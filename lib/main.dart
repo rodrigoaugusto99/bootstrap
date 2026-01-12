@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bootstrap/app/app.bottomsheets.custom.dart';
 import 'package:bootstrap/app/app.logger.dart';
+import 'package:bootstrap/ui/views/components/loading.dart';
+import 'package:bootstrap/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bootstrap/app/app.dialogs.dart';
@@ -8,6 +10,7 @@ import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.router.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 /*
@@ -45,14 +48,27 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledToast(
-      child: MaterialApp(
-        initialRoute: Routes.startupView,
-        onGenerateRoute: StackedRouter().onGenerateRoute,
-        navigatorKey: StackedService.navigatorKey,
-        navigatorObservers: [
-          StackedService.routeObserver,
-        ],
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        unfocus();
+      },
+      child: StyledToast(
+        child: LoaderOverlay(
+          overlayColor: Colors.black.withOpacity(0.3),
+          closeOnBackButton: true,
+          overlayWidgetBuilder: (_) {
+            return const Loading();
+          },
+          child: MaterialApp(
+            initialRoute: Routes.startupView,
+            onGenerateRoute: StackedRouter().onGenerateRoute,
+            navigatorKey: StackedService.navigatorKey,
+            navigatorObservers: [
+              StackedService.routeObserver,
+            ],
+          ),
+        ),
       ),
     );
   }

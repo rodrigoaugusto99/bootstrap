@@ -9,6 +9,8 @@ import 'package:bootstrap/services/google_cloud_logging_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/services/subscription_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
+import 'package:bootstrap/services/conectivity_service.dart';
+import 'package:bootstrap/services/location_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -25,6 +27,8 @@ import 'test_helpers.mocks.dart';
   MockSpec<UserService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<SubscriptionService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<NotificationService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<ConectivityService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<LocationService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -38,6 +42,8 @@ void registerServices() {
   getAndRegisterUserService();
   getAndRegisterSubscriptionService();
   getAndRegisterNotificationService();
+  getAndRegisterConectivityService();
+  getAndRegisterLocationService();
 // @stacked-mock-register
 }
 
@@ -137,6 +143,20 @@ MockNotificationService getAndRegisterNotificationService() {
   _removeRegistrationIfExists<NotificationService>();
   final service = MockNotificationService();
   locator.registerSingleton<NotificationService>(service);
+  return service;
+}
+
+MockConectivityService getAndRegisterConectivityService() {
+  _removeRegistrationIfExists<ConectivityService>();
+  final service = MockConectivityService();
+  locator.registerSingleton<ConectivityService>(service);
+  return service;
+}
+
+MockLocationService getAndRegisterLocationService() {
+  _removeRegistrationIfExists<LocationService>();
+  final service = MockLocationService();
+  locator.registerSingleton<LocationService>(service);
   return service;
 }
 // @stacked-mock-create

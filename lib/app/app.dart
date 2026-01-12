@@ -1,3 +1,4 @@
+import 'package:bootstrap/services/conectivity_service.dart';
 import 'package:bootstrap/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:bootstrap/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:bootstrap/ui/views/home/home_view.dart';
@@ -16,6 +17,7 @@ import 'package:bootstrap/ui/views/on_boarding/on_boarding_view.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/services/subscription_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
+import 'package:bootstrap/services/location_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -38,6 +40,8 @@ import 'package:bootstrap/services/notification_service.dart';
     LazySingleton(classType: UserService),
     LazySingleton(classType: SubscriptionService),
     LazySingleton(classType: NotificationService),
+    LazySingleton(classType: ConnectivityService),
+    LazySingleton(classType: LocationService),
 // @stacked-service
   ],
   bottomsheets: [

@@ -1,3 +1,4 @@
+import 'package:bootstrap/utils/helpers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ Widget appCachedNetWorkImage({
   double? height,
   double? width,
   BoxFit? fit,
-  bool isRounded = false,
+  bool isCircle = false,
   double? radius,
   Function()? onTap,
 }) {
@@ -14,23 +15,27 @@ Widget appCachedNetWorkImage({
     const SizedBox();
   }
 
-  return GestureDetector(
-    onTap: onTap,
-    child: CachedNetworkImage(
-      height: height,
-      width: width,
-      fit: BoxFit.cover,
-      imageUrl: imageUrl ?? '',
-      placeholder: (context, url) {
-        return const SizedBox(
-          height: 30,
-          width: 30,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-          ),
-        );
-      },
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+  return decContainer(
+    isCircle: isCircle,
+    radius: radius,
+    child: GestureDetector(
+      onTap: onTap,
+      child: CachedNetworkImage(
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+        imageUrl: imageUrl ?? '',
+        placeholder: (context, url) {
+          return const SizedBox(
+            height: 30,
+            width: 30,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          );
+        },
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      ),
     ),
   );
 }
