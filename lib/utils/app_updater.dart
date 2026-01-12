@@ -1,6 +1,9 @@
+import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io' show Platform;
+
+final _log = getLogger('app_updater.dart');
 
 Future<void> redirectToStore() async {
   String url = '';
@@ -19,10 +22,16 @@ void printCurrentVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();
   final version = packageInfo.version;
   final buildNumber = packageInfo.buildNumber;
-  print('Versão do usuário: $version+$buildNumber');
+  _log.i('Versão do usuário: $version+$buildNumber');
 }
 
-//final _log = getLogger('app_updater.dart');
+Future<bool> needToUpdate(String minVersion, String minBuildNumber) async {
+  bool userNeedsUpdateByBuildNumber =
+      await needsUpdateByBuildNumber(minBuildNumber);
+  bool userNeedsUpdateByVersion = await needsUpdateByVersion(minVersion);
+  return userNeedsUpdateByBuildNumber || userNeedsUpdateByVersion;
+}
+
 Future<bool> needsUpdateByVersion(String minVersion) async {
   final packageInfo = await PackageInfo.fromPlatform();
   final version = packageInfo.version;
