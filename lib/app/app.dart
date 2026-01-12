@@ -18,6 +18,7 @@ import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/services/subscription_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
 import 'package:bootstrap/services/location_service.dart';
+import 'package:bootstrap/services/alarm_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -42,6 +43,7 @@ import 'package:bootstrap/services/location_service.dart';
     LazySingleton(classType: NotificationService),
     LazySingleton(classType: ConnectivityService),
     LazySingleton(classType: LocationService),
+    LazySingleton(classType: AlarmService),
 // @stacked-service
   ],
   bottomsheets: [

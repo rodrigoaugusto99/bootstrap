@@ -48,3 +48,60 @@ void showLogoutPopup({
     }
   });
 }
+
+void showYearPopup({
+  required BuildContext context,
+  required Offset offset,
+  required Function(int) onSelected,
+  required List<int> years,
+}) async {
+  await showMenu(
+    context: context,
+    position: RelativeRect.fromLTRB(
+      offset.dx,
+      offset.dy + 30,
+      offset.dx,
+      offset.dy,
+    ),
+    items: years.map((int year) {
+      return PopupMenuItem<int>(
+        value: year,
+        child: Text(year.toString()),
+      );
+    }).toList(),
+  ).then((value) {
+    if (value != null) {
+      onSelected(value);
+    }
+  });
+}
+
+/*
+void showDeliveryMethodPopup({
+  required BuildContext context,
+  required Offset offset,
+  required Function(DeliveryMethod) onSelected,
+  List<DeliveryMethod>? initialList,
+}) async {
+  final methods = initialList ?? DeliveryMethod.values;
+  await showMenu(
+    context: context,
+    position: RelativeRect.fromLTRB(
+      offset.dx,
+      offset.dy,
+      offset.dx + 100,
+      offset.dy + 100,
+    ),
+    items: methods.map((DeliveryMethod deliveryMethod) {
+      return PopupMenuItem<DeliveryMethod>(
+        value: deliveryMethod,
+        child: Text(translateEnum(deliveryMethod)),
+      );
+    }).toList(),
+  ).then((value) {
+    if (value != null) {
+      onSelected(value);
+    }
+  });
+}
+*/

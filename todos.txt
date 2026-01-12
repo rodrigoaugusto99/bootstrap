@@ -1,0 +1,2 @@
+colocar os requisitos de cada package nos services (service location,
+colocar oq tem que botar no manifest e infoplist talvez)
