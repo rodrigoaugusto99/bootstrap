@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 enum ImageEnum {
+  logo('logo'),
   jpg('jpg', ext: 'jpg'),
-  png('png'),
   ;
 
   final String slug;

@@ -16,8 +16,8 @@ class StartupViewModel extends BaseViewModel {
   Future runStartupLogic({
     required Future<void> animationCompleted,
   }) async {
-    locator<LogarteService>().init(context);
-    await locator<GoogleCloudLoggingService>().setupLoggingApi();
+    //locator<LogarteService>().init(context);
+    //await locator<GoogleCloudLoggingService>().setupLoggingApi();
     await locator<AppService>().init();
     await locator<AuthService>().init();
 

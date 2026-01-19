@@ -93,7 +93,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const ImageUtil(
-              ImageEnum.png,
+              ImageEnum.logo,
             ),
             const SizedBox(height: 20),
             Opacity(

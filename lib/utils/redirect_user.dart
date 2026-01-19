@@ -13,14 +13,14 @@ class RedirectUser {
 
   Future<void> redirectUser() async {
     if (_authService.currUser == null) {
-      bool sawOnboarding = await getBoolSharedPreferences(
-        SharedPreferencesKeys.sawOnboarding,
-      );
-      if (!sawOnboarding) {
-        _log.i('redirecting to onboarding view');
-        _navigationService.replaceWithOnBoardingView();
-        return;
-      }
+      // bool sawOnboarding = await getBoolSharedPreferences(
+      //   SharedPreferencesKeys.sawOnboarding,
+      // );
+      // if (!sawOnboarding) {
+      //   _log.i('redirecting to onboarding view');
+      //   _navigationService.replaceWithOnBoardingView();
+      //   return;
+      // }
       _log.i('redirecting to login view');
       _navigationService.replaceWithLoginView();
       return;
