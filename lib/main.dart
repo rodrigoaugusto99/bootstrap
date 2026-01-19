@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bootstrap/app/app.bottomsheets.custom.dart';
 import 'package:bootstrap/app/app.logger.dart';
+import 'package:bootstrap/ui/common/app_theme.dart';
 import 'package:bootstrap/ui/views/components/loading.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,8 @@ class MainApp extends StatelessWidget {
             return const Loading();
           },
           child: MaterialApp(
+            theme: makeAppTheme(),
+            debugShowCheckedModeBanner: false,
             initialRoute: Routes.startupView,
             onGenerateRoute: StackedRouter().onGenerateRoute,
             navigatorKey: StackedService.navigatorKey,
