@@ -21,6 +21,17 @@ class UserService {
     }
   }
 
+  Future<void> createUser(UserModel user) async {
+    try {
+      await firestore.createUser(
+        userMap: user.toMap(),
+        userId: user.id,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   void unSetUser() {
     _userSubscription?.cancel();
     user.value = null;

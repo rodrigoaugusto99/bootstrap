@@ -5,6 +5,7 @@ import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/utils/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,6 +52,7 @@ class AuthService {
       await locator<UserService>().setUser(currUser!.uid);
       //await locator<InAppPurchaseService>().init();
       //await locator<NotificationService>().initNotifications();
+      hideLoading();
       _navigationService.clearStackAndShow(Routes.homeView);
       // _log.wtf('terminou o setupUserLoggedIn');
     } catch (e, stackTrace) {

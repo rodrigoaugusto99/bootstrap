@@ -19,6 +19,7 @@ import 'package:bootstrap/services/subscription_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/alarm_service.dart';
+import 'package:bootstrap/ui/views/complex_register/complex_register_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -28,6 +29,7 @@ import 'package:bootstrap/services/alarm_service.dart';
     MaterialRoute(page: LoginView),
     MaterialRoute(page: RegisterView),
     MaterialRoute(page: OnBoardingView),
+    MaterialRoute(page: ComplexRegisterView),
 // @stacked-route
   ],
   dependencies: [

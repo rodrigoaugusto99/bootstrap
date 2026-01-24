@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bootstrap/ui/common/app_colors.dart';
-import 'package:bootstrap/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -38,14 +37,12 @@ class NoticeSheet extends StackedView<NoticeSheetModel> {
             request.title!,
             style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
           ),
-          verticalSpaceTiny,
           Text(
             request.description!,
             style: const TextStyle(fontSize: 14, color: kcMediumGrey),
             maxLines: 3,
             softWrap: true,
           ),
-          verticalSpaceLarge,
         ],
       ),
     );

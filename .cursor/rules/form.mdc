@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+
+# Nos formularios, geralmente usamos validações e máscaras
+
+# validações em lib/utils/validators.dart
+
+# máscaras em lib/utils/easy_mask.dart
+
+# exemplo:
+
+view:
+
+```Dart
+Form(
+        key: viewModel.formKey,
+CustomTextFormField(
+    label: 'Celular (WhatsApp)',
+    keyboardType: TextInputType.phone,
+    inputFormatters: [viewModel.phoneMaskFormatter],
+    controller: viewModel.celularController,
+    validator: Validators.phone,
+),
+```
+
+viewModel:
+
+```dart
+void finalize(){
+    if(!formKey.currentState!.validate()){
+        return;
+    }
+
+    // continuar com o cadastro
+}
+
+```
+
+
+

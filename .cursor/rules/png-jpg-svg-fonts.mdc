@@ -1,0 +1,65 @@
+---
+alwaysApply: false
+---
+
+# JPGs, PNGs, SVGs
+
+## sempre ficam em:
+
+- /assets/icons
+- /assets/images
+
+## São declarados em lib/utils/svg_utils e lib/uils/image_utils
+
+```dart
+enum SvgEnum {
+  svg('svg'),
+}
+
+enum ImageEnum {
+  logo('logo'),
+  jpg('jpg', ext: 'jpg'),
+  ;
+```
+
+## uso:
+
+```dart
+SvgUtil(
+    SvgEnum.svg
+),
+
+ImageUtil(
+    ImageEnum.png,
+),
+```
+
+# FONTES
+
+supondo que em assets/fonts tem os arquivos:
+
+- Poppins-Bold.ttf
+- Poppins-Medium.ttf
+- Poppins-Regular.ttf
+- Sora-Bold.ttf
+- Sora-Regular.ttf
+
+Então no pubspec.yaml deverá estar assim:
+
+```dart
+fonts:
+    - family: Poppins
+      fonts:
+        - asset: lib/assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: lib/assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: lib/assets/fonts/Poppins-Medium.ttf
+          weight: 500
+    - family: Sora
+      fonts:
+        - asset: lib/assets/fonts/Sora-Regular.ttf
+          weight: 400
+        - asset: lib/assets/fonts/Sora-Bold.ttf
+          weight: 700
+```

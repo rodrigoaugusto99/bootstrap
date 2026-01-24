@@ -1,0 +1,88 @@
+---
+alwaysApply: true
+---
+
+# Como funciona o transporte de dados:
+
+## Usuário:
+
+### Service - UserService
+
+- Todos os services no projeto são singleton. Por isso, lá fica a instância do usuário logado.
+- Os dados do usuario vem do firestore, e por isso há uma função que pega o snapshot do usuario,
+  transforma no UserModel e salva na variavel user. Nesses tipos de função geralmente também há
+  o listener naquela query para capturar mudanças no banco relacionados ao usuário e atualizar a instancia do mesmo.
+- Variaveis desse tipo geralmente salvo como ValueNotifier para podermos ouvir com addListener aonde for necessario.
+- Caso precisamos alterar um valor do usuario no banco, entao fazemos essa função no diretório "firestore", e aqui no service,
+  iremos chamar essa função criada em firestore/users.dart.
+
+### Firestore - firestore/users.dart
+
+- funções que apenas se comunicam com o firestore.
+- Queries, try/catches, sem logs.
+- O ideal é sempre chamar esses métodos através dos services para melhor organização.
+
+### Utils
+
+#### pacotes:
+
+- O diretório utils é usado para agrupar funções auxiliares e abstrações de pacotes externos, como o image_picker,
+  facilitando a reutilização, isolamento e encapsulamento da lógica de integração.
+- Exemplos: image_picker, onde crio funcoes reutilizaveis como pickMedia ou pickPhoto; storage_utils, onde encapsulo
+  e crio funcoes reutilizaveis usando o pacote firebase_storage; shared_preferences, onde crio funcoes que apenas salvam
+  ou retornam dados salvos pelo shared preferences
+
+#### imagens (png, jpg ou svg)
+
+- no diretorio utils, tambem colocamos svg_utils e image_utils, que armazenam enums de svgs/pngs/jpgs, facilitando o uso
+  de Image.asset e SvgPicture.asset no resto do app.
+
+#### Validators
+
+- em validators.dart, é onde ficam todos os metodos estaticos que sao usados majoritariamente por textformfields no parametro
+  "validator".
+
+### Models - UserModel
+
+- no diretorio model ficam os modelos dos objetos que sao usados no restante do App, por exemplo, UserModel, onde tem os atributos,
+  o construtor, o fromMap e toMap, e os getters.
+- os metodos fromMap sempre recebem por parametro um Map<String, dynamic>.
+
+### ui/views - onde ficam as views e viewmodels do app.
+
+- No contexto do usuario, é assim que por exemplo lidamos com a view e viewmodel: Na viewmodel há a comunicação com os services. Na
+  view, apenas há a comunicação com a viewmodel. Na viewModel há funções, getters e variáveis que serão usadas na view.
+- É na viewmodel que settamos um addListener para ouvir alteracoes do user no service, por exemplo. E dentro do callback, apenas
+  rodamos o notifyListeners(), pois geralmente na viewmodel tambem ficaria um getter que pega o usuario diretamente do service, sendo assim, o usuario na view seria automaticamente atualizado quando ele for alterado la no service por causa do notifyListener.
+
+## Tratamento de erros:
+
+### Service
+
+- Nos services, sempre usamos try/catchs e lançamos os erros usando `throw AppError(message:"mensagem")`.
+- Quando por exemplo o erro vem do firestore, então colocamos um \_log.e(e) sendo o "e" tudo que veio do catch,
+  e no AppError, lançamos uma mensagem genérica como "Erro ao buscar produtos".
+- Quando o erro vem da api, então colocamos no AppError diretamente a mensagem que veio da api.
+
+### ViewModels
+
+- nos viewmodels, chamamos os métodos do services e também usamos o try/catch, mas dessa vez apenas para capturar os erros usando
+  `on AppError catch(e)`, e nesses casos geralmente mostramos essa mensagem para o usuario usando snackbar com toast. Por precaucao, tambem colocamos um catch no final genérico, apenas printando o erro usando `_log.e(e)`
+
+## Componentes.
+
+- Quando um componente é usado no app inteiro, então colocamos na pasta em lib/ui/components.
+- Quando é um componente que é usado apenas em uma tela, então podemos colocar dentro do mesmo diretorio que ficam
+  a view e a viewmodel daquele arquivo.
+
+## common - lib/ui/common
+
+### app_colors
+
+- ficam todas as cores que sao usadas no app salvas em uma variavel
+
+### ui_helpers
+
+- ficam widgets base para o app, como por exemplo, containers personalizados, estilos de texto, espaçamentos, etc.
+- heightSeparator e widthSeparatos - SizedBox com height/width.
+- decContainer - container com os parametros mais faceis de serem passados.

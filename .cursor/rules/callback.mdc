@@ -1,0 +1,39 @@
+---
+alwaysApply: true
+---
+
+# CALLBACK
+
+## Exemplo de uso
+
+```dart
+
+// VIEW DA TELA DE REGISTRO
+class DependentRegisterView extends StackedView<DependentRegisterViewModel> {
+  final Function(DependentModel)? registerCallback;
+  const DependentRegisterView({
+    Key? key,
+    this.registerCallback,
+  }) : super(key: key);
+
+   @override
+  DependentRegisterViewModel viewModelBuilder(
+    BuildContext context,
+  ) =>
+      DependentRegisterViewModel(dependent, registerCallback);
+
+// VIEWMODEL DA TELA DE REGISTRO
+class DependentRegisterViewModel extends BaseViewModel {
+  final Function(DependentModel)? registerCallback;
+  DependentRegisterViewModel(
+    this.registerCallback,
+  ) {
+
+
+// CHAMANDO ESSA TELA E USANDO O CALLBACK
+_navigationService.navigateToDependentRegisterView(
+      registerCallback: (dependent) => registerCallback(dependent),
+    );
+
+void registerCallback(DependentModel dependent) {}
+```

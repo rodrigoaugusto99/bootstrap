@@ -4,7 +4,6 @@ import 'package:bootstrap/ui/views/startup/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
-import 'package:bootstrap/ui/common/ui_helpers.dart';
 
 import 'startup_viewmodel.dart';
 

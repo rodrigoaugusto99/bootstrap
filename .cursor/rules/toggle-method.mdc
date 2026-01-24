@@ -1,0 +1,45 @@
+---
+alwaysApply: true
+---
+
+
+# padrões para métodos toggle
+VIEW:
+```Dart
+GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: viewModel.toggleDetranCredenciado,
+    child: Row(
+        children: [
+            RadioBall(
+                isSelected: viewModel.isDetranCredenciado,
+            ),
+            widthSeparator(8),
+            styledText(
+                text: 'Sim',
+            ),
+            widthSeparator(20),
+            RadioBall(
+                isSelected: !viewModel.isDetranCredenciado,
+            ),
+            widthSeparator(8),
+            styledText(
+                text: 'Não',
+            ),
+        ],
+    ),
+),
+```
+VIEWMODEL:
+
+```Dart
+
+bool isDetranCredenciado = false;
+
+void toggleDetranCredenciado() {
+    isDetranCredenciado = !isDetranCredenciado;
+    notifyListeners();
+  }
+```
+
+# 

@@ -1,0 +1,18 @@
+---
+alwaysApply: false
+---
+
+lib/app - nunca mexa nesse diretório.
+lib/assets/ imagens, icones, fontes, animacoes, etc.
+lib/firestore/ arquivos que fazem apenas comunicação com o firestore
+lib/models classes, modelos, schemas
+lib/services - sempre são um singleton.
+lib/ui/dialogs e lib/ui/bottom_sheets - dialogs e bottomsheets
+lib/ui/common/ -
+
+- app_colors.dart
+- cores - app_theme.dart
+- tema - ui_helpers.dart: widgets
+
+lib/ui/components - componentes que são usados em varios lugares
+(se for usado apenas em um lugar, geralmente coloca-se na mesma pasta da view)

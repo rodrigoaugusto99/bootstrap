@@ -1,2 +1,13 @@
 colocar os requisitos de cada package nos services (service location,
 colocar oq tem que botar no manifest e infoplist talvez)
+
+cursor rules - callbacks
+como usar shared preferences utils em algumas situacoes
+
+arquitetura viewmodel- service - firestore
+
+logicas de seleção 
+
+```Dart
+
+```

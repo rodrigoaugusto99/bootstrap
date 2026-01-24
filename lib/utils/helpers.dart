@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:bootstrap/ui/common/app_colors.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -305,6 +306,48 @@ double getBottomPadding(BuildContext context) {
     mediaQuery.viewPadding.bottom,
   );
   return bottomPadding;
+}
+
+class AppRichText extends StatelessWidget {
+  final List<TextSpan> children;
+  final TextStyle? style;
+  final TextAlign textAlign;
+  final int? maxLines;
+  final TextOverflow overflow;
+  final double? textScaleFactor;
+
+  const AppRichText({
+    super.key,
+    required this.children,
+    this.style,
+    this.textAlign = TextAlign.start,
+    this.maxLines,
+    this.overflow = TextOverflow.clip,
+    this.textScaleFactor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle style = const TextStyle(
+      color: kcTextColor,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Montserrat',
+      height: 1.4,
+    );
+
+    return RichText(
+      textAlign: textAlign,
+      maxLines: maxLines,
+      overflow: overflow,
+      text: TextSpan(
+        style: style,
+        children: children,
+      ),
+      textScaler: TextScaler.linear(
+          textScaleFactor ?? MediaQuery.of(context).textScaleFactor),
+    );
+  }
 }
 
 class MappedColumn<T> extends StatelessWidget {

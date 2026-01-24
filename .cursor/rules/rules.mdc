@@ -1,0 +1,34 @@
+---
+alwaysApply: true
+---
+
+# Jamais mexa nos arquivos dentro de lib/app.
+
+# Não faça comentários.
+
+# Não crie arquivos svg. Os arquivos png, jpg ou svg sempre estarão criados antes de eu falar com voce.
+
+# Nunca utilize print()
+
+## caso queira fazer logs, não use print(). Em vez disso, use esse padrão:
+
+```dart
+import 'package:oon/app/app.logger.dart';
+
+class LoginViewModel extends BaseViewModel {
+  LoginViewModel() {
+    _log.i('LoginViewModel');
+  }
+  final _log = getLogger('LoginViewModel');
+
+
+  Future<void> login() async {
+    _log.w('login');
+  }
+}
+
+```
+
+### se não tiver classe, use o nome do arquivo para nomear o getLogger.
+
+# nunca crie arquivos .md.

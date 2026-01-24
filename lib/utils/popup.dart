@@ -49,6 +49,33 @@ void showLogoutPopup({
   });
 }
 
+void showStatePopup({
+  required BuildContext context,
+  required Offset offset,
+  required Function(String) onSelected,
+  required List<String> initialList,
+}) async {
+  await showMenu(
+    context: context,
+    position: RelativeRect.fromLTRB(
+      offset.dx,
+      offset.dy,
+      offset.dx + 100,
+      offset.dy + 100,
+    ),
+    items: initialList.map((String state) {
+      return PopupMenuItem<String>(
+        value: state,
+        child: Text(state),
+      );
+    }).toList(),
+  ).then((value) {
+    if (value != null) {
+      onSelected(value);
+    }
+  });
+}
+
 void showYearPopup({
   required BuildContext context,
   required Offset offset,
