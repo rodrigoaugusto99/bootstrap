@@ -1,6 +1,7 @@
 import 'package:bootstrap/utils/helpers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 Widget appCachedNetWorkImage({
   String? imageUrl,
@@ -26,11 +27,13 @@ Widget appCachedNetWorkImage({
         fit: BoxFit.cover,
         imageUrl: imageUrl ?? '',
         placeholder: (context, url) {
-          return const SizedBox(
-            height: 30,
-            width: 30,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
+          return Skeletonizer(
+            enabled: true,
+            child: Skeleton.leaf(
+              child: decContainer(
+                isCircle: true,
+                color: Colors.red,
+              ),
             ),
           );
         },
