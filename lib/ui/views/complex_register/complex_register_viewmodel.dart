@@ -1,6 +1,7 @@
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/models/user_model.dart';
+import 'package:bootstrap/schemas/user_registration_schema.dart';
 import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/enums.dart';
@@ -223,19 +224,17 @@ class ComplexRegisterViewModel extends BaseViewModel {
       //   state: estadoSelecionadoController.text.trim(),
       // );
 
-      // final coordinates =
+      // final response =
       //     await _locationService.getCoordinatesFromAddress(address);
 
-      // address.latitude = coordinates['latitude'];
-      // address.longitude = coordinates['longitude'];
+      // address.latitude = response.latitude;
+      // address.longitude = response.longitude;
 
-      final userModel = UserModel(
-        id: _authService.currUser!.uid,
-        name: fullNameController.text.trim(),
-        createdAt: DateTime.now(),
+      final userRegistrationSchema = UserRegistrationSchema(
+        name: fullNameController.text,
       );
 
-      await _userService.createUser(userModel);
+      await _userService.updateUserRegistration(userRegistrationSchema);
       _log.i('User created successfully');
 
       // ANALYTICS:

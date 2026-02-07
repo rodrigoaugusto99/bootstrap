@@ -32,3 +32,26 @@ class LoginViewModel extends BaseViewModel {
 ### se não tiver classe, use o nome do arquivo para nomear o getLogger.
 
 # nunca crie arquivos .md.
+
+# nunca faça lógicas dentro da view. Sempre faça na viewmodel.
+
+## Por exemplo:
+
+```dart
+//ao inves de fazer isso:
+
+/*view*/
+onTap: () {
+  viewModel.isPCD = true;
+  viewModel.notifyListener();
+}
+
+//faça isso:
+/*view*/
+onTap: () => viewModel.toggleCarroPCD(true),
+/*viewmodel*/
+void toggleCarroPCD(bool value) {
+  carroPCD = value;
+  notifyListeners();
+}
+```

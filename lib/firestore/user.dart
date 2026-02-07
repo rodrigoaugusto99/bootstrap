@@ -5,13 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _log = getLogger('UserService');
 
-Future<StreamSubscription> getUserById({
+Future<StreamSubscription> getAndListenUserById({
   required Function(UserModel) onNewSnapshot,
   required String userId,
 }) async {
   try {
     final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('instructors');
+        FirebaseFirestore.instance.collection('users');
 
     final query = usersCollection.doc(userId);
 
@@ -37,7 +37,7 @@ Future<void> updateUser({
 }) async {
   try {
     await FirebaseFirestore.instance
-        .collection('instructors')
+        .collection('users')
         .doc(userId)
         .update(map);
   } catch (error) {

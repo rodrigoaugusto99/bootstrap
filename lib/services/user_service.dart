@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bootstrap/firestore/user.dart' as firestore;
 import 'package:bootstrap/models/user_model.dart';
+import 'package:bootstrap/schemas/user_registration_schema.dart';
+import 'package:bootstrap/utils/enums.dart';
 import 'package:flutter/material.dart';
 
 class UserService {
@@ -9,7 +11,7 @@ class UserService {
   StreamSubscription? _userSubscription;
   Future<void> setUser(String uid) async {
     try {
-      _userSubscription = await firestore.getUserById(
+      _userSubscription = await firestore.getAndListenUserById(
         onNewSnapshot: (user) {
           this.user.value = user;
         },
@@ -21,11 +23,26 @@ class UserService {
     }
   }
 
-  Future<void> createUser(UserModel user) async {
+  Future<void> updateUserRegistration(
+    UserRegistrationSchema userRegistrationSchema,
+  ) async {
     try {
-      await firestore.createUser(
-        userMap: user.toMap(),
-        userId: user.id,
+      await firestore.updateUser(
+        map: userRegistrationSchema.toMap(),
+        userId: user.value!.id,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserSex(SexEnum sex) async {
+    try {
+      await firestore.updateUser(
+        map: {
+          'sex': sex.name,
+        },
+        userId: user.value!.id,
       );
     } catch (e) {
       rethrow;

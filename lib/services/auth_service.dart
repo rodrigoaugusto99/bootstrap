@@ -371,7 +371,10 @@ class AuthService {
 
   Future<void> createUserProfile() async {
     try {
-      if (currUser == null) return;
+      if (currUser == null) {
+        _log.e('currUser is null');
+        return;
+      }
 
       String uid = currUser!.uid;
 

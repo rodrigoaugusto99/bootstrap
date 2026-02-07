@@ -1,17 +1,35 @@
 import 'dart:async';
-
+import 'package:bootstrap/app/app.locator.dart';
+import 'package:bootstrap/schemas/get_coordinates_from_address_response.dart';
+import 'package:bootstrap/services/api_service.dart';
+import 'package:bootstrap/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/models/address_model.dart';
-import 'package:bootstrap/services/user_service.dart';
 
 class LocationService {
   final _log = getLogger("LocationService");
   ValueNotifier<Position?> currentLocation = ValueNotifier(null);
+
+  final _apiService = locator<ApiService>();
+
+  Future<GetCoordinatesFromAddressResponse> getCoordinatesFromAddress(
+    AddressModel address,
+  ) async {
+    final response = await _apiService.request(
+      method: HttpMethod.POST,
+      url: '$apiUrl/user/geocoding',
+      body: address.toMap(),
+    );
+
+    return GetCoordinatesFromAddressResponse(
+      latitude: response['latitude'],
+      longitude: response['longitude'],
+    );
+  }
 
   Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
