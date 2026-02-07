@@ -1,3 +1,18 @@
 ---
 alwaysApply: true
 ---
+
+```dart
+// adicionar a tela na pilha
+_navigationService.navigateToProfileView();
+
+// substituir a tela na pilha
+
+_navigationService.replaceWithProfileView();
+
+// limpar a pilha até uma tela
+
+_navigationService.popUntil((route) => Routes.homeView == route.settings.name);
+_navigationService.clearStackAndShowView(const HomeView());
+
+```
