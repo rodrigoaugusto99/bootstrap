@@ -1,3 +1,4 @@
+import 'package:bootstrap/ui/components/custom_bottom_navigation_bar.dart';
 import 'package:bootstrap/ui/views/complex_register/pages/first_page.dart';
 import 'package:bootstrap/ui/views/complex_register/pages/second_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class ComplexRegisterView extends StackedView<ComplexRegisterViewModel> {
   ) {
     return WillPopScope(
       onWillPop: () async {
-        viewModel.back();
+        viewModel.handleBack();
         return false;
       },
       child: Scaffold(
@@ -28,10 +29,10 @@ class ComplexRegisterView extends StackedView<ComplexRegisterViewModel> {
         //   hasLogout: true,
         // ),
         //extendBody: true,
-        // bottomNavigationBar: CustomBottonNavigationBar(
-        //   text: viewModel.buttonText,
-        //   onPressed: viewModel.nextPage,
-        // ),
+        bottomNavigationBar: CustomBottonNavigationBar(
+          text: viewModel.buttonText,
+          onPressed: viewModel.handleNextPage,
+        ),
         body: Column(
           children: [
             Expanded(

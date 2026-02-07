@@ -2,7 +2,6 @@
 alwaysApply: true
 ---
 
-
 # Nos formularios, geralmente usamos validações e máscaras
 
 # validações em lib/utils/validators.dart
@@ -19,7 +18,7 @@ Form(
 CustomTextFormField(
     label: 'Celular (WhatsApp)',
     keyboardType: TextInputType.phone,
-    inputFormatters: [viewModel.phoneMaskFormatter],
+    inputFormatters: [phoneMaskFormatter],
     controller: viewModel.celularController,
     validator: Validators.phone,
 ),
@@ -37,6 +36,3 @@ void finalize(){
 }
 
 ```
-
-
-

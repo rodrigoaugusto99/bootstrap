@@ -11,3 +11,8 @@ logicas de seleção
 ```Dart
 
 ```
+
+
+esqueleto do onboarding
+esqueleto de registro complexo
+arrumar o login (comentar outras formas de login/chamadas do service)

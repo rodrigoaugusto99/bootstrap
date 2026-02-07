@@ -381,7 +381,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
               style: TextStyle(
                 color: _textColor,
                 overflow: TextOverflow.ellipsis,
-                fontFamily: 'Montserrat',
+                // fontFamily: 'Montserrat',
               ),
               validator: (value) {
                 final error = widget.validator?.call(value);

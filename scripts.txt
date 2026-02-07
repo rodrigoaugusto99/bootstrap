@@ -1,2 +1,9 @@
 dart run flutter_native_splash:create --path=flutter_native_splash.yaml
 
+dart run change_app_package_name:main com.kxp.tal
+
+firebase login:use EMAIL
+
+
+gcloud config set project inner-chat-v1
+gcloud firestore export gs://inner-chat-v1.appspot.com

@@ -3,6 +3,7 @@ import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/models/user_model.dart';
 import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/services/user_service.dart';
+import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/loading.dart';
 import 'package:bootstrap/utils/redirect_user.dart';
 import 'package:bootstrap/utils/toast.dart';
@@ -17,7 +18,7 @@ class ComplexRegisterViewModel extends BaseViewModel {
   ComplexRegisterViewModel({
     this.initialPage,
   }) {
-    init();
+    _init();
   }
 
   final _authService = locator<AuthService>();
@@ -26,10 +27,80 @@ class ComplexRegisterViewModel extends BaseViewModel {
   final _log = getLogger('ComplexRegisterViewModel');
 
   int currentPage = 0;
-  bool get canLogout => currentPage != 0 && currentPage != 1;
+  int totalPages = 2;
+
+  bool get isLastPage => currentPage == totalPages - 1;
+  bool get isFirstPage => currentPage == 0;
+  bool get canLogout => !isFirstPage;
   UserModel? get user => _userService.user.value;
-  String get buttonText =>
-      currentPage == 2 ? 'Finalizar cadastro' : 'Continuar';
+  String get buttonText => isLastPage ? 'Continuar' : 'Finalizar cadastro';
+
+  PageController pageController = PageController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController celularController = TextEditingController();
+
+  TextEditingController enderecoCompletoController = TextEditingController();
+  TextEditingController bairroController = TextEditingController();
+  TextEditingController pontoReferenciaController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
+  TextEditingController cidadeSelecionadaController = TextEditingController();
+  TextEditingController estadoSelecionadoController = TextEditingController();
+
+  bool enableStreet = true;
+  bool enableNeighborhood = true;
+  bool enableState = true;
+  bool enableCity = true;
+
+  SexEnum sexSelected = SexEnum.male;
+  List<FruitEnum> fruitsSelected = [];
+
+  final firstFormKey = GlobalKey<FormState>();
+  final secondFormKey = GlobalKey<FormState>();
+
+  void _init() {
+    pageController.addListener(_onPageControllerChanged);
+    // _retrieveLostImage();
+  }
+
+  /* VALIDATIONS */
+
+  Future<bool> _checkIfFormIsValid() async {
+    if (currentPage == 1) {
+      if (true) {
+        AppToast.showToast(
+          text: 'Selecione a isso',
+        );
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  bool get _validateForm {
+    switch (currentPage) {
+      case 0:
+        return firstFormKey.currentState!.validate();
+      case 1:
+        return secondFormKey.currentState!.validate();
+      default:
+        return false;
+    }
+  }
+
+  void _advanceToNextPage() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _previousPage() {
+    pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   void _onPageControllerChanged() {
     final page = pageController.page?.round() ?? 0;
@@ -39,9 +110,49 @@ class ComplexRegisterViewModel extends BaseViewModel {
     }
   }
 
-  void init() {
-    pageController.addListener(_onPageControllerChanged);
-    // _retrieveLostImage();
+  void handleSelectState(String state) {
+    estadoSelecionadoController.text = state;
+    notifyListeners();
+  }
+
+  void handleToggleSex(SexEnum sex) {
+    sexSelected = sex;
+    notifyListeners();
+  }
+
+  void handleSelectFruit(
+    FruitEnum fruit,
+  ) {
+    if (fruitsSelected.contains(fruit)) {
+      fruitsSelected.remove(fruit);
+    } else {
+      fruitsSelected.add(fruit);
+    }
+    notifyListeners();
+  }
+
+  void handleBack() {
+    if (isFirstPage) {
+      _navigationService.back();
+      return;
+    }
+    _previousPage();
+  }
+
+  Future<void> handleNextPage() async {
+    if (!_validateForm) return;
+
+    bool formIsValid = await _checkIfFormIsValid();
+    if (!formIsValid) return;
+
+    unfocus();
+
+    if (isLastPage) {
+      _finalize();
+      return;
+    }
+
+    _advanceToNextPage();
   }
 
   // Future<void> _retrieveLostImage() async {
@@ -55,80 +166,6 @@ class ComplexRegisterViewModel extends BaseViewModel {
   //     _log.e(e);
   //   }
   // }
-
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController celularController = TextEditingController();
-
-  TextEditingController enderecoCompletoController = TextEditingController();
-  TextEditingController bairroController = TextEditingController();
-  TextEditingController pontoReferenciaController = TextEditingController();
-  TextEditingController cepController = TextEditingController();
-  TextEditingController cidadeSelecionadaController = TextEditingController();
-  TextEditingController estadoSelecionadoController = TextEditingController();
-
-  final firstFormKey = GlobalKey<FormState>();
-  final secondFormKey = GlobalKey<FormState>();
-
-  Future<bool> checkIfFormIsValid() async {
-    if (currentPage == 1) {
-      if (true) {
-        AppToast.showToast(
-          text: 'Selecione a isso',
-        );
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  bool get validateForm {
-    switch (currentPage) {
-      case 0:
-        return firstFormKey.currentState!.validate();
-      case 1:
-        return secondFormKey.currentState!.validate();
-      default:
-        return false;
-    }
-  }
-
-  PageController pageController = PageController();
-
-  void back() {
-    if (currentPage == 1 || currentPage == 2) {
-      previousPage();
-    }
-    //else if (currentPage == 0) {
-    //_navigationService.back();
-    //}
-  }
-
-  Future<void> nextPage() async {
-    if (!validateForm) return;
-
-    bool formIsValid = await checkIfFormIsValid();
-    if (!formIsValid) return;
-
-    unfocus();
-
-    if (currentPage == 2) {
-      finalize();
-      return;
-    }
-
-    advanceToNextPage();
-  }
-
-  void selectState(String state) {
-    estadoSelecionadoController.text = state;
-    notifyListeners();
-  }
-
-  bool enableStreet = true;
-  bool enableNeighborhood = true;
-  bool enableState = true;
-  bool enableCity = true;
 
   Future<void> onCepChanged() async {
     // if (cepController.text.length != 9) {
@@ -160,7 +197,7 @@ class ComplexRegisterViewModel extends BaseViewModel {
     // );
   }
 
-  Future<void> finalize() async {
+  Future<void> _finalize() async {
     _log.i('Finalizing registration');
 
     try {
@@ -211,24 +248,6 @@ class ComplexRegisterViewModel extends BaseViewModel {
       hideLoading();
       _log.e('Error finalizing registration: $e');
       rethrow;
-    }
-  }
-
-  void advanceToNextPage() {
-    pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void previousPage() {
-    if (currentPage > 0) {
-      pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    } else {
-      _navigationService.back();
     }
   }
 

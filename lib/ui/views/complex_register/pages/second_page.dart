@@ -1,13 +1,11 @@
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/ui/views/complex_register/complex_register_viewmodel.dart';
-import 'package:bootstrap/ui/views/components/custom_text_form_field.dart';
+import 'package:bootstrap/ui/components/custom_text_form_field.dart';
 import 'package:bootstrap/utils/easy_mask.dart';
 import 'package:bootstrap/utils/helpers.dart';
 import 'package:bootstrap/utils/validators.dart';
 import 'package:flutter/material.dart';
-import 'package:bootstrap/ui/views/register/register_viewmodel.dart';
 import 'package:bootstrap/utils/popup.dart';
-import 'package:bootstrap/utils/utils.dart';
 
 class SecondPage extends StatelessWidget {
   final ComplexRegisterViewModel viewModel;
@@ -77,12 +75,8 @@ class SecondPage extends StatelessWidget {
                   initialList: estadosParaUF.entries
                       .map((entry) => entry.value)
                       .toList(),
-                  // onSelected: (String state) {
-                  //   viewModel.tipoChavePixController.text =
-                  //       translateEnum(pixType);
-                  //   viewModel.selectedPixType = pixType;
-                  // },
-                  onSelected: (String state) => viewModel.selectState(state),
+                  onSelected: (String state) =>
+                      viewModel.handleSelectState(state),
                 );
               },
               enabled: false,
@@ -94,12 +88,6 @@ class SecondPage extends StatelessWidget {
                 emptyErrorMessage: 'Selecione um tipo de chave',
               ),
             ),
-            // heightSeparator(24),
-            // CustomTextFormField(
-            //   floatLabel: 'Ponto de referência',
-            //   controller: viewModel.pontoReferenciaController,
-            //   hintText: 'Ex.: Próximo ao Shopping',
-            // ),
 
             heightSeparator(84),
             // AppButton(

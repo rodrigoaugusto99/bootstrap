@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bootstrap/app/app.bottomsheets.custom.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/ui/common/app_theme.dart';
-import 'package:bootstrap/ui/views/components/loading.dart';
+import 'package:bootstrap/ui/components/loading.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:bootstrap/app/app.dialogs.dart';
@@ -56,7 +56,7 @@ class MainApp extends StatelessWidget {
       child: StyledToast(
         child: LoaderOverlay(
           overlayColor: Colors.black.withOpacity(0.3),
-          closeOnBackButton: true,
+          closeOnBackButton: false,
           overlayWidgetBuilder: (_) {
             return const Loading();
           },
