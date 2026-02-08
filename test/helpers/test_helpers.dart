@@ -12,6 +12,7 @@ import 'package:bootstrap/services/notification_service.dart';
 import 'package:bootstrap/services/conectivity_service.dart';
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/alarm_service.dart';
+import 'package:bootstrap/services/analytics_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -31,6 +32,7 @@ import 'test_helpers.mocks.dart';
   MockSpec<ConectivityService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<LocationService>(onMissingStub: OnMissingStub.returnDefault),
   MockSpec<AlarmService>(onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<AnalyticsService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
 ])
 void registerServices() {
@@ -47,6 +49,7 @@ void registerServices() {
   getAndRegisterConectivityService();
   getAndRegisterLocationService();
   getAndRegisterAlarmService();
+  getAndRegisterAnalyticsService();
 // @stacked-mock-register
 }
 
@@ -167,6 +170,13 @@ MockAlarmService getAndRegisterAlarmService() {
   _removeRegistrationIfExists<AlarmService>();
   final service = MockAlarmService();
   locator.registerSingleton<AlarmService>(service);
+  return service;
+}
+
+MockAnalyticsService getAndRegisterAnalyticsService() {
+  _removeRegistrationIfExists<AnalyticsService>();
+  final service = MockAnalyticsService();
+  locator.registerSingleton<AnalyticsService>(service);
   return service;
 }
 // @stacked-mock-create
