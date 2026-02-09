@@ -1,3 +1,10 @@
+enum LoginProviderEnum {
+  google,
+  apple,
+  emailAndPassword,
+  anonymous,
+}
+
 enum SexEnum {
   male,
   female,

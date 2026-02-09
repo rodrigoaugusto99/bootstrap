@@ -1,14 +1,22 @@
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
+import 'package:bootstrap/schemas/authenticate_anonymous_schema.dart';
+import 'package:bootstrap/schemas/login_view_schema.dart';
 import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/toast.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginViewModel extends BaseViewModel {
+  LoginViewModel({
+    required this.schema,
+  });
+  LoginViewSchema? schema;
+
   bool isRegister = true;
   bool isLogin = false;
 
@@ -44,31 +52,37 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> handleLogin({
-    bool isGoogle = false,
-    bool isApple = false,
-    bool isEmailAndPassword = false,
-  }) async {
-    _log.i('handleLogin');
-    if (isEmailAndPassword && !formKey.currentState!.validate()) {
+  Future<void> handleLogin(LoginProviderEnum provider) async {
+    _log.i('handleLogin: ${provider.name}');
+
+    if (provider == LoginProviderEnum.emailAndPassword &&
+        !formKey.currentState!.validate()) {
       return;
     }
+
     unfocus();
+
     try {
-      // if (wasAnonymous) {
-      //   _log.i('authenticateAnonymousUser');
-      //   await authenticateAnonymousUser(
-      //     isApple: isApple,
-      //     isGoogle: isGoogle,
-      //   );
-      //   return;
-      // }
-      if (isEmailAndPassword) {
-        if (isRegister) {
-          _log.i('registerWithEmailAndPassword');
-          registerWithEmailAndPassword();
-          //  await atualizarDadosUsuarioNoFirestore();
-        } else {
+      if (schema != null && schema!.wasAnonymous) {
+        _log.i('authenticateAnonymousUser');
+        await _authService.authenticateAnonymousUser(
+          AuthenticateAnonymousSchema(
+            provider: provider,
+            name: '',
+            email: emailController.text,
+            password: passwordController.text,
+          ),
+        );
+        return;
+      }
+
+      switch (provider) {
+        case LoginProviderEnum.emailAndPassword:
+          if (isRegister) {
+            _log.i('registerWithEmailAndPassword');
+            await registerWithEmailAndPassword();
+            return;
+          }
           //_log.w('nao espero entrar aqui nunca');
           // if (wasAnonymous && _authService.currUser != null) {
           //   //todo: fazer logout da conta anonima
@@ -77,20 +91,25 @@ class LoginViewModel extends BaseViewModel {
           // }
           _log.i('loginWithEmailAndPassword');
           await loginWithEmailAndPassword();
-          // await atualizarDadosUsuarioNoFirestore();
-        }
+
+          break;
+
+        case LoginProviderEnum.google:
+          _log.i('signInWithGoogle');
+          // await login(() =>
+          //     _authService.signInWithGoogle(accountOwnerId: accountOwnerId));
+          break;
+
+        case LoginProviderEnum.apple:
+          _log.i('signInWithApple');
+          // await login(
+          //     () => _authService.signInWithApple(accountOwnerId: accountOwnerId));
+          break;
+
+        case LoginProviderEnum.anonymous:
+          _log.i('signInAnonymously');
+          break;
       }
-      // else if (isGoogle) {
-      //   _log.i('signInWithGoogle');
-      //   await login(() =>
-      //       _authService.signInWithGoogle(accountOwnerId: accountOwnerId));
-      //   //await atualizarDadosUsuarioNoFirestore();
-      // } else if (isApple) {
-      //   _log.i('signInWithApple');
-      //   await login(
-      //       () => _authService.signInWithApple(accountOwnerId: accountOwnerId));
-      //   //await atualizarDadosUsuarioNoFirestore();
-      // }
     } on Exception catch (e) {
       _log.e(e);
     }
@@ -131,6 +150,32 @@ class LoginViewModel extends BaseViewModel {
       _log.e(e);
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<void> authenticateAnonymousUser({
+    required LoginProviderEnum provider,
+  }) async {
+    try {
+      await _authService.authenticateAnonymousUser(
+        AuthenticateAnonymousSchema(
+          provider: provider,
+          name: '',
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
+
+      if (schema != null) {
+        _log.i('onAuthenticatedCallback');
+        schema!.onAuthenticatedCallback();
+      }
+    } on AppError catch (e) {
+      _log.e(e);
+      AppToast.showToast(text: e.message);
+    } on Exception catch (e) {
+      _log.e(e);
+      AppToast.showToast(text: 'Credenciais inválidas');
     }
   }
 }

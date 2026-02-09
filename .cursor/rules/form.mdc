@@ -36,3 +36,31 @@ void finalize(){
 }
 
 ```
+
+# para usar mensagem de erro personalizada (sem validator)
+
+```Dart
+
+// view
+Form(
+        key: viewModel.formKey,
+CustomTextFormField(
+    label: 'Celular (WhatsApp)',
+    keyboardType: TextInputType.phone,
+    inputFormatters: [phoneMaskFormatter],
+    controller: viewModel.celularController,
+    validationMessage: viewModel.phoneErrorMessage,
+),
+
+//view model
+
+String? passwordErrorMessage;
+
+    try {
+     [...]
+    } on AppError catch (e) {
+    _log.e(e);
+      passwordErrorMessage = e.message;
+      notifyListeners();
+    }
+```

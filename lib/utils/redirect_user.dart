@@ -3,7 +3,6 @@ import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/app/app.router.dart';
 import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/utils/loading.dart';
-import 'package:bootstrap/utils/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class RedirectUser {

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 enum ImageEnum {
   logo('logo'),
+  onBoarding1('on_boarding_1'),
+  onBoarding2('on_boarding_2'),
+  onBoarding3('on_boarding_3'),
   jpg('jpg', ext: 'jpg'),
   ;
 

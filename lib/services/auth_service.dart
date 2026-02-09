@@ -2,13 +2,17 @@ import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/app/app.router.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
+import 'package:bootstrap/schemas/authenticate_anonymous_schema.dart';
 import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../firestore/user.dart' as firestore;
 
@@ -149,14 +153,8 @@ class AuthService {
 
   //TRANSFORMAR ANONIMO EM NORMAL
 
-  /*
-  Future<void> authenticateAnonymousUser({
-    required String name,
-    required String email,
-    required String password,
-    required bool isGoogle,
-    required bool isApple,
-  }) async {
+  Future<void> authenticateAnonymousUser(
+      AuthenticateAnonymousSchema schema) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
 
@@ -164,20 +162,26 @@ class AuthService {
         throw Exception('Nenhum usuário anônimo encontrado');
       }
 
-      if (isGoogle) {
-        // Conversão para conta Google
-        await _convertToGoogle(user, name);
-      } else if (isApple) {
-        // Conversão para conta Apple
-        await _convertToApple(user, name);
-      } else {
-        // Conversão para email/senha
-        await _convertToEmailPassword(user, email, password, name);
+      showLoading();
+
+      switch (schema.provider) {
+        case LoginProviderEnum.google:
+          await _convertToGoogle(user, schema.name);
+          break;
+        case LoginProviderEnum.apple:
+          await _convertToApple(user, schema.name);
+          break;
+        case LoginProviderEnum.emailAndPassword:
+          await _convertToEmailPassword(
+              user, schema.email, schema.password, schema.name);
+          break;
+        case LoginProviderEnum.anonymous:
+          break;
       }
 
       // Atualiza o nome do usuário (se fornecido)
-      if (name.isNotEmpty) {
-        await user.updateDisplayName(name);
+      if (schema.name.isNotEmpty) {
+        await user.updateDisplayName(schema.name);
       }
       if (currUser != null && currUser!.email != null) {
         //await locator<UserService>().updateUserField('email', currUser!.email!);
@@ -187,12 +191,13 @@ class AuthService {
         // await locator<UserService>()
         //     .updateUserField('displayName', currUser!.displayName!);
       }
-
+      hideLoading();
       _log.i('Conta convertida com sucesso!');
 
       // Atualiza os dados no Firestore se necessário
       // await _updateUserDataInFirestore(user.uid, email, name);
     } on FirebaseAuthException catch (e) {
+      hideLoading();
       switch (e.code) {
         case "provider-already-linked":
           _log.e("The provider has already been linked to the user.");
@@ -280,7 +285,6 @@ class AuthService {
 
     await user.linkWithCredential(oauthCredential);
   }
-  */
 
   //ENVIAR CÓDIGO SMS
 
