@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/app/app.router.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/schemas/authenticate_anonymous_schema.dart';
+import 'package:bootstrap/schemas/code_sent_schema.dart';
+import 'package:bootstrap/schemas/verify_code_schema.dart';
 import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/loading.dart';
+import 'package:bootstrap/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -127,15 +132,103 @@ class AuthService {
     }
   }
 
+  //SIGN IN WITH GOOGLE
+  Future<void> signInWithGoogle() async {
+    try {
+      showLoading();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(
+        scopes: ['email', 'profile'],
+      ).signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      if (googleAuth == null) {
+        hideLoading();
+        throw Exception('Google auth failed');
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      currUser = userCredential.user;
+      await createUserProfile();
+
+      await setupUserLoggedIn();
+    } on Exception catch (e) {
+      _log.e(e);
+      hideLoading();
+      throw AppError(message: 'Erro ao efetuar login com Google');
+    }
+  }
+
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  //SIGN IN WITH APPLE
+  Future signInWithApple({required String? accountOwnerId}) async {
+    try {
+      showLoading();
+      final rawNonce = generateNonce();
+      final nonce = sha256ofString(rawNonce);
+
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+
+      // Create an `OAuthCredential` from the credential returned by Apple.
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
+      currUser = userCredential.user;
+
+      String displayName = '';
+
+      if (currUser != null) {
+        displayName =
+            ("${appleCredential.givenName ?? "Apple"} ${appleCredential.familyName ?? "User"}");
+        // _log.i("Updating display name to $displayName");
+        // _log.i('currUser.email:${currUser!.email}');
+        // await currUser!.updateDisplayName(displayName).catchError(
+        //       (e) => _log.e("Error updating display name: ${e.toString()}"),
+        //     );
+      }
+      await createUserProfile(name: displayName);
+
+      await setupUserLoggedIn();
+    } on Exception catch (e) {
+      _log.e(e);
+      hideLoading();
+      throw AppError(message: 'Erro ao entrar com a Apple');
+    }
+  }
+
 // SIGN IN ANONYMOUSLY
 
-  /*
   Future<void> signInAnonymously() async {
     try {
       final userCredential = await FirebaseAuth.instance.signInAnonymously();
       currUser = userCredential.user;
-      await createUserProfile(accountOwnerId: null);
-      setSharedPreferencesOnBoarding();
+      await createUserProfile();
 
       await setupUserLoggedIn();
       _log.i("Signed in with temporary account.");
@@ -149,12 +242,12 @@ class AuthService {
       }
     }
   }
-   */
 
   //TRANSFORMAR ANONIMO EM NORMAL
 
   Future<void> authenticateAnonymousUser(
-      AuthenticateAnonymousSchema schema) async {
+    AuthenticateAnonymousSchema schema,
+  ) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
 
@@ -181,7 +274,7 @@ class AuthService {
 
       // Atualiza o nome do usuário (se fornecido)
       if (schema.name.isNotEmpty) {
-        await user.updateDisplayName(schema.name);
+        // await user.updateDisplayName(schema.name);
       }
       if (currUser != null && currUser!.email != null) {
         //await locator<UserService>().updateUserField('email', currUser!.email!);
@@ -275,8 +368,7 @@ class AuthService {
 
     if (currUser != null) {
       final displayName =
-          ("${appleCredential.givenName ?? "Apple"} ${appleCredential.familyName ?? "User"}")
-              .trim();
+          ("${appleCredential.givenName ?? "Apple"} ${appleCredential.familyName ?? "User"}");
       _log.i("Updating display name to $displayName");
       await currUser!.updateDisplayName(displayName).catchError(
             (e) => _log.e("Error updating display name: ${e.toString()}"),
@@ -288,7 +380,6 @@ class AuthService {
 
   //ENVIAR CÓDIGO SMS
 
-  /*
   Future<void> sendCode({
     required String phoneNumber,
     int? resendToken,
@@ -311,7 +402,7 @@ class AuthService {
 
         // Sign the user in (or link) with the auto-generated credential
         await FirebaseAuth.instance.signInWithCredential(credential);
-        currUser = userCredential.user;
+        //  currUser = userCredential.user;
       },
       verificationFailed: (FirebaseAuthException e) {
         _log.e('Error verifying phone number: ${e.message}');
@@ -346,12 +437,10 @@ class AuthService {
       },
     );
   }
-  */
 
   // VEFICAR CÓDIGO SMS
 
-  /*
-    verifyCode(VerifyCodeParams param) async {
+  Future<void> verifyCode(VerifyCodeParams param) async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: param.verificationId,
@@ -367,13 +456,11 @@ class AuthService {
       _log.e('Error verifying code: $e');
       throw AppError(message: 'Error verifying code');
     }
-    return null;
   }
-  */
 
 // CRIAR USUARIO NO FIRESTORE
 
-  Future<void> createUserProfile() async {
+  Future<void> createUserProfile({String? name}) async {
     try {
       if (currUser == null) {
         _log.e('currUser is null');
@@ -382,7 +469,7 @@ class AuthService {
 
       String uid = currUser!.uid;
 
-      String newName = (currUser!.displayName)?.trim() ?? '';
+      String newName = name ?? (currUser!.displayName)?.trim() ?? '';
 
       // Dados do perfil do usuário
       final userProfile = {
@@ -416,5 +503,13 @@ class AuthService {
     locator.registerLazySingleton(() => UserService());
 
     _navigationService.clearStackAndShow(Routes.loginView);
+  }
+
+  Future<String> getDisplayName() async {
+    if (currUser == null) {
+      _log.e('currUser is null');
+      return '';
+    }
+    return currUser!.displayName ?? '';
   }
 }
