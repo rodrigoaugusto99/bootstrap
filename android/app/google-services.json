@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "544710371918",
+    "project_id": "bootstrap-ea399",
+    "storage_bucket": "bootstrap-ea399.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544710371918:android:befd1faa414eef8b02311f",
+        "android_client_info": {
+          "package_name": "com.example.bootstrap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC31WvulszMwAj04a1AgTXnRfM298GzaYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

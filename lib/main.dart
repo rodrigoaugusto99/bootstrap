@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:bootstrap/app/app.bottomsheets.custom.dart';
 import 'package:bootstrap/app/app.logger.dart';
+import 'package:bootstrap/firebase_options.dart';
 import 'package:bootstrap/ui/common/app_theme.dart';
 import 'package:bootstrap/ui/components/loading.dart';
 import 'package:bootstrap/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bootstrap/app/app.dialogs.dart';
 import 'package:bootstrap/app/app.locator.dart';
@@ -29,10 +31,10 @@ Future<void> main() async {
   };
   await runZonedGuarded(() async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-    // await Firebase.initializeApp(
-    //   options: DefaultFirebaseOptions.currentPlatform,
-    // );
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await setupLocator();
     setupDialogUi();
     setupBottomSheetUiWithCustomAnimations();
