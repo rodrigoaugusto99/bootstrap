@@ -16,3 +16,5 @@ arrumar o login (comentar outras formas de login/chamadas do service)
 inventar mais rules
 
 refatorar appbutton
+
+rodar projeto de vdd pra configurar notificacoes

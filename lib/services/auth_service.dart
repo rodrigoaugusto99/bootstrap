@@ -22,10 +22,10 @@ import 'package:stacked_services/stacked_services.dart';
 import '../firestore/user.dart' as firestore;
 
 class AuthService {
-  User? currUser = FirebaseAuth.instance.currentUser;
+  User? currUser;
   final _log = getLogger('AuthService');
   final _navigationService = locator<NavigationService>();
-  final _apiService = locator<ApiService>();
+  //final _apiService = locator<ApiService>();
 
   // INIT
 
@@ -58,7 +58,7 @@ class AuthService {
       // if (!(await userExists(userId: currUser!.uid))) {
       //   await createUser(userId: currUser!.uid, map: {});
       // }
-      await locator<UserService>().setUser(currUser!.uid);
+      //await locator<UserService>().setUser(currUser!.uid);
       //await locator<InAppPurchaseService>().init();
       //await locator<NotificationService>().initNotifications();
       hideLoading();
