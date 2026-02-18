@@ -12,7 +12,6 @@ ThemeData makeAppTheme() {
       foregroundColor: Colors.white,
     ),
     primarySwatch: Colors.cyan,
-    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.cyan),
     scaffoldBackgroundColor: Colors.white,
   );
 }

@@ -18,7 +18,7 @@ class StartupViewModel extends BaseViewModel {
   }) async {
     //locator<LogarteService>().init(context);
     //await locator<GoogleCloudLoggingService>().setupLoggingApi();
-    await locator<AppService>().init();
+    //await locator<AppService>().init();
     await locator<AuthService>().init();
 
     // bool userNeedsUpdate = await needToUpdate(

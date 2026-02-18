@@ -22,7 +22,61 @@ class LoginView extends StackedView<LoginViewModel> {
     LoginViewModel viewModel,
     Widget? child,
   ) {
-    // Widget
+    Widget buildLoginForm() {
+      return Column(
+        children: [
+          CustomTextFormField(
+            controller: viewModel.emailController,
+            label: 'Email',
+            keyboardType: TextInputType.emailAddress,
+            validator: Validators.email,
+          ),
+          heightSeparator(32),
+          CustomTextFormField(
+            controller: viewModel.passwordController,
+            label: 'Senha',
+            validator: Validators.password,
+            hasEye: true,
+            obscureText: true,
+          ),
+        ],
+      );
+    }
+
+    Widget buildRegisterForm() {
+      return Column(
+        children: [
+          CustomTextFormField(
+            controller: viewModel.emailController,
+            label: 'Email',
+            keyboardType: TextInputType.emailAddress,
+            validator: Validators.email,
+          ),
+          heightSeparator(32),
+          CustomTextFormField(
+            controller: viewModel.passwordController,
+            label: 'Senha',
+            validator: Validators.password,
+            hasEye: true,
+            obscureText: true,
+          ),
+          heightSeparator(32),
+          CustomTextFormField(
+            controller: viewModel.confirmPasswordController,
+            label: 'Confirme sua senha',
+            validator: (value) => Validators.validateConfirmPassword(
+              value,
+              confirmPassword: viewModel.passwordController.text,
+            ),
+            hasEye: true,
+            obscureText: true,
+          ),
+        ],
+      );
+    }
+
+    Widget activeForm =
+        viewModel.isRegister ? buildRegisterForm() : buildLoginForm();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -34,29 +88,16 @@ class LoginView extends StackedView<LoginViewModel> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                heightSeparator(80),
                 styledText(
-                  text: viewModel.isRegister ? 'Criar Conta' : 'Entrar',
+                  text: viewModel.title,
                   fontSize: 32,
                   fontWeightEnum: FontWeightEnum.bold,
                 ),
                 heightSeparator(40),
-                CustomTextFormField(
-                  controller: viewModel.emailController,
-                  label: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: Validators.email,
-                ),
-                heightSeparator(16),
-                CustomTextFormField(
-                  controller: viewModel.passwordController,
-                  label: 'Senha',
-                  validator: Validators.password,
-                  hasEye: true,
-                ),
+                activeForm,
                 heightSeparator(24),
                 AppButton(
-                  text: viewModel.isRegister ? 'Cadastrar' : 'Entrar',
+                  text: viewModel.buttonLabel,
                   onPressed: () => viewModel.handleLogin(
                     LoginProviderEnum.emailAndPassword,
                   ),
@@ -86,13 +127,9 @@ class LoginView extends StackedView<LoginViewModel> {
                 heightSeparator(24),
                 Center(
                   child: TextButton(
-                    onPressed: viewModel.isRegister
-                        ? viewModel.wantToLogin
-                        : viewModel.wantToRegister,
+                    onPressed: viewModel.handleToggleLogin,
                     child: Text(
-                      viewModel.isRegister
-                          ? 'Já tem conta? Fazer login'
-                          : 'Não tem conta? Cadastrar',
+                      viewModel.textToggleLogin,
                     ),
                   ),
                 ),

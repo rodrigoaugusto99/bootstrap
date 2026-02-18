@@ -76,7 +76,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
     with SingleTickerProviderStateMixin {
   late FocusNode _focusNode;
   bool _isFocused = false;
-  bool useObscure = true;
+  bool isObscure = false;
   String? _errorMessage;
   late AnimationController _errorAnimationController;
   late Animation<Offset> _errorSlideAnimation;
@@ -84,8 +84,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   @override
   void initState() {
     super.initState();
+    isObscure = widget.obscureText ?? false;
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
+    widget.controller?.addListener(_handleControllerChange);
 
     _errorAnimationController = AnimationController(
       vsync: this,
@@ -107,14 +109,30 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
     });
   }
 
+  void _handleControllerChange() {
+    if (_errorMessage != null) {
+      _setError(null);
+    }
+  }
+
   void onTapEye() {
-    useObscure = !useObscure;
+    isObscure = !isObscure;
     setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(CustomTextFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_handleControllerChange);
+      widget.controller?.addListener(_handleControllerChange);
+    }
   }
 
   @override
   void dispose() {
     _focusNode.removeListener(_handleFocusChange);
+    widget.controller?.removeListener(_handleControllerChange);
     _errorAnimationController.dispose();
     if (widget.focusNode == null) {
       _focusNode.dispose();
@@ -251,7 +269,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   double get _eyeTopPadding {
-    if (useObscure) return 20.5;
+    if (isObscure) return 20.5;
     return 18;
   }
 
@@ -369,14 +387,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
             TextFormField(
               onChanged: widget.onChanged,
               onEditingComplete: widget.onEditingComplete,
-              maxLines: widget.maxLines,
+              maxLines: isObscure ? 1 : widget.maxLines,
               inputFormatters: widget.inputFormatters,
               focusNode: widget.focusNode ?? _focusNode,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: widget.onFieldSubmitted,
               controller: widget.controller,
               keyboardType: widget.keyboardType,
-              obscureText: useObscure && widget.hasEye,
+              obscureText: isObscure,
               enabled: widget.enabled,
               style: TextStyle(
                 color: _textColor,

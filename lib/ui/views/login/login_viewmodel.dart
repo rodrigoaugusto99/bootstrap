@@ -22,34 +22,26 @@ class LoginViewModel extends BaseViewModel {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   String? passwordErrorMessage;
+  String? confirmPasswordErrorMessage;
   String? emailErrorMessage;
 
   final formKey = GlobalKey<FormState>();
 
   final _log = getLogger('LoginViewModel');
   final _authService = locator<AuthService>();
-  void wantToLogin() {
-    isRegister = false;
-    isLogin = true;
-    reset();
-    notifyListeners();
-  }
 
-  void wantToRegister() {
-    isRegister = true;
-    isLogin = false;
-    reset();
-    notifyListeners();
-  }
+  String get title => isRegister ? 'Cadastrar' : 'Entrar';
 
-  void reset() {
-    emailController.clear();
-    passwordController.clear();
-    passwordErrorMessage = null;
-    emailErrorMessage = null;
-    notifyListeners();
+  String get buttonLabel => isRegister ? 'Cadastrar' : 'Entrar';
+
+  String get textToggleLogin =>
+      isRegister ? 'Já tem conta? Fazer login' : 'Não tem conta? Cadastrar';
+
+  void handleToggleLogin() {
+    isRegister ? wantToLogin() : wantToRegister();
   }
 
   Future<void> handleLogin(LoginProviderEnum provider) async {
@@ -114,6 +106,29 @@ class LoginViewModel extends BaseViewModel {
       _log.e(e);
     }
     _log.i('setSharedPreferencesOnBoarding');
+  }
+
+  void wantToLogin() {
+    isRegister = false;
+    isLogin = true;
+    reset();
+    notifyListeners();
+  }
+
+  void wantToRegister() {
+    isRegister = true;
+    isLogin = false;
+    reset();
+    notifyListeners();
+  }
+
+  void reset() {
+    emailController.clear();
+    passwordController.clear();
+    passwordErrorMessage = null;
+    emailErrorMessage = null;
+    formKey.currentState?.reset();
+    notifyListeners();
   }
 
   Future<void> loginWithEmailAndPassword() async {

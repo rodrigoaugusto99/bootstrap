@@ -261,7 +261,7 @@ Widget styledText({
     letterSpacing: letterSpacing ?? 0.0,
     overflow: overflow ?? (hasOverflow ? TextOverflow.ellipsis : null),
     fontSize: fontSize,
-    color: color,
+    color: color ?? kcTextColor,
     decoration: decoration,
     decorationColor: color ?? decorationColor,
     decorationThickness: decorationThickness,
