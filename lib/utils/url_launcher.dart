@@ -1,11 +1,17 @@
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void openUrl(String url) async {
-  if (await canOpenUrl(url)) {
-    await launchUrl(Uri.parse(url));
-  } else {
+  bool canOpen = await canOpenUrl(url);
+  if (!canOpen) {
     throw 'Could not launch $url';
   }
+  if (url.contains("mailto:")) {
+    FlutterEmailSender.send(Email(
+      recipients: [url.replaceAll("mailto:", "")],
+    ));
+  }
+  await launchUrl(Uri.parse(url));
 }
 
 Future<bool> canOpenUrl(String url) async {

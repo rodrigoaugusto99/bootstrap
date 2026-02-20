@@ -1,8 +1,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+        <uses-permission android:name="android.permission.VIDEO_CAPTURE"/>
+        <uses-permission android:name="android.permission.CAMERA"/>
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    -->
+    
+    <!-- Bluetooth permissions for Android 12+ 
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+    -->
+    <!-- Legacy Bluetooth permissions for Android < 12 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    -->
+
     <application
         android:label="bootstrap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <!-- 
+         android:usesCleartextTraffic="true" 
+         android:networkSecurityConfig="${networkSecurityConfig}">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="AIzaSyBhE8QGfMBV..."/>
+                   -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -47,6 +75,15 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="mailto"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="https"/>
         </intent>
     </queries>
 </manifest>

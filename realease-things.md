@@ -38,3 +38,16 @@ dar replace em tudo
 
 no ios, eh no ios/flutter/runner/assets.scassets/appIcon.appiconset
 
+--------------------------------------------------------
+
+# keystore & key.properties
+
+key.properties
+```
+storePassword=123123
+keyPassword=123123
+keyAlias=my-key-alias
+storeFile=upload-keystore.keystore
+```
+
+arquivo keystore no root do android
