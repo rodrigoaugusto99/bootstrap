@@ -26,7 +26,7 @@ class NotificationService {
       final fcmToken = await _firebaseMessaging.getToken();
 
       await saveFcmTokenToFirestore(fcmToken);
-      // requestPermissions();
+      requestPermissions();
       _initPushNotifications();
       _initLocalNotifications();
       await getNotifications();
@@ -160,6 +160,7 @@ class NotificationService {
     _log.i('Handling background notification TAPPED');
   }
 
+//roda quando o app recebe notificacao em primeiro plano
   Future<void> _handleForegroundNotification(
     RemoteMessage message,
   ) async {
