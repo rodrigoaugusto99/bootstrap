@@ -6,6 +6,7 @@ import 'package:bootstrap/schemas/login_view_schema.dart';
 import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/enums.dart';
+import 'package:bootstrap/utils/loading.dart';
 import 'package:bootstrap/utils/toast.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +54,12 @@ class LoginViewModel extends BaseViewModel {
     }
 
     unfocus();
+    showLoading();
 
     try {
       if (schema != null && schema!.wasAnonymous) {
         _log.i('authenticateAnonymousUser');
+        hideLoading();
         await _authService.authenticateAnonymousUser(
           AuthenticateAnonymousSchema(
             provider: provider,
@@ -72,40 +75,41 @@ class LoginViewModel extends BaseViewModel {
         case LoginProviderEnum.emailAndPassword:
           if (isRegister) {
             _log.i('registerWithEmailAndPassword');
+            hideLoading();
             await registerWithEmailAndPassword();
             return;
           }
-          //_log.w('nao espero entrar aqui nunca');
-          // if (wasAnonymous && _authService.currUser != null) {
-          //   //todo: fazer logout da conta anonima
-          //   await _authService.signOut();
-          //   RedirectUser().listenerToRedirectToHome();
-          // }
+
           _log.i('loginWithEmailAndPassword');
+          hideLoading();
           await loginWithEmailAndPassword();
 
           break;
 
         case LoginProviderEnum.google:
           _log.i('signInWithGoogle');
-          // await login(() =>
-          //     _authService.signInWithGoogle(accountOwnerId: accountOwnerId));
+          hideLoading();
+          await _authService.signInWithGoogle();
           break;
 
         case LoginProviderEnum.apple:
           _log.i('signInWithApple');
-          // await login(
-          //     () => _authService.signInWithApple(accountOwnerId: accountOwnerId));
+          hideLoading();
+          _authService.signInWithApple();
           break;
 
         case LoginProviderEnum.anonymous:
           _log.i('signInAnonymously');
+          hideLoading();
           break;
       }
+    } on AppError catch (e) {
+      hideLoading();
+      AppToast.showToast(text: e.message);
     } on Exception catch (e) {
       _log.e(e);
+      AppToast.showToast(text: 'Erro ao fazer login');
     }
-    _log.i('setSharedPreferencesOnBoarding');
   }
 
   void wantToLogin() {
@@ -163,34 +167,9 @@ class LoginViewModel extends BaseViewModel {
       }
     } on Exception catch (e) {
       _log.e(e);
+      AppToast.showToast(text: 'Erro ao realizar cadastro');
     } finally {
       notifyListeners();
-    }
-  }
-
-  Future<void> authenticateAnonymousUser({
-    required LoginProviderEnum provider,
-  }) async {
-    try {
-      await _authService.authenticateAnonymousUser(
-        AuthenticateAnonymousSchema(
-          provider: provider,
-          name: '',
-          email: emailController.text,
-          password: passwordController.text,
-        ),
-      );
-
-      if (schema != null) {
-        _log.i('onAuthenticatedCallback');
-        schema!.onAuthenticatedCallback();
-      }
-    } on AppError catch (e) {
-      _log.e(e);
-      AppToast.showToast(text: e.message);
-    } on Exception catch (e) {
-      _log.e(e);
-      AppToast.showToast(text: 'Credenciais inválidas');
     }
   }
 }

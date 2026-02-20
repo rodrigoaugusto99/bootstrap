@@ -60,7 +60,7 @@ class AppButton extends StatelessWidget {
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
-                color: textColor ?? Colors.black,
+                color: textColor ?? Colors.white,
                 strokeWidth: 2,
               ),
             )
@@ -70,7 +70,7 @@ class AppButton extends StatelessWidget {
               maxLines: maxLines,
               fontSize: fontSize ?? 16,
               fontFamily: fontFamily ?? 'Roboto',
-              color: textColor,
+              color: textColor ?? Colors.white,
             ),
     );
   }

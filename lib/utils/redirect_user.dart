@@ -12,6 +12,7 @@ class RedirectUser {
   final _log = getLogger('RedirectUser');
 
   Future<void> redirectUser() async {
+    showLoading();
     if (_authService.currUser == null) {
       // bool sawOnboarding = await getBoolSharedPreferences(
       //   SharedPreferencesKeys.sawOnboarding,

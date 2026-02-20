@@ -44,7 +44,7 @@ class NotificationService {
 
   Future<void> _initLocalNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@drawable/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings();
@@ -117,7 +117,7 @@ class NotificationService {
     _onMessageSubscription =
         FirebaseMessaging.onMessage.listen(_handleForegroundNotification);
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      //_log.i('Handling initial notification');
+      _log.i('Handling initial notification');
       if (message == null) return;
       //redirectTo(json.encode(message.data));
     });
@@ -147,19 +147,23 @@ class NotificationService {
     }
   }
 
-  //AudioService audioService = AudioService();
   Future<void> _handleForegroundNotificationTapped(
-      NotificationResponse notification) async {
+    NotificationResponse notification,
+  ) async {
     _log.i('Handling foreground notification TAPPED');
   }
 
 //roda quando o app é aberto a partir da notificacao
   Future<void> _handleBackgroundNotificationTapped(
-      RemoteMessage message) async {
+    RemoteMessage message,
+  ) async {
     _log.i('Handling background notification TAPPED');
   }
 
-  Future<void> _handleForegroundNotification(RemoteMessage message) async {
+  Future<void> _handleForegroundNotification(
+    RemoteMessage message,
+  ) async {
+    _log.i('Handling foreground notification');
     _showLocalNotification(message);
   }
 
@@ -173,7 +177,7 @@ class NotificationService {
       if (locator<AuthService>().currUser != null && fcmToken != null) {
         _log.i("FCM token: $fcmToken");
         final userDoc = _firestore
-            .collection("instructors")
+            .collection("users")
             .doc(locator<AuthService>().currUser!.uid);
 
         final docSnapshot = await userDoc.get();
@@ -202,7 +206,7 @@ class NotificationService {
       final fcmToken = await _firebaseMessaging.getToken();
       if (locator<AuthService>().currUser != null && fcmToken != null) {
         final userDoc = _firestore
-            .collection("instructors")
+            .collection("users")
             .doc(locator<AuthService>().currUser!.uid);
 
         final docSnapshot = await userDoc.get();
@@ -263,7 +267,11 @@ class NotificationService {
       DateTime.now().subtract(const Duration(days: 99)),
     );
     final userService = locator<UserService>();
-    DateTime createdAt = userService.user.value!.createdAt;
+    if (userService.user.value!.createdAt == null) {
+      _log.e('User has no createdAt date');
+      return;
+    }
+    DateTime createdAt = userService.user.value!.createdAt!;
     // Query para 'all' notifications
     final topicQuery = FirebaseFirestore.instance
         .collection('notifications')

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/app/app.router.dart';
@@ -7,7 +6,10 @@ import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/schemas/authenticate_anonymous_schema.dart';
 import 'package:bootstrap/schemas/code_sent_schema.dart';
 import 'package:bootstrap/schemas/verify_code_schema.dart';
-import 'package:bootstrap/services/api_service.dart';
+import 'package:bootstrap/services/app_service.dart';
+import 'package:bootstrap/services/location_service.dart';
+import 'package:bootstrap/services/notification_service.dart';
+import 'package:bootstrap/services/subscription_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/enums.dart';
@@ -58,9 +60,9 @@ class AuthService {
       // if (!(await userExists(userId: currUser!.uid))) {
       //   await createUser(userId: currUser!.uid, map: {});
       // }
-      //await locator<UserService>().setUser(currUser!.uid);
+      await locator<UserService>().setUser(currUser!.uid);
       //await locator<InAppPurchaseService>().init();
-      //await locator<NotificationService>().initNotifications();
+      await locator<NotificationService>().initNotifications();
       hideLoading();
       _navigationService.clearStackAndShow(Routes.homeView);
       // _log.wtf('terminou o setupUserLoggedIn');
@@ -135,7 +137,7 @@ class AuthService {
   //SIGN IN WITH GOOGLE
   Future<void> signInWithGoogle() async {
     try {
-      showLoading();
+      //showLoading();
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
         scopes: ['email', 'profile'],
       ).signIn();
@@ -145,7 +147,7 @@ class AuthService {
           await googleUser?.authentication;
 
       if (googleAuth == null) {
-        hideLoading();
+        //hideLoading();
         throw Exception('Google auth failed');
       }
 
@@ -163,7 +165,7 @@ class AuthService {
       await setupUserLoggedIn();
     } on Exception catch (e) {
       _log.e(e);
-      hideLoading();
+      //hideLoading();
       throw AppError(message: 'Erro ao efetuar login com Google');
     }
   }
@@ -175,9 +177,9 @@ class AuthService {
   }
 
   //SIGN IN WITH APPLE
-  Future signInWithApple({required String? accountOwnerId}) async {
+  Future signInWithApple() async {
     try {
-      showLoading();
+      //showLoading();
       final rawNonce = generateNonce();
       final nonce = sha256ofString(rawNonce);
 
@@ -217,7 +219,7 @@ class AuthService {
       await setupUserLoggedIn();
     } on Exception catch (e) {
       _log.e(e);
-      hideLoading();
+      //hideLoading();
       throw AppError(message: 'Erro ao entrar com a Apple');
     }
   }
@@ -255,7 +257,7 @@ class AuthService {
         throw Exception('Nenhum usuário anônimo encontrado');
       }
 
-      showLoading();
+      //showLoading();
 
       switch (schema.provider) {
         case LoginProviderEnum.google:
@@ -284,13 +286,13 @@ class AuthService {
         // await locator<UserService>()
         //     .updateUserField('displayName', currUser!.displayName!);
       }
-      hideLoading();
+      //hideLoading();
       _log.i('Conta convertida com sucesso!');
 
       // Atualiza os dados no Firestore se necessário
       // await _updateUserDataInFirestore(user.uid, email, name);
     } on FirebaseAuthException catch (e) {
-      hideLoading();
+      //hideLoading();
       switch (e.code) {
         case "provider-already-linked":
           _log.e("The provider has already been linked to the user.");
@@ -493,15 +495,20 @@ class AuthService {
 
   Future signOut() async {
     _log.i('Signing out');
+    showLoading();
     // await locator<NotificationService>().removeFcmTokenFromFirestore();
     //await locator<NotificationService>().dispose();
     currUser = null;
     await FirebaseAuth.instance.signOut();
-    // locator<UserService>().unSetUser();
+    locator<UserService>().unSetUser();
     locator.pushNewScope();
     locator.registerLazySingleton(() => AuthService());
     locator.registerLazySingleton(() => UserService());
-
+    locator.registerLazySingleton(() => AppService());
+    locator.registerLazySingleton(() => LocationService());
+    locator.registerLazySingleton(() => NotificationService());
+    locator.registerLazySingleton(() => SubscriptionService());
+    hideLoading();
     _navigationService.clearStackAndShow(Routes.loginView);
   }
 

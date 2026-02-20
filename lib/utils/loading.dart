@@ -3,7 +3,8 @@ import 'package:bootstrap/utils/get_context.dart';
 
 void showLoading() {
   final context = getContext();
-  context!.loaderOverlay.show();
+  if (context!.loaderOverlay.visible) return;
+  context.loaderOverlay.show();
 }
 
 void hideLoading() {

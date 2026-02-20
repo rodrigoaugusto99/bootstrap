@@ -1,4 +1,5 @@
 import 'package:bootstrap/utils/image_util.dart';
+import 'package:bootstrap/utils/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/redirect_user.dart';
@@ -54,6 +55,7 @@ class OnBoardingViewModel extends BaseViewModel {
 
   Future<void> nextPage() async {
     if (isLastPage) {
+      showLoading();
       await setBoolSharedPreferences(
         key: SharedPreferencesKeys.sawOnboarding,
         value: true,

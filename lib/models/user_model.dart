@@ -1,11 +1,13 @@
 class UserModel {
   final String id;
   final String name;
-  final DateTime createdAt;
+  final String email;
+  final DateTime? createdAt;
 
   UserModel({
     required this.id,
     required this.name,
+    required this.email,
     required this.createdAt,
   });
 
@@ -13,7 +15,8 @@ class UserModel {
     return UserModel(
       id: id,
       name: map['name'] ?? '',
-      createdAt: map['createdAt'].toDate(),
+      createdAt: map['createdAt']?.toDate(),
+      email: map['email'] ?? '',
     );
   }
 
@@ -21,7 +24,8 @@ class UserModel {
     return {
       'id': id,
       'name': name,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'email': email,
     };
   }
 }

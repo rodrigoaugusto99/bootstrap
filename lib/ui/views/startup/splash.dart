@@ -16,7 +16,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
 
-  bool isLoading = false;
+  //bool isLoading = false;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       if (status == AnimationStatus.completed) {
         // Completa o Completer quando a animação terminar
         if (!widget.animationCompleter.isCompleted) {
-          isLoading = true;
+          // = true;
           setState(() {});
           widget.animationCompleter.complete();
         }
@@ -89,19 +89,19 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             ),
           );
         },
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const ImageUtil(
+            ImageUtil(
               ImageEnum.logo,
             ),
-            const SizedBox(height: 20),
-            Opacity(
-              opacity: isLoading ? 1.0 : 0.0,
-              child: const CircularProgressIndicator(
-                strokeCap: StrokeCap.round,
-              ),
-            )
+            SizedBox(height: 20),
+            // Opacity(
+            //   opacity: isLoading ? 1.0 : 0.0,
+            //   child: const CircularProgressIndicator(
+            //     strokeCap: StrokeCap.round,
+            //   ),
+            // )
           ],
         ),
       ),
