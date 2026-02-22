@@ -59,7 +59,6 @@ class LoginViewModel extends BaseViewModel {
     try {
       if (schema != null && schema!.wasAnonymous) {
         _log.i('authenticateAnonymousUser');
-        hideLoading();
         await _authService.authenticateAnonymousUser(
           AuthenticateAnonymousSchema(
             provider: provider,
@@ -68,6 +67,8 @@ class LoginViewModel extends BaseViewModel {
             password: passwordController.text,
           ),
         );
+        //todo: continuar o após autenticado com sucesso
+        hideLoading();
         return;
       }
 
@@ -75,38 +76,35 @@ class LoginViewModel extends BaseViewModel {
         case LoginProviderEnum.emailAndPassword:
           if (isRegister) {
             _log.i('registerWithEmailAndPassword');
-            hideLoading();
             await registerWithEmailAndPassword();
             return;
           }
 
           _log.i('loginWithEmailAndPassword');
-          hideLoading();
           await loginWithEmailAndPassword();
 
           break;
 
         case LoginProviderEnum.google:
           _log.i('signInWithGoogle');
-          hideLoading();
+
           await _authService.signInWithGoogle();
           break;
 
         case LoginProviderEnum.apple:
           _log.i('signInWithApple');
-          hideLoading();
           _authService.signInWithApple();
           break;
 
         case LoginProviderEnum.anonymous:
           _log.i('signInAnonymously');
-          hideLoading();
           break;
       }
     } on AppError catch (e) {
       hideLoading();
       AppToast.showToast(text: e.message);
     } on Exception catch (e) {
+      hideLoading();
       _log.e(e);
       AppToast.showToast(text: 'Erro ao fazer login');
     }
@@ -138,15 +136,18 @@ class LoginViewModel extends BaseViewModel {
   Future<void> loginWithEmailAndPassword() async {
     try {
       //_log.i('loginWithEmailAndPassword');
+      showLoading();
       await _authService.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
     } on AppError catch (e) {
       _log.e(e);
+      hideLoading();
       passwordErrorMessage = e.message;
       notifyListeners();
     } on Exception catch (e) {
+      hideLoading();
       _log.e(e);
       AppToast.showToast(text: 'Credenciais inválidas');
     }
@@ -154,11 +155,14 @@ class LoginViewModel extends BaseViewModel {
 
   Future<void> registerWithEmailAndPassword() async {
     try {
+      showLoading();
       await _authService.registerEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+      // hideLoading();
     } on AppError catch (e) {
+      hideLoading();
       switch (e.message) {
         case EMAIL_ALREADY_IN_USE:
           emailErrorMessage = EMAIL_ALREADY_IN_USE;
@@ -166,6 +170,7 @@ class LoginViewModel extends BaseViewModel {
           passwordErrorMessage = WEAK_PASSWORD;
       }
     } on Exception catch (e) {
+      hideLoading();
       _log.e(e);
       AppToast.showToast(text: 'Erro ao realizar cadastro');
     } finally {

@@ -22,7 +22,6 @@ class ComplexRegisterViewModel extends BaseViewModel {
     _init();
   }
 
-  final _authService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
   final _userService = locator<UserService>();
   final _log = getLogger('ComplexRegisterViewModel');

@@ -257,8 +257,6 @@ class AuthService {
         throw Exception('Nenhum usuário anônimo encontrado');
       }
 
-      //showLoading();
-
       switch (schema.provider) {
         case LoginProviderEnum.google:
           await _convertToGoogle(user, schema.name);
@@ -286,13 +284,11 @@ class AuthService {
         // await locator<UserService>()
         //     .updateUserField('displayName', currUser!.displayName!);
       }
-      //hideLoading();
       _log.i('Conta convertida com sucesso!');
 
       // Atualiza os dados no Firestore se necessário
       // await _updateUserDataInFirestore(user.uid, email, name);
     } on FirebaseAuthException catch (e) {
-      //hideLoading();
       switch (e.code) {
         case "provider-already-linked":
           _log.e("The provider has already been linked to the user.");
