@@ -7,25 +7,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     required this.title,
-    required this.imageUrl,
+    this.imageUrl,
     this.onProfileTap,
+    this.widget,
   });
 
   final String title;
-  final String imageUrl;
+  final String? imageUrl;
   final Function()? onProfileTap;
+  final Widget? widget;
 
   @override
   Widget build(BuildContext context) {
     return decContainer(
-      color: kcBackgroundColor,
-      bottomLeftRadius: 16,
-      bottomRightRadius: 16,
+      color: kcPrimaryColor,
+      // bottomLeftRadius: 16,
+      // bottomRightRadius: 16,
       leftPadding: 24,
       rightPadding: 24,
       topPadding: 12,
       bottomPadding: 12,
-      //   height: 94,
+      //height: 64,
       child: SafeArea(
         child: Row(
           // clipBehavior: Clip.none,
@@ -36,14 +38,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontWeightEnum: FontWeightEnum.semiBold,
             ),
             const Spacer(),
-            appCachedNetWorkImage(
-              imageUrl: imageUrl,
-              isCircle: true,
-              radius: 100,
-              onTap: onProfileTap,
-              height: 40,
-              width: 40,
-            ),
+            if (imageUrl != null)
+              appCachedNetWorkImage(
+                imageUrl: imageUrl,
+                isCircle: true,
+                radius: 100,
+                onTap: onProfileTap,
+                height: 40,
+                width: 40,
+              ),
+            if (widget != null) widget!,
           ],
         ),
       ),
@@ -51,5 +55,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(64);
+  Size get preferredSize => const Size.fromHeight(84);
 }

@@ -21,6 +21,8 @@ import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/alarm_service.dart';
 import 'package:bootstrap/ui/views/complex_register/complex_register_view.dart';
 import 'package:bootstrap/services/analytics_service.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation/try_staggered_animation_view.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation_two/try_staggered_animation_two_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -31,6 +33,8 @@ import 'package:bootstrap/services/analytics_service.dart';
     MaterialRoute(page: RegisterView),
     MaterialRoute(page: OnBoardingView),
     MaterialRoute(page: ComplexRegisterView),
+    MaterialRoute(page: TryStaggeredAnimationView),
+    MaterialRoute(page: TryStaggeredAnimationTwoView),
 // @stacked-route
   ],
   dependencies: [
