@@ -36,9 +36,12 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
   late Animation<double> buttonFade;
   late Animation<Offset> buttonSlide;
 
-  // Fade-out uniforme do conteúdo atual antes de trocar de step.
+  // Fade-out uniforme do conteúdo de saída durante a transição.
   // Vai de 1.0 → 0.0 enquanto o controller avança.
   late Animation<double> contentOpacity;
+
+  SignupStepTwo? previousStep;
+  bool get isTransitioning => _isTransitioning;
 
   bool _initialized = false;
   final Curve _curve = Curves.easeOutCirc;
@@ -62,15 +65,22 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
     // Fade-out rápido e uniforme para todas as transições de saída
     _exitController = AnimationController(
       vsync: vsync,
-      duration: const Duration(milliseconds: 220),
+      duration: const Duration(milliseconds: 100),
     );
 
     _setupNumberAnimations();
     _setupSmsAnimations();
     _setupButtonAnimation();
     _setupExitAnimation();
+    runInitialNumberAnimation();
+  }
 
+  void runInitialNumberAnimation() {
     runNumberAnimations();
+// Botão entra logo depois do campo de telefone, quase no mesmo
+    Future.delayed(const Duration(milliseconds: 100), () {
+      runButtonAnimation();
+    });
   }
 
   void _setupNumberAnimations() {
@@ -158,45 +168,41 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
     );
   }
 
-  // Fade-out uniforme do conteúdo atual, depois reseta para o próximo step.
-  Future<void> _fadeOutContent() async {
-    await _exitController.forward(from: 0);
-    _exitController.reset(); // volta para opacity 1.0 antes do próximo rebuild
-  }
-
-  // Stagger de entrada do número. Chamado SOMENTE na entrada inicial da tela.
-  // O botão também anima aqui e nunca mais.
   void runNumberAnimations() {
     _numberController.forward(from: 0);
-    // Botão entra logo depois do campo de telefone, quase no mesmo tempo
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (!_initialized) return;
-      _buttonController.forward(from: 0);
-    });
   }
 
-  // Stagger de entrada do SMS.
-  // O botão NÃO é tocado — permanece visível exatamente como está.
+  void runButtonAnimation() {
+    _buttonController.forward(from: 0);
+  }
+
   void runSmsAnimations() {
     _smsController.forward(from: 0);
   }
 
-  // Fade-out uniforme do SMS, depois mostra o número.
-  // Botão NÃO re-anima — já está visível e fica parado.
-  // O conteúdo de number já está com _numberController em 1.0,
-  // então aparece diretamente sem precisar re-animar.
+  // Sms → number: inicia o fade-out do SMS e a animação de entrada do number
+  // ao mesmo tempo, sem esperar um terminar para começar o outro.
   Future<void> runBackToNumber() async {
     if (_isTransitioning) return;
     _isTransitioning = true;
 
-    await _fadeOutContent();
-
+    previousStep = currentStep; // sms
     currentStep = SignupStepTwo.number;
-    notifyListeners();
+    _numberController.value = 0;
+    notifyListeners(); // Stack: sms (saindo) + number (entrando)
+
+    final exitFuture = _exitController.forward(from: 0);
+    runNumberAnimations(); // começa junto com o fade-out
+    await exitFuture;
 
     _isTransitioning = false;
+    previousStep = null;
+    _exitController.reset();
+    notifyListeners();
   }
 
+  // Number → sms: inicia o fade-out do number e a animação de entrada do sms
+  // ao mesmo tempo, sem esperar um terminar para começar o outro.
   void next() async {
     if (_isTransitioning) return;
 
@@ -204,17 +210,19 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
       case SignupStepTwo.number:
         _isTransitioning = true;
 
-        // Fade-out do conteúdo do number enquanto prepara o SMS
-        await _fadeOutContent();
-
+        previousStep = currentStep; // number
         currentStep = SignupStepTwo.sms;
-        notifyListeners();
-
-        // _smsController começa do zero para o stagger entrar do início
         _smsController.value = 0;
-        runSmsAnimations();
+        notifyListeners(); // Stack: number (saindo) + sms (entrando)
+
+        final exitFuture = _exitController.forward(from: 0);
+        runSmsAnimations(); // começa junto com o fade-out
+        await exitFuture;
 
         _isTransitioning = false;
+        previousStep = null;
+        _exitController.reset();
+        notifyListeners();
         break;
 
       case SignupStepTwo.sms:
@@ -224,7 +232,9 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
   }
 
   void back() {
-    runBackToNumber();
+    if (currentStep == SignupStepTwo.sms) {
+      runBackToNumber();
+    }
   }
 
   void finish() {

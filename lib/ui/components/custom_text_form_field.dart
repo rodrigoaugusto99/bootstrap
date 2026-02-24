@@ -104,6 +104,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   void _handleFocusChange() {
+    if(!mounted)return;
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
@@ -117,6 +118,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
 
   void onTapEye() {
     isObscure = !isObscure;
+    if(!mounted)return;
     setState(() {});
   }
 
@@ -141,6 +143,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   void _setError(String? error) {
+    if(!mounted)return;
     setState(() {
       _errorMessage = error;
       if (_errorMessage != null && _errorMessage!.isNotEmpty) {

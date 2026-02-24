@@ -58,13 +58,33 @@ class _AnimatedContentState extends State<_AnimatedContent>
     }
   }
 
-  Widget _buildStep() {
-    switch (widget.viewModel.currentStep) {
+  Widget _buildStepWidget(SignupStepTwo step) {
+    switch (step) {
       case SignupStepTwo.number:
         return NumberStepTwo(viewModel: widget.viewModel);
       case SignupStepTwo.sms:
         return SmsStepTwo(viewModel: widget.viewModel);
     }
+  }
+
+  // Durante a transição: Stack com a saída fading out por baixo e a entrada
+  // já animando por cima, sobrepostos no tempo.
+  Widget _buildContent() {
+    final vm = widget.viewModel;
+
+    if (vm.isTransitioning && vm.previousStep != null) {
+      return Stack(
+        children: [
+          FadeTransition(
+            opacity: vm.contentOpacity,
+            child: _buildStepWidget(vm.previousStep!),
+          ),
+          _buildStepWidget(vm.currentStep),
+        ],
+      );
+    }
+
+    return _buildStepWidget(vm.currentStep);
   }
 
   @override
@@ -98,12 +118,7 @@ class _AnimatedContentState extends State<_AnimatedContent>
         ),
         body: Column(
           children: [
-            // contentOpacity faz o fade-out uniforme do conteúdo atual
-            // antes de trocar o step. O próximo step entra via suas próprias animações.
-            FadeTransition(
-              opacity: vm.contentOpacity,
-              child: _buildStep(),
-            ),
+            _buildContent(),
           ],
         ),
       ),
