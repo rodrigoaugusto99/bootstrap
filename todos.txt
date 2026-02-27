@@ -18,3 +18,11 @@ inventar mais rules
 refatorar appbutton
 
 rodar projeto de vdd pra configurar notificacoes
+
+skill
+usar notifylistener
+viewmodel sempre ter init que eh chamado no construtor
+nomes das funcoes em ingles
+enums + getters em models
+view que pode ter mais de um titulo e subtitulo (getter no viewmodel)
+funcoes que sao chamadas diretamente pela view, começa com handle

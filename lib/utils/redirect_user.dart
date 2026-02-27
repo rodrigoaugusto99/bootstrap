@@ -6,12 +6,16 @@ import 'package:bootstrap/utils/loading.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class RedirectUser {
+   RedirectUser() {
+    _redirectUser();
+  }
+
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthService>();
 
   final _log = getLogger('RedirectUser');
 
-  Future<void> redirectUser() async {
+  Future<void> _redirectUser() async {
     _navigationService.clearStackAndShow(Routes.tryStaggeredAnimationTwoView);
 
     return;
@@ -37,7 +41,7 @@ class RedirectUser {
     //   _navigationService.replaceWithRegisterView();
     //   return;
     // }
-    _log.i('initializing user logged in');
+    _log.i('redirecting user logged in');
     await _authService.setupUserLoggedIn();
   }
 }

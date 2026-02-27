@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:bootstrap/app/app.bottomsheets.custom.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/firebase_options.dart';
+import 'package:bootstrap/ui/common/app_colors.dart';
 import 'package:bootstrap/ui/common/app_theme.dart';
 import 'package:bootstrap/ui/components/loading.dart';
+import 'package:bootstrap/utils/logarte.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +16,7 @@ import 'package:bootstrap/app/app.router.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:logarte/logarte.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 /*
@@ -59,22 +62,31 @@ class MainApp extends StatelessWidget {
       onTap: () {
         unfocus();
       },
-      child: StyledToast(
-        child: LoaderOverlay(
-          overlayColor: Colors.black.withOpacity(0.3),
-          closeOnBackButton: false,
-          overlayWidgetBuilder: (_) {
-            return const Loading();
-          },
-          child: MaterialApp(
-            theme: makeAppTheme(),
-            debugShowCheckedModeBanner: false,
-            initialRoute: Routes.startupView,
-            onGenerateRoute: StackedRouter().onGenerateRoute,
-            navigatorKey: StackedService.navigatorKey,
-            navigatorObservers: [
-              StackedService.routeObserver,
-            ],
+      child: MaterialApp(
+        theme: makeAppTheme(),
+        debugShowCheckedModeBanner: false,
+        initialRoute: Routes.startupView,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        navigatorKey: StackedService.navigatorKey,
+        navigatorObservers: [
+          LogarteNavigatorObserver(locator<LogarteService>().logarte),
+          StackedService.routeObserver,
+          // FirebaseAnalyticsObserver(
+          //   analytics: FirebaseAnalytics.instance,
+          // ),
+        ],
+        builder: (context, child) => StyledToast(
+          child: LoaderOverlay(
+            overlayColor: Colors.black.withValues(alpha: 0.3),
+            closeOnBackButton: true,
+            overlayWidgetBuilder: (_) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kcPrimaryColor,
+                ),
+              );
+            },
+            child: child!,
           ),
         ),
       ),

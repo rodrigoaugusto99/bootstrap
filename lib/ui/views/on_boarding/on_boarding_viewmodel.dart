@@ -60,7 +60,7 @@ class OnBoardingViewModel extends BaseViewModel {
         key: SharedPreferencesKeys.sawOnboarding,
         value: true,
       );
-      RedirectUser().redirectUser();
+      RedirectUser();
       return;
     }
     pageController.nextPage(

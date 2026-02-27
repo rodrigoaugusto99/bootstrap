@@ -1,5 +1,8 @@
+import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
+import 'package:bootstrap/services/app_service.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
+import 'package:bootstrap/utils/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io' show Platform;
 
@@ -9,14 +12,32 @@ Future<void> redirectToStore() async {
   String url = '';
 
   if (Platform.isAndroid) {
-    url = '';
+    url = androidStoreUrl;
   } else if (Platform.isIOS) {
-    url = '';
+    url = iosStoreUrl; 
   } else {
     return;
   }
   openUrl(url);
 }
+
+Future<bool> userCanContinueUsingApp() async {
+    final minVersion = locator<AppService>().appInfos?.minVersion;
+    final minBuildNumber = locator<AppService>().appInfos?.minBuildNumber;
+    if (minVersion == null || minBuildNumber == null) {
+      _log.e('AppInfos não disponíveis, pulando verificação de atualização');
+      return true;
+    }
+    bool userNeedsUpdate = await needToUpdate(
+      minVersion,
+      minBuildNumber,
+    );
+    if (userNeedsUpdate) {
+      await redirectToStore();
+      return false;
+    }
+    return true;
+  }
 
 void printCurrentVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();

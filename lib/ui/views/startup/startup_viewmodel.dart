@@ -21,15 +21,9 @@ class StartupViewModel extends BaseViewModel {
     //await locator<AppService>().init();
     await locator<AuthService>().init();
 
-    // bool userNeedsUpdate = await needToUpdate(
-    //   appInfos?.minVersion ?? '',
-    //   appInfos?.minBuildNumber ?? '',
-    // );
-    // if (userNeedsUpdate) {
-    //   await redirectToStore();
-    //   return;
-    // }
+    // bool canContinue = await userCanContinueUsingApp();
+    // if (!canContinue) return;
     await animationCompleted;
-    await RedirectUser().redirectUser();
+     RedirectUser();
   }
 }

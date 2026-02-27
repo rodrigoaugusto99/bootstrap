@@ -15,6 +15,12 @@ class AppToast {
     StyledToastAnimation? fromWhere,
     StyledToastAnimation? reverseTo,
     bool showIcon = true,
+    /*
+    caso o teclado esteja descendo logo antes de mostrar o toast, pode ser
+    que o toast fique no meio da tela. colocar true pra forçar que o toast apareça
+    lá embaixo (garanta que o keyboard esteja fechado chamando unfocus!)
+     */
+    bool ignoreKeyboard= false,
   }) {
     BuildContext? context = getContext();
 
@@ -32,7 +38,7 @@ class AppToast {
         radius: 12,
         outLeftPadding: getResponsiveWidth(context, 32),
         outRightPadding: getResponsiveWidth(context, 32),
-        outBottomPadding:
+        outBottomPadding:ignoreKeyboard ?getResponsiveWidth(context, 62) :
             getBottomPadding(context) + getResponsiveWidth(context, 62),
         color: Colors.grey,
         child: Padding(
