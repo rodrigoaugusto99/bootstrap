@@ -88,8 +88,16 @@ class NotificationService {
         showWhen: false,
       );
 
+      const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+          DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
       final NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics,
       );
 
       await _flutterLocalNotificationsPlugin.show(
@@ -105,6 +113,8 @@ class NotificationService {
   }
 
   Future _initPushNotifications() async {
+
+    //remove notificacoes nativas do ios em foreground
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: false,
