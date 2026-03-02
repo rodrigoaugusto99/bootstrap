@@ -140,7 +140,7 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
     // so the logo moves and shrinks in perfect sync.
     final logoMoveCurve = CurvedAnimation(
       parent: _getStartedController,
-      curve: Interval(0.25, 0.50, curve: Curves.easeInOutCubic),
+      curve: const Interval(0.25, 0.50, curve: Curves.easeInOutCubic),
     );
     logoScale = Tween<double>(begin: 1.0, end: 0.4).animate(logoMoveCurve);
     logoAlignProgress = logoMoveCurve;
@@ -480,10 +480,32 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
 
     previousStep = currentStep; // number
     currentStep = SignupStepTwo.getStarted;
+    _getStartedController.value = 0;
     notifyListeners();
 
     final exitFuture = _exitController.forward(from: 0);
     _buttonController.reverse();
+    runGetStartedAnimations();
+    await exitFuture;
+
+    _isTransitioning = false;
+    previousStep = null;
+    _exitController.reset();
+    notifyListeners();
+  }
+
+  Future<void> runBackToSms() async {
+    if (_isTransitioning) return;
+    _isTransitioning = true;
+
+    previousStep = currentStep; // profile
+    currentStep = SignupStepTwo.sms;
+    _smsController.value = 0;
+    notifyListeners();
+
+    final exitFuture = _exitController.forward(from: 0);
+    _buttonController.forward(from: 0);
+    runSmsAnimations();
     await exitFuture;
 
     _isTransitioning = false;
@@ -514,7 +536,6 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
   void back() {
     switch (currentStep) {
       case SignupStepTwo.getStarted:
-        _navigationService.back();
         break;
       case SignupStepTwo.number:
         runBackToGetStarted();
@@ -523,6 +544,7 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
         runBackToNumber();
         break;
       case SignupStepTwo.profile:
+        runBackToSms();
         break;
     }
   }
@@ -533,6 +555,16 @@ class TryStaggeredAnimationTwoViewModel extends BaseViewModel {
 
   void finishProfile() {
     // TODO: navigate to next screen
+  }
+
+  void stopAllAnimations() {
+    if (!_initialized) return;
+    _getStartedController.stop();
+    _numberController.stop();
+    _smsController.stop();
+    _profileController.stop();
+    _buttonController.stop();
+    _exitController.stop();
   }
 
   void reset() {

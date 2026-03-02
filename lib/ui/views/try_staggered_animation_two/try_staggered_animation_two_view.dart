@@ -98,10 +98,10 @@ class _AnimatedContentState extends State<_AnimatedContent>
         opacity: vm.getStartedTermsFade,
         child: SlideTransition(
           position: vm.getStartedTermsSlide,
-          child: CustomBottonNavigationBar(
+          child: const CustomBottonNavigationBar(
             widget: AppRichText(
               textAlign: TextAlign.center,
-              children: const [
+              children: [
                 TextSpan(text: 'By signing up, you are agreeing to our '),
                 TextSpan(
                   text: 'Terms and Conditions',
@@ -138,14 +138,21 @@ class _AnimatedContentState extends State<_AnimatedContent>
   }
 
   @override
+  void dispose() {
+    widget.viewModel.stopAllAnimations();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final vm = widget.viewModel;
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
         vm.back();
-        return false;
+        return;
       },
+      canPop: false,
       child: Scaffold(
         appBar: CustomAppBar(
           title: 'aa',
