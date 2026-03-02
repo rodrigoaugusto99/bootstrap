@@ -107,9 +107,9 @@ class NotificationService {
   Future _initPushNotifications() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-      alert: true,
+      alert: false,
       badge: true,
-      sound: true,
+      sound: false,
     );
 
     _onMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp
