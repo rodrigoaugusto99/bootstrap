@@ -22,7 +22,7 @@ class _NumberStepTwoState extends State<NumberStepTwo> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = widget.viewModel;
+    final anims = widget.viewModel.numberAnimations;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -31,9 +31,9 @@ class _NumberStepTwoState extends State<NumberStepTwo> {
         children: [
           const SizedBox(height: 80),
           FadeTransition(
-            opacity: vm.numberTitleFade,
+            opacity: anims.titleFade,
             child: SlideTransition(
-              position: vm.numberTitleSlide,
+              position: anims.titleSlide,
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -55,9 +55,9 @@ class _NumberStepTwoState extends State<NumberStepTwo> {
           ),
           const SizedBox(height: 40),
           FadeTransition(
-            opacity: vm.numberFieldFade,
+            opacity: anims.fieldFade,
             child: SlideTransition(
-              position: vm.numberFieldSlide,
+              position: anims.fieldSlide,
               child: CustomTextFormField(
                 controller: _phoneController,
                 textInputAction: TextInputAction.next,

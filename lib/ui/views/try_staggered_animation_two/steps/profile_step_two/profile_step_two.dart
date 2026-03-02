@@ -29,6 +29,7 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
   @override
   Widget build(BuildContext context) {
     final vm = widget.viewModel;
+    final anims = vm.profileAnimations;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -37,9 +38,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
         children: [
           const SizedBox(height: 60),
           FadeTransition(
-            opacity: vm.profileCloseFade,
+            opacity: anims.closeFade,
             child: SlideTransition(
-              position: vm.profileCloseSlide,
+              position: anims.closeSlide,
               child: GestureDetector(
                 onTap: vm.closeProfile,
                 child: const Icon(Icons.close, size: 28),
@@ -48,9 +49,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
           ),
           const SizedBox(height: 24),
           FadeTransition(
-            opacity: vm.profileTitleFade,
+            opacity: anims.titleFade,
             child: SlideTransition(
-              position: vm.profileTitleSlide,
+              position: anims.titleSlide,
               child: const Text(
                 'Complete your profile',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -59,9 +60,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
           ),
           const SizedBox(height: 32),
           FadeTransition(
-            opacity: vm.profileNameRowFade,
+            opacity: anims.nameRowFade,
             child: SlideTransition(
-              position: vm.profileNameRowSlide,
+              position: anims.nameRowSlide,
               child: Row(
                 children: [
                   Expanded(
@@ -85,9 +86,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
           ),
           const SizedBox(height: 16),
           FadeTransition(
-            opacity: vm.profileEmailFade,
+            opacity: anims.emailFade,
             child: SlideTransition(
-              position: vm.profileEmailSlide,
+              position: anims.emailSlide,
               child: CustomTextFormField(
                 controller: _emailController,
                 label: 'Email',
@@ -98,9 +99,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
           ),
           const SizedBox(height: 24),
           FadeTransition(
-            opacity: vm.profileButtonInsideFade,
+            opacity: anims.buttonInsideFade,
             child: SlideTransition(
-              position: vm.profileButtonInsideSlide,
+              position: anims.buttonInsideSlide,
               child: SizedBox(
                 width: double.infinity,
                 child: AppButton(
@@ -112,9 +113,9 @@ class _ProfileStepTwoState extends State<ProfileStepTwo> {
           ),
           const SizedBox(height: 16),
           FadeTransition(
-            opacity: vm.profileRichTextFade,
+            opacity: anims.richTextFade,
             child: SlideTransition(
-              position: vm.profileRichTextSlide,
+              position: anims.richTextSlide,
               child: AppRichText(
                 textAlign: TextAlign.center,
                 children: const [

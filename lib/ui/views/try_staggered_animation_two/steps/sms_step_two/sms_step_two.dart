@@ -31,7 +31,7 @@ class _SmsStepTwoState extends State<SmsStepTwo> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = widget.viewModel;
+    final anims = widget.viewModel.smsAnimations;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -40,9 +40,9 @@ class _SmsStepTwoState extends State<SmsStepTwo> {
         children: [
           const SizedBox(height: 80),
           FadeTransition(
-            opacity: vm.smsTitleFade,
+            opacity: anims.titleFade,
             child: SlideTransition(
-              position: vm.smsTitleSlide,
+              position: anims.titleSlide,
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -61,9 +61,9 @@ class _SmsStepTwoState extends State<SmsStepTwo> {
           ),
           const SizedBox(height: 40),
           FadeTransition(
-            opacity: vm.smsPinFade,
+            opacity: anims.pinFade,
             child: SlideTransition(
-              position: vm.smsPinSlide,
+              position: anims.pinSlide,
               child: PinCodeField(
                 onCompleted: (_) {},
                 errorAnimationController: _errorAnimationController,
@@ -72,9 +72,9 @@ class _SmsStepTwoState extends State<SmsStepTwo> {
           ),
           const SizedBox(height: 40),
           FadeTransition(
-            opacity: vm.smsResendFade,
+            opacity: anims.resendFade,
             child: SlideTransition(
-              position: vm.smsResendSlide,
+              position: anims.resendSlide,
               child: const Text(
                 'Resend code in',
                 style: TextStyle(fontSize: 16, color: Colors.grey),

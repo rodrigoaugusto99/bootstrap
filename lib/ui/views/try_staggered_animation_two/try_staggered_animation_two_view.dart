@@ -1,10 +1,10 @@
 import 'package:bootstrap/ui/components/app_button.dart';
 import 'package:bootstrap/ui/components/custom_app_bar.dart';
 import 'package:bootstrap/ui/components/custom_bottom_navigation_bar.dart';
-import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/get_started_step_two.dart';
-import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/number_step_two.dart';
-import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/profile_step_two.dart';
-import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/sms_step_two.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/get_started_step_two/get_started_step_two.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/number_step_two/number_step_two.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/profile_step_two/profile_step_two.dart';
+import 'package:bootstrap/ui/views/try_staggered_animation_two/steps/sms_step_two/sms_step_two.dart';
 import 'package:bootstrap/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -95,9 +95,9 @@ class _AnimatedContentState extends State<_AnimatedContent>
     // GetStarted: show animated terms & conditions text
     if (vm.currentStep == SignupStepTwo.getStarted) {
       return FadeTransition(
-        opacity: vm.getStartedTermsFade,
+        opacity: vm.getStartedAnimations.termsFade,
         child: SlideTransition(
-          position: vm.getStartedTermsSlide,
+          position: vm.getStartedAnimations.termsSlide,
           child: const CustomBottonNavigationBar(
             widget: AppRichText(
               textAlign: TextAlign.center,

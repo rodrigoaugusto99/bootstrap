@@ -1,0 +1,4 @@
+voltar pra tela get started sem a animacao da logo
+facilidades com focus,talvez manter focus de tela pra tela
+comentar //todo logout quando sair de profile (pois n pode voltar p tela de sms)
+

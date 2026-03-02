@@ -24,6 +24,7 @@ class GetStartedStepTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = viewModel;
+    final anims = vm.getStartedAnimations;
 
     return Stack(
       children: [
@@ -34,9 +35,9 @@ class GetStartedStepTwo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FadeTransition(
-                opacity: vm.getStartedTitleFade,
+                opacity: anims.titleFade,
                 child: SlideTransition(
-                  position: vm.getStartedTitleSlide,
+                  position: anims.titleSlide,
                   child: const Text(
                     'Get started with\nbootstrap',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -45,9 +46,9 @@ class GetStartedStepTwo extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               FadeTransition(
-                opacity: vm.getStartedPhoneFade,
+                opacity: anims.phoneFade,
                 child: SlideTransition(
-                  position: vm.getStartedPhoneSlide,
+                  position: anims.phoneSlide,
                   child: SizedBox(
                     width: double.infinity,
                     child: AppButton(
@@ -59,9 +60,9 @@ class GetStartedStepTwo extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               FadeTransition(
-                opacity: vm.getStartedOrFade,
+                opacity: anims.orFade,
                 child: SlideTransition(
-                  position: vm.getStartedOrSlide,
+                  position: anims.orSlide,
                   child: const Center(
                     child: Text(
                       'or',
@@ -72,9 +73,9 @@ class GetStartedStepTwo extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               FadeTransition(
-                opacity: vm.getStartedAppleFade,
+                opacity: anims.appleFade,
                 child: SlideTransition(
-                  position: vm.getStartedAppleSlide,
+                  position: anims.appleSlide,
                   child: SizedBox(
                     width: double.infinity,
                     child: AppButton(
@@ -87,9 +88,9 @@ class GetStartedStepTwo extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               FadeTransition(
-                opacity: vm.getStartedGoogleFade,
+                opacity: anims.googleFade,
                 child: SlideTransition(
-                  position: vm.getStartedGoogleSlide,
+                  position: anims.googleSlide,
                   child: SizedBox(
                     width: double.infinity,
                     child: AppButton(
@@ -109,21 +110,21 @@ class GetStartedStepTwo extends StatelessWidget {
 
         // Logo — starts centered and large, flies to top-center while shrinking
         AnimatedBuilder(
-          animation: vm.logoAlignProgress,
+          animation: anims.logoAlignProgress,
           builder: (context, child) {
             return Align(
               alignment: Alignment.lerp(
                 Alignment.center,
                 const Alignment(0, -0.85),
-                vm.logoAlignProgress.value,
+                anims.logoAlignProgress.value,
               )!,
               child: child,
             );
           },
           child: ScaleTransition(
-            scale: vm.logoScale,
+            scale: anims.logoScale,
             child: FadeTransition(
-              opacity: vm.logoFade,
+              opacity: anims.logoFade,
               child: _buildLogo(),
             ),
           ),
