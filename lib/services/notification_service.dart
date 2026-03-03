@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:bootstrap/firestore/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -88,16 +89,16 @@ class NotificationService {
         showWhen: false,
       );
 
-      const DarwinNotificationDetails iOSPlatformChannelSpecifics =
-          DarwinNotificationDetails(
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true,
-      );
+      // const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+      //     DarwinNotificationDetails(
+      //   presentAlert: true,
+      //   presentBadge: true,
+      //   presentSound: true,
+      // );
 
       final NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics,
+        //iOS: iOSPlatformChannelSpecifics,
       );
 
       await _flutterLocalNotificationsPlugin.show(
@@ -113,13 +114,12 @@ class NotificationService {
   }
 
   Future _initPushNotifications() async {
-
     //remove notificacoes nativas do ios em foreground
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-      alert: false,
+      alert: true,
       badge: true,
-      sound: false,
+      sound: true,
     );
 
     _onMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp
@@ -175,6 +175,10 @@ class NotificationService {
     RemoteMessage message,
   ) async {
     _log.i('Handling foreground notification');
+    if (Platform.isIOS) {
+       _log.i('ios. early return');
+      return;
+    }
     _showLocalNotification(message);
   }
 

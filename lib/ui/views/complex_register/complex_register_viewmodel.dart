@@ -171,30 +171,37 @@ class ComplexRegisterViewModel extends BaseViewModel {
     // if (cepController.text.length != 9) {
     //   return;
     // }
-    // final viaCepSearchCep = ViaCepSearchCep();
     // showLoading();
-    // final infoCepJSON = await viaCepSearchCep.searchInfoByCep(
-    //     cep: cepController.text.replaceAll('-', ''));
-    // infoCepJSON.fold(
-    //   (error) {
-    //     hideLoading();
-    //     _log.w('Erro ao buscar informações do CEP: $error');
-    //     notifyListeners();
-    //   },
-    //   (infoCepJSON) {
-    //     hideLoading();
-    //     enderecoCompletoController.text = infoCepJSON.logradouro ?? '';
-    //     bairroController.text = infoCepJSON.bairro ?? '';
-    //     estadoSelecionadoController.text = infoCepJSON.uf?.toUpperCase() ?? '';
-    //     cidadeSelecionadaController.text = infoCepJSON.localidade ?? '';
-
-    //     enableStreet = enderecoCompletoController.text.isEmpty;
-    //     enableNeighborhood = bairroController.text.isEmpty;
-    //     enableState = estadoSelecionadoController.text.isEmpty;
-    //     enableCity = cidadeSelecionadaController.text.isEmpty;
-    //     notifyListeners();
-    //   },
+    // final address = await _locationService.getAddressFromCep(cepController.text);
+    // if (address == null) {
+    //   hideLoading();
+    //   return;
+    // }
+    // hideLoading();
+    // _fillAddressFields(
+    //   bairro: address.bairro,
+    //   logradouro: address.logradouro,
+    //   uf: address.uf,
+    //   localidade: address.localidade,
     // );
+  }
+
+  void _fillAddressFields({
+    String? logradouro,
+    String? bairro,
+    String? uf,
+    String? localidade,
+  }) {
+    enderecoCompletoController.text = logradouro ?? '';
+    bairroController.text = bairro ?? '';
+    estadoSelecionadoController.text = uf?.toUpperCase() ?? '';
+    cidadeSelecionadaController.text = localidade ?? '';
+
+    enableStreet = enderecoCompletoController.text.isEmpty;
+    enableNeighborhood = bairroController.text.isEmpty;
+    enableState = estadoSelecionadoController.text.isEmpty;
+    enableCity = cidadeSelecionadaController.text.isEmpty;
+    notifyListeners();
   }
 
   Future<void> _finalize() async {

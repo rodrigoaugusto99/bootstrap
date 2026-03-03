@@ -10,6 +10,19 @@ import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/models/address_model.dart';
 
+class AddressByCep {
+  final String? logradouro;
+  final String? bairro;
+  final String? uf;
+  final String? localidade;
+  AddressByCep({
+    required this.logradouro,
+    required this.bairro,
+    required this.uf,
+    required this.localidade,
+  });
+}
+
 class LocationService {
   final _log = getLogger("LocationService");
   ValueNotifier<Position?> currentLocation = ValueNotifier(null);
@@ -76,11 +89,6 @@ class LocationService {
     return await Geolocator.getCurrentPosition();
   }
 
-//todo: averiguar esse erro
-/*
-Error getting address: PlatformException(IO_ERROR, java.util.concurrent.TimeoutException: Waited 5 seconds 
-(plus 379373 nanoseconds delay) for kii@801c5da[status=PENDING, info=[tag=[ReverseGeocode]]], null, null)
- */
   Future<AddressModel?> getAddressFromCoordinates(
     double latitude,
     double longitude,
@@ -105,7 +113,52 @@ Error getting address: PlatformException(IO_ERROR, java.util.concurrent.TimeoutE
       // throw Exception("Error getting address: $e");
     }
   }
+
+   Future<AddressByCep?> fetchCepFromBrasilApi(String cep) async {
+    try {
+      _log.i('buscando cep via BrasilAPI');
+
+      final data = await locator<ApiService>()
+          .request(
+            url: 'https://brasilapi.com.br/api/cep/v1/$cep',
+            method: HttpMethod.GET,
+          )
+          .timeout(const Duration(seconds: 10));
+      return AddressByCep(
+        logradouro: data['street'] as String?,
+        bairro: data['neighborhood'] as String?,
+        uf: data['state'] as String?,
+        localidade: data['city'] as String?,
+      );
+    } on Exception catch (e) {
+      _log.w('Erro ao buscar CEP via BrasilAPI: $e');
+    }
+    return null;
+  }
+
+  Future<AddressByCep?> getAddressFromCep(String rawCep) async {
+    final cep = rawCep.replaceAll('-', '');
+    try {
+      _log.i('buscando cep via ViaCEP');
+      final data = await _apiService
+          .request(
+            url: 'https://viacep.com.br/ws/$cep/json/',
+            method: HttpMethod.GET,
+          )
+          .timeout(const Duration(seconds: 10));
+      return AddressByCep(
+        logradouro: data['logradouro'] as String?,
+        bairro: data['bairro'] as String?,
+        uf: data['uf'] as String?,
+        localidade: data['localidade'] as String?,
+      );
+    } on Exception catch (e) {
+      _log.w('Erro ao buscar CEP via ViaCEP: $e');
+    }
+    return await fetchCepFromBrasilApi(cep);
+  }
 }
+
 
 Map<String, String> estadosParaUF = {
   'Acre': 'AC',
