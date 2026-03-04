@@ -17,6 +17,7 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:logarte/logarte.dart';
 import 'package:stacked_services/stacked_services.dart';
+//import 'package:firebase_app_check/firebase_app_check.dart';
 
 /*
      output: MultiOutput([
@@ -44,6 +45,19 @@ Future<void> main() async {
     await setupLocator();
     setupDialogUi();
     setupBottomSheetUiWithCustomAnimations();
+
+    // try {
+    //   await FirebaseAppCheck.instance.activate(
+    //     providerAndroid: kDebugMode
+    //         ? const AndroidDebugProvider()
+    //         : const AndroidPlayIntegrityProvider(),
+    //     providerApple: kDebugMode
+    //         ? const AppleDebugProvider()
+    //         : const AppleAppAttestProvider(),
+    //   );
+    // } catch (e) {
+    //   _log.e("Error activating FirebaseAppCheck: ${e.toString()}");
+    // }
 
     runApp(const MainApp());
   }, (error, stack) {

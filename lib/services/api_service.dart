@@ -97,7 +97,11 @@ class ApiService {
         return {};
       }
     } on DioException catch (e) {
+      int? statusCode;
+      String? statusMessage;
       if (e.response != null && e.response!.data != null) {
+        statusCode = e.response!.statusCode;
+      statusMessage = e.response!.statusMessage;
         try {
           final responseData = jsonDecode(e.response!.data);
           if (responseData is Map &&
@@ -111,7 +115,7 @@ class ApiService {
       }
 
       //_log.e('Erro: $e');
-      _log.e('errorMessage: $errorMessage');
+       _log.e('errorMessage: $errorMessage\nstatusCode: $statusCode\nstatusMessage: $statusMessage\nurl: $url');_log.e('errorMessage: $errorMessage');
       throw AppError(
         message: errorMessage ?? 'Erro desconhecido',
         dataResponse: dataResponse,

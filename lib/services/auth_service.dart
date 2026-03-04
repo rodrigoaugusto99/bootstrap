@@ -5,7 +5,9 @@ import 'package:bootstrap/app/app.router.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/schemas/authenticate_anonymous_schema.dart';
 import 'package:bootstrap/schemas/code_sent_schema.dart';
+import 'package:bootstrap/schemas/login_schema.dart';
 import 'package:bootstrap/schemas/verify_code_schema.dart';
+import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/services/app_service.dart';
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
@@ -27,7 +29,7 @@ class AuthService {
   User? currUser;
   final _log = getLogger('AuthService');
   final _navigationService = locator<NavigationService>();
-  //final _apiService = locator<ApiService>();
+  final _apiService = locator<ApiService>();
 
   // INIT
 
@@ -101,8 +103,26 @@ class AuthService {
     }
   }
 
-  //CADASTRAR COM EMAIL E SENHA
+//LOGIN COM CUSTOM TOKEN
+  Future<void> login(LoginSchema loginSchema) async {
+    _log.i('login');
+    final response = await _apiService.request(
+      url: '$apiUrl/login',
+      body: loginSchema.toMap(),
+      method: HttpMethod.POST,
+    );
 
+    String token = response['token'];
+    _log.i('Usuário logado com sucesso: Token: $token');
+
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCustomToken(token);
+    currUser = userCredential.user;
+    _log.i('Successfully signed in with userName and password!');
+    await createUserProfile();
+    await setupUserLoggedIn();
+  }
+  //CADASTRAR COM EMAIL E SENHA
   Future<void> registerEmailAndPassword({
     required String email,
     required String password,
