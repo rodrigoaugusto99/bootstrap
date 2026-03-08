@@ -46,7 +46,7 @@ app.*.map.json
 .fvm/
 
 # Claude local config
-.claude
+# .claude
 
 # Cursor local config
-.cursor
+# .cursor
