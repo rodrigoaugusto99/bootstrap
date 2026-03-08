@@ -7,3 +7,5 @@ firebase login:use EMAIL
 
 gcloud config set project inner-chat-v1
 gcloud firestore export gs://inner-chat-v1.appspot.com
+
+remover o .git : Remove-Item -Recurse -Force .git
