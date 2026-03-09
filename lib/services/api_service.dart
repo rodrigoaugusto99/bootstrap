@@ -44,43 +44,40 @@ class ApiService {
       final encodedBody = body != null ? jsonEncode(body) : null;
       Response response;
 
-      switch (method.name) {
-        case 'POST':
+      switch (method) {
+        case HttpMethod.POST:
           response = await dio.post(
             url,
             data: encodedBody,
             options: Options(headers: headers),
           );
           break;
-        case 'GET':
+        case HttpMethod.GET: 
           response = await dio.get(
             url,
             options: Options(headers: headers),
           );
           break;
-        case 'PUT':
+        case HttpMethod.PUT:
           response = await dio.put(
             url,
             data: encodedBody,
             options: Options(headers: headers),
           );
           break;
-        case 'DELETE':
+        case HttpMethod.DELETE:
           response = await dio.delete(
             url,
             data: encodedBody,
             options: Options(headers: headers),
           );
           break;
-        case 'PATCH':
+        case HttpMethod.PATCH:
           response = await dio.patch(
             url,
             data: encodedBody,
             options: Options(headers: headers),
           );
-          break;
-        default:
-          throw AppError(message: 'Método HTTP não suportado: $method');
       }
 
       try {
