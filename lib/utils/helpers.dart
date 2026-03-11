@@ -233,13 +233,14 @@ enum FontWeightEnum {
 
 Widget styledText({
   required String text,
-  double? fontSize,
+  double fontSize = 14,
   FontWeightEnum? fontWeightEnum,
   FontWeight? fontWeight,
   Color? color,
   Color? decorationColor,
   TextDecoration? decoration,
-  double? height,
+  //double? height,
+  double? lineHeight,
   TextAlign? textAlign,
   bool? showShimmer,
   double? shimmerRadius,
@@ -257,6 +258,10 @@ Widget styledText({
   Key? keyText,
   TextOverflow? overflow,
 }) {
+  double? height;
+  if(lineHeight!= null){
+height = lineHeight / fontSize;
+  }
   final textStyle = TextStyle(
     letterSpacing: letterSpacing ?? 0.0,
     overflow: overflow ?? (hasOverflow ? TextOverflow.ellipsis : null),
