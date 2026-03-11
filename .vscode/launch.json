@@ -4,11 +4,52 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
         {
             "name": "bootstrap",
             "request": "launch",
             "type": "dart"
+        },
+        {
+            "name": "debug internal",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "internal"
+            ]
+        },
+        {
+            "name": "debug stable",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "stable"
+            ]
+        },
+        {
+            "name": "release internal",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "internal",
+                "--release"
+            ]
+        },
+        {
+            "name": "release stable",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "stable",
+                "--release"
+            ]
         },
         {
             "name": "bootstrap (profile mode)",
