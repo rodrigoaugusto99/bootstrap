@@ -49,11 +49,13 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
       );
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return 
+      PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
         await viewModel.backPage();
-        return false;
+        return;
       },
+      canPop: false,
       child: Scaffold(
         body: PageView.builder(
           controller: viewModel.pageController,

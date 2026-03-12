@@ -15,11 +15,13 @@ class ComplexRegisterView extends StackedView<ComplexRegisterViewModel> {
     ComplexRegisterViewModel viewModel,
     Widget? child,
   ) {
-    return WillPopScope(
-      onWillPop: () async {
+    return 
+      PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
         viewModel.handleBack();
-        return false;
+        return;
       },
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         // appBar: AppBarWidget(
