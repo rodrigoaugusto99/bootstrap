@@ -16,6 +16,7 @@ class RedirectUser {
   final _log = getLogger('RedirectUser');
 
   Future<void> _redirectUser() async {
+    hideLoading();
     _navigationService.clearStackAndShow(Routes.tryStaggeredAnimationTwoView);
 
     return;
@@ -42,6 +43,8 @@ class RedirectUser {
     //   return;
     // }
     _log.i('redirecting user logged in');
-    await _authService.setupUserLoggedIn();
+    hideLoading();
+      _navigationService.clearStackAndShow(Routes.homeView);
+    
   }
 }

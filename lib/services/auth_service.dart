@@ -65,8 +65,7 @@ class AuthService {
       await locator<UserService>().setUser(currUser!.uid);
       //await locator<InAppPurchaseService>().init();
       await locator<NotificationService>().initNotifications();
-      hideLoading();
-      _navigationService.clearStackAndShow(Routes.homeView);
+      
       // _log.wtf('terminou o setupUserLoggedIn');
     } catch (e, stackTrace) {
       //_log.e('Erro no setupUserLoggedIn: $e\n$stackTrace');
