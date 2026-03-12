@@ -91,6 +91,7 @@ class AuthService {
       await createUserProfile();
 
       await setupUserLoggedIn();
+      
     } on AppError {
       rethrow;
     } on FirebaseAuthException catch (e) {

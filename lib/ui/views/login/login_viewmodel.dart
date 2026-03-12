@@ -7,6 +7,7 @@ import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/loading.dart';
+import 'package:bootstrap/utils/redirect_user.dart';
 import 'package:bootstrap/utils/toast.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -141,6 +142,7 @@ class LoginViewModel extends BaseViewModel {
         email: emailController.text,
         password: passwordController.text,
       );
+      RedirectUser();
     } on AppError catch (e) {
       _log.e(e);
       hideLoading();
@@ -160,7 +162,8 @@ class LoginViewModel extends BaseViewModel {
         email: emailController.text,
         password: passwordController.text,
       );
-      // hideLoading();
+
+      RedirectUser();
     } on AppError catch (e) {
       hideLoading();
       switch (e.message) {
