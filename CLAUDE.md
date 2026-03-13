@@ -72,17 +72,27 @@ lib/
 | Arquivo | O que faz |
 |---------|-----------|
 | `validators.dart` | Validadores estáticos para `TextFormField` |
-| `easy_mask.dart` | Máscaras de input |
+| `formatters.dart` | Formatação de datas, moeda, telefone, máscaras de input |
+| `helpers.dart` | `decContainer`, `styledText`, `heightSeparator`, `widthSeparator`, layout responsivo |
 | `shared_preferences.dart` | Wrapper de SharedPreferences (use enums para keys) |
+| `constants.dart` | URLs da API, URLs das stores, mensagens de erro globais, flag `DEVELOPMENT` |
+| `enums.dart` | Enums globais |
 | `svg_util.dart` | Widget `SvgUtil` |
 | `image_util.dart` | Widget `ImageUtil` |
-| `enums.dart` | Enums globais |
+| `app_cached_network_image.dart` | Widget de imagem remota com skeleton e fallback de erro |
+| `url_launcher.dart` | `openUrl`, `openUrlWithFallback` — abre URLs e e-mails |
+| `utils.dart` | `sendWppMessage`, `removeSpecialCaracteres`, `unfocus`, `gerarCpfValido` |
+| `app_updater.dart` | Verificação de versão mínima e redirecionamento para a store |
+| `custom_transition.dart` | `transitionAnimation()` — animação de slide para navegação |
+| `get_context.dart` | `getContext()` — acessa o `BuildContext` fora da árvore de widgets |
 | `redirect_user.dart` | Lógica de redirecionamento pós-login |
 | `loading.dart` | Controle do overlay de loading |
 | `toast.dart` | Toasts |
 | `popup.dart` | Popups |
 | `firebase_storage.dart` | Wrapper Firebase Storage |
 | `image_picker.dart` | Wrapper image_picker |
+| `GCPLogger.dart` | `LogOutput` que envia logs para o Google Cloud Logging |
+| `logarte.dart` | `LogarteService` — painel de logs em tela + interceptor Dio (apenas dev) |
 
 ## Assets
 
@@ -166,6 +176,7 @@ OBRIGATÓRIO: antes de gerar qualquer código, identifique qual contexto se apli
 | Contexto | Arquivo a ler |
 |----------|--------------|
 | Criar ou editar ViewModel | [.claude/viewmodel/SKILL.md](.claude/viewmodel/SKILL.md) |
+| Criar ou editar View | [.claude/view/SKILL.md](.claude/view/SKILL.md) |
 | Criar ou editar Model | [.claude/models/SKILL.md](.claude/models/SKILL.md) |
 | Criar ou editar Schema/DTO | [.claude/schemas/SKILL.md](.claude/schemas/SKILL.md) |
 | Criar ou editar Dialog ou Bottom Sheet | [.claude/dialogs_and_bottomsheets/SKILL.md](.claude/dialogs_and_bottomsheets/SKILL.md) |
@@ -175,4 +186,5 @@ OBRIGATÓRIO: antes de gerar qualquer código, identifique qual contexto se apli
 | Usar SharedPreferences | [.claude/shared_preferences/SKILL.md](.claude/shared_preferences/SKILL.md) |
 | Toggle, seleção de opções | [.claude/toggle_and_selection/SKILL.md](.claude/toggle_and_selection/SKILL.md) |
 | Callbacks entre componentes | [.claude/callbacks/SKILL.md](.claude/callbacks/SKILL.md) |
+| Criar ou editar View ou Componente de View | [.claude/view/SKILL.md](.claude/view/SKILL.md) |
 

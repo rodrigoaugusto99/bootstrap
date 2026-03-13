@@ -1,7 +1,7 @@
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/ui/views/complex_register/complex_register_viewmodel.dart';
 import 'package:bootstrap/ui/components/custom_text_form_field.dart';
-import 'package:bootstrap/utils/easy_mask.dart';
+import 'package:bootstrap/utils/formatters.dart';
 import 'package:bootstrap/utils/helpers.dart';
 import 'package:bootstrap/utils/validators.dart';
 import 'package:flutter/material.dart';
