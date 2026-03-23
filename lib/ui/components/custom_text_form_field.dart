@@ -435,7 +435,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
                   topPadding: _eyeTopPadding,
                   rightPadding: 18,
                   onTap: onTapEye,
-                  color: Colors.transparent,
+                  child:  Icon(isObscure ? Icons.remove_red_eye: Icons.remove_red_eye),
                 ),
               ),
             if (widget.hasArrowDown)

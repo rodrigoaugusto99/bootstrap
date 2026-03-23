@@ -2,6 +2,75 @@ import 'package:bootstrap/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 /*
+onTapDown: (details) {
+              showOptionsPopup(
+                offset: details.globalPosition,
+                context: context,
+                onTap: (option) {
+                  viewModel.handleOnPopupOption(option);
+                },
+              );
+            },
+
+
+  viewmodel:
+
+  final _authService = locator<AuthService>();
+
+  void handleOnPopupOption(PopupOptions option) {
+    if (option == PopupOptions.logout) {
+      _authService.signOut();
+    }
+  }
+
+ */
+
+enum PopupOptions {
+  logout('Sair da conta');
+
+  const PopupOptions(this.label);
+  final String label;
+}
+
+void showOptionsPopup({
+  required BuildContext context,
+  required Offset offset,
+  required Function(PopupOptions) onTap,
+  List<PopupOptions>? options,
+}) async {
+  final items = options ?? PopupOptions.values;
+  await showMenu(
+    color: Colors.grey,
+    context: context,
+    position: RelativeRect.fromLTRB(
+      offset.dx,
+      offset.dy + 30,
+      offset.dx,
+      offset.dy,
+    ),
+    items: items.map((PopupOptions option) {
+      return PopupMenuItem<PopupOptions>(
+        value: option,
+        child: Row(
+          children: [
+            widthSeparator(10),
+            styledText(
+              text: option.label,
+              isBold: true,
+              fontWeight: FontWeight.w700,
+            ),
+          ],
+        ),
+      );
+    }).toList(),
+  ).then((value) {
+    if (value != null) {
+      onTap(value);
+    }
+  });
+}
+
+/*
 GestureDetector(
               child: const SvgUtil(SvgEnum.matrizInfo),
               onTapDown: (details) {
@@ -10,7 +79,7 @@ GestureDetector(
                   details.globalPosition,
                 );
               },
-            ),
+            ),   
  */
 
 void showLogoutPopup({
