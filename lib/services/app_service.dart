@@ -2,15 +2,15 @@ import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/firestore/app.dart';
 
 class AppInfos {
-  final String? minVersion;
+  final String? minVersionName;
   final String? minBuildNumber;
   AppInfos({
-    this.minVersion,
+    this.minVersionName,
     this.minBuildNumber,
   });
   factory AppInfos.fromMap(Map<String, dynamic> map) {
     return AppInfos(
-      minVersion: map['minVersion'],
+      minVersionName: map['minVersionName'],
       minBuildNumber: map['minBuildNumber'],
     );
   }

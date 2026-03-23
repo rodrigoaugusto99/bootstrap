@@ -22,7 +22,7 @@ Future<void> redirectToStore() async {
 }
 
 Future<bool> userCanContinueUsingApp() async {
-    final minVersion = locator<AppService>().appInfos?.minVersion;
+    final minVersion = locator<AppService>().appInfos?.minVersionName;
     final minBuildNumber = locator<AppService>().appInfos?.minBuildNumber;
     if (minVersion == null || minBuildNumber == null) {
       _log.e('AppInfos não disponíveis, pulando verificação de atualização');
