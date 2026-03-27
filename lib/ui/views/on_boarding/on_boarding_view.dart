@@ -49,8 +49,7 @@ class OnBoardingView extends StackedView<OnBoardingViewModel> {
       );
     }
 
-    return 
-      PopScope(
+    return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         await viewModel.backPage();
         return;

@@ -65,7 +65,7 @@ class AuthService {
       await locator<UserService>().setUser(currUser!.uid);
       //await locator<InAppPurchaseService>().init();
       await locator<NotificationService>().initNotifications();
-      
+
       // _log.wtf('terminou o setupUserLoggedIn');
     } catch (e, stackTrace) {
       //_log.e('Erro no setupUserLoggedIn: $e\n$stackTrace');
@@ -91,7 +91,6 @@ class AuthService {
       await createUserProfile();
 
       await setupUserLoggedIn();
-      
     } on AppError {
       rethrow;
     } on FirebaseAuthException catch (e) {
@@ -122,6 +121,7 @@ class AuthService {
     await createUserProfile();
     await setupUserLoggedIn();
   }
+
   //CADASTRAR COM EMAIL E SENHA
   Future<void> registerEmailAndPassword({
     required String email,

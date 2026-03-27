@@ -176,7 +176,7 @@ class NotificationService {
   ) async {
     _log.i('Handling foreground notification');
     if (Platform.isIOS) {
-       _log.i('ios. early return');
+      _log.i('ios. early return');
       return;
     }
     _showLocalNotification(message);

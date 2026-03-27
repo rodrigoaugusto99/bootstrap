@@ -114,7 +114,7 @@ class LocationService {
     }
   }
 
-   Future<AddressByCep?> fetchCepFromBrasilApi(String cep) async {
+  Future<AddressByCep?> fetchCepFromBrasilApi(String cep) async {
     try {
       _log.i('buscando cep via BrasilAPI');
 
@@ -158,7 +158,6 @@ class LocationService {
     return await fetchCepFromBrasilApi(cep);
   }
 }
-
 
 Map<String, String> estadosParaUF = {
   'Acre': 'AC',

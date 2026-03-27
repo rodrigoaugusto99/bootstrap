@@ -13,8 +13,8 @@ class StartupViewModel extends BaseViewModel {
   StartupViewModel({required this.context});
 
   AppInfos? get appInfos => locator<AppService>().appInfos;
-   final _authService = locator<AuthService>();
-   
+  final _authService = locator<AuthService>();
+
   Future runStartupLogic({
     required Future<void> animationCompleted,
   }) async {
@@ -22,15 +22,13 @@ class StartupViewModel extends BaseViewModel {
     //await locator<GoogleCloudLoggingService>().setupLoggingApi();
     //await locator<AppService>().init();
     await _authService.init();
-    if(_authService.currUser!= null){
+    if (_authService.currUser != null) {
       await _authService.setupUserLoggedIn();
     }
-
-
 
     // bool canContinue = await userCanContinueUsingApp();
     // if (!canContinue) return;
     await animationCompleted;
-     RedirectUser();
+    RedirectUser();
   }
 }

@@ -259,8 +259,8 @@ Widget styledText({
   TextOverflow? overflow,
 }) {
   double? height;
-  if(lineHeight!= null){
-height = lineHeight / fontSize;
+  if (lineHeight != null) {
+    height = lineHeight / fontSize;
   }
   final textStyle = TextStyle(
     letterSpacing: letterSpacing ?? 0.0,

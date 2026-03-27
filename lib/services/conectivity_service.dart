@@ -7,7 +7,8 @@ class ConnectivityService {
   ValueNotifier<bool> hasInternet = ValueNotifier(false);
 
   StreamSubscription<InternetStatus>? _subscription;
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _snackbarController;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>?
+      _snackbarController;
 
   void init() {
     _initInternetListener();
@@ -18,7 +19,8 @@ class ConnectivityService {
   }
 
   void _initInternetListener() {
-    _subscription = InternetConnection().onStatusChange.listen((InternetStatus status) {
+    _subscription =
+        InternetConnection().onStatusChange.listen((InternetStatus status) {
       if (status == InternetStatus.connected) {
         hasInternet.value = true;
         _hideNoInternetSnackbar();

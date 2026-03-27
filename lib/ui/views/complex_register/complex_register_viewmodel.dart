@@ -248,7 +248,7 @@ class ComplexRegisterViewModel extends BaseViewModel {
       //   method: 'phone',
       // );
 
-    RedirectUser();
+      RedirectUser();
     } catch (e) {
       hideLoading();
       _log.e('Error finalizing registration: $e');

@@ -23,6 +23,9 @@ import 'package:bootstrap/ui/views/complex_register/complex_register_view.dart';
 import 'package:bootstrap/services/analytics_service.dart';
 import 'package:bootstrap/ui/views/try_staggered_animation/try_staggered_animation_view.dart';
 import 'package:bootstrap/ui/views/try_staggered_animation_two/try_staggered_animation_two_view.dart';
+import 'package:bootstrap/ui/views/login_with_sms/login_with_sms_view.dart';
+import 'package:bootstrap/ui/views/enter_code/enter_code_view.dart';
+import 'package:bootstrap/ui/views/terms/terms_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -35,6 +38,9 @@ import 'package:bootstrap/ui/views/try_staggered_animation_two/try_staggered_ani
     MaterialRoute(page: ComplexRegisterView),
     MaterialRoute(page: TryStaggeredAnimationView),
     MaterialRoute(page: TryStaggeredAnimationTwoView),
+    MaterialRoute(page: LoginWithSmsView),
+    MaterialRoute(page: EnterCodeView),
+    MaterialRoute(page: TermsView),
 // @stacked-route
   ],
   dependencies: [

@@ -14,7 +14,7 @@ Future<void> redirectToStore() async {
   if (Platform.isAndroid) {
     url = androidStoreUrl;
   } else if (Platform.isIOS) {
-    url = iosStoreUrl; 
+    url = iosStoreUrl;
   } else {
     return;
   }
@@ -22,22 +22,22 @@ Future<void> redirectToStore() async {
 }
 
 Future<bool> userCanContinueUsingApp() async {
-    final minVersion = locator<AppService>().appInfos?.minVersionName;
-    final minBuildNumber = locator<AppService>().appInfos?.minBuildNumber;
-    if (minVersion == null || minBuildNumber == null) {
-      _log.e('AppInfos não disponíveis, pulando verificação de atualização');
-      return true;
-    }
-    bool userNeedsUpdate = await needToUpdate(
-      minVersion,
-      minBuildNumber,
-    );
-    if (userNeedsUpdate) {
-      await redirectToStore();
-      return false;
-    }
+  final minVersion = locator<AppService>().appInfos?.minVersionName;
+  final minBuildNumber = locator<AppService>().appInfos?.minBuildNumber;
+  if (minVersion == null || minBuildNumber == null) {
+    _log.e('AppInfos não disponíveis, pulando verificação de atualização');
     return true;
   }
+  bool userNeedsUpdate = await needToUpdate(
+    minVersion,
+    minBuildNumber,
+  );
+  if (userNeedsUpdate) {
+    await redirectToStore();
+    return false;
+  }
+  return true;
+}
 
 void printCurrentVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();

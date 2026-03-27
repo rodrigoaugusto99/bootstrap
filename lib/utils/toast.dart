@@ -20,7 +20,7 @@ class AppToast {
     que o toast fique no meio da tela. colocar true pra forçar que o toast apareça
     lá embaixo (garanta que o keyboard esteja fechado chamando unfocus!)
      */
-    bool ignoreKeyboard= false,
+    bool ignoreKeyboard = false,
   }) {
     BuildContext? context = getContext();
 
@@ -38,8 +38,9 @@ class AppToast {
         radius: 12,
         outLeftPadding: getResponsiveWidth(context, 32),
         outRightPadding: getResponsiveWidth(context, 32),
-        outBottomPadding:ignoreKeyboard ?getResponsiveWidth(context, 62) :
-            getBottomPadding(context) + getResponsiveWidth(context, 62),
+        outBottomPadding: ignoreKeyboard
+            ? getResponsiveWidth(context, 62)
+            : getBottomPadding(context) + getResponsiveWidth(context, 62),
         color: Colors.grey,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),

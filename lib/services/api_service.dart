@@ -52,7 +52,7 @@ class ApiService {
             options: Options(headers: headers),
           );
           break;
-        case HttpMethod.GET: 
+        case HttpMethod.GET:
           response = await dio.get(
             url,
             options: Options(headers: headers),
@@ -98,7 +98,7 @@ class ApiService {
       String? statusMessage;
       if (e.response != null && e.response!.data != null) {
         statusCode = e.response!.statusCode;
-      statusMessage = e.response!.statusMessage;
+        statusMessage = e.response!.statusMessage;
         try {
           final responseData = jsonDecode(e.response!.data);
           if (responseData is Map &&
@@ -112,7 +112,9 @@ class ApiService {
       }
 
       //_log.e('Erro: $e');
-       _log.e('errorMessage: $errorMessage\nstatusCode: $statusCode\nstatusMessage: $statusMessage\nurl: $url');_log.e('errorMessage: $errorMessage');
+      _log.e(
+          'errorMessage: $errorMessage\nstatusCode: $statusCode\nstatusMessage: $statusMessage\nurl: $url');
+      _log.e('errorMessage: $errorMessage');
       throw AppError(
         message: errorMessage ?? 'Erro desconhecido',
         dataResponse: dataResponse,

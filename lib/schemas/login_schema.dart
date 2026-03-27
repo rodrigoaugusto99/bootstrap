@@ -19,5 +19,4 @@ class LoginSchema {
       password: map['password'] as String,
     );
   }
-
 }

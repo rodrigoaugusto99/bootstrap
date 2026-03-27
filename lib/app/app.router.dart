@@ -5,22 +5,27 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:bootstrap/schemas/login_view_schema.dart' as _i11;
+import 'package:bootstrap/schemas/code_sent_schema.dart' as _i15;
+import 'package:bootstrap/schemas/login_view_schema.dart' as _i14;
 import 'package:bootstrap/ui/views/complex_register/complex_register_view.dart'
     as _i7;
+import 'package:bootstrap/ui/views/enter_code/enter_code_view.dart' as _i11;
 import 'package:bootstrap/ui/views/home/home_view.dart' as _i2;
 import 'package:bootstrap/ui/views/login/login_view.dart' as _i4;
+import 'package:bootstrap/ui/views/login_with_sms/login_with_sms_view.dart'
+    as _i10;
 import 'package:bootstrap/ui/views/on_boarding/on_boarding_view.dart' as _i6;
 import 'package:bootstrap/ui/views/register/register_view.dart' as _i5;
 import 'package:bootstrap/ui/views/startup/startup_view.dart' as _i3;
+import 'package:bootstrap/ui/views/terms/terms_view.dart' as _i12;
 import 'package:bootstrap/ui/views/try_staggered_animation/try_staggered_animation_view.dart'
     as _i8;
 import 'package:bootstrap/ui/views/try_staggered_animation_two/try_staggered_animation_two_view.dart'
     as _i9;
-import 'package:flutter/material.dart' as _i10;
+import 'package:flutter/material.dart' as _i13;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i12;
+import 'package:stacked_services/stacked_services.dart' as _i16;
 
 class Routes {
   static const homeView = '/home-view';
@@ -40,6 +45,12 @@ class Routes {
   static const tryStaggeredAnimationTwoView =
       '/try-staggered-animation-two-view';
 
+  static const loginWithSmsView = '/login-with-sms-view';
+
+  static const enterCodeView = '/enter-code-view';
+
+  static const termsView = '/terms-view';
+
   static const all = <String>{
     homeView,
     startupView,
@@ -49,6 +60,9 @@ class Routes {
     complexRegisterView,
     tryStaggeredAnimationView,
     tryStaggeredAnimationTwoView,
+    loginWithSmsView,
+    enterCodeView,
+    termsView,
   };
 }
 
@@ -86,11 +100,23 @@ class StackedRouter extends _i1.RouterBase {
       Routes.tryStaggeredAnimationTwoView,
       page: _i9.TryStaggeredAnimationTwoView,
     ),
+    _i1.RouteDef(
+      Routes.loginWithSmsView,
+      page: _i10.LoginWithSmsView,
+    ),
+    _i1.RouteDef(
+      Routes.enterCodeView,
+      page: _i11.EnterCodeView,
+    ),
+    _i1.RouteDef(
+      Routes.termsView,
+      page: _i12.TermsView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.HomeView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.HomeView(),
         settings: data,
       );
@@ -99,7 +125,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<StartupViewArguments>(
         orElse: () => const StartupViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.StartupView(key: args.key),
         settings: data,
       );
@@ -108,38 +134,61 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LoginViewArguments>(
         orElse: () => const LoginViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.LoginView(key: args.key, schema: args.schema),
         settings: data,
       );
     },
     _i5.RegisterView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.RegisterView(),
         settings: data,
       );
     },
     _i6.OnBoardingView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.OnBoardingView(),
         settings: data,
       );
     },
     _i7.ComplexRegisterView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.ComplexRegisterView(),
         settings: data,
       );
     },
     _i8.TryStaggeredAnimationView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.TryStaggeredAnimationView(),
         settings: data,
       );
     },
     _i9.TryStaggeredAnimationTwoView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i13.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.TryStaggeredAnimationTwoView(),
+        settings: data,
+      );
+    },
+    _i10.LoginWithSmsView: (data) {
+      return _i13.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i10.LoginWithSmsView(),
+        settings: data,
+      );
+    },
+    _i11.EnterCodeView: (data) {
+      final args = data.getArgs<EnterCodeViewArguments>(nullOk: false);
+      return _i13.MaterialPageRoute<dynamic>(
+        builder: (context) => _i11.EnterCodeView(
+            key: args.key,
+            codeSentParams: args.codeSentParams,
+            phoneNumber: args.phoneNumber,
+            onVerified: args.onVerified),
+        settings: data,
+      );
+    },
+    _i12.TermsView: (data) {
+      return _i13.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i12.TermsView(),
         settings: data,
       );
     },
@@ -155,7 +204,7 @@ class StackedRouter extends _i1.RouterBase {
 class StartupViewArguments {
   const StartupViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i13.Key? key;
 
   @override
   String toString() {
@@ -180,9 +229,9 @@ class LoginViewArguments {
     this.schema,
   });
 
-  final _i10.Key? key;
+  final _i13.Key? key;
 
-  final _i11.LoginViewSchema? schema;
+  final _i14.LoginViewSchema? schema;
 
   @override
   String toString() {
@@ -201,7 +250,46 @@ class LoginViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i12.NavigationService {
+class EnterCodeViewArguments {
+  const EnterCodeViewArguments({
+    this.key,
+    required this.codeSentParams,
+    required this.phoneNumber,
+    required this.onVerified,
+  });
+
+  final _i13.Key? key;
+
+  final _i15.CodeSentParams codeSentParams;
+
+  final String phoneNumber;
+
+  final dynamic Function() onVerified;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "codeSentParams": "$codeSentParams", "phoneNumber": "$phoneNumber", "onVerified": "$onVerified"}';
+  }
+
+  @override
+  bool operator ==(covariant EnterCodeViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.codeSentParams == codeSentParams &&
+        other.phoneNumber == phoneNumber &&
+        other.onVerified == onVerified;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        codeSentParams.hashCode ^
+        phoneNumber.hashCode ^
+        onVerified.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i16.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -217,7 +305,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
   }
 
   Future<dynamic> navigateToStartupView({
-    _i10.Key? key,
+    _i13.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -233,8 +321,8 @@ extension NavigatorStateExtension on _i12.NavigationService {
   }
 
   Future<dynamic> navigateToLoginView({
-    _i10.Key? key,
-    _i11.LoginViewSchema? schema,
+    _i13.Key? key,
+    _i14.LoginViewSchema? schema,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -319,6 +407,57 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToLoginWithSmsView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.loginWithSmsView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToEnterCodeView({
+    _i13.Key? key,
+    required _i15.CodeSentParams codeSentParams,
+    required String phoneNumber,
+    required dynamic Function() onVerified,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.enterCodeView,
+        arguments: EnterCodeViewArguments(
+            key: key,
+            codeSentParams: codeSentParams,
+            phoneNumber: phoneNumber,
+            onVerified: onVerified),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTermsView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.termsView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -334,7 +473,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
   }
 
   Future<dynamic> replaceWithStartupView({
-    _i10.Key? key,
+    _i13.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -350,8 +489,8 @@ extension NavigatorStateExtension on _i12.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginView({
-    _i10.Key? key,
-    _i11.LoginViewSchema? schema,
+    _i13.Key? key,
+    _i14.LoginViewSchema? schema,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -430,6 +569,57 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.tryStaggeredAnimationTwoView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithLoginWithSmsView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.loginWithSmsView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithEnterCodeView({
+    _i13.Key? key,
+    required _i15.CodeSentParams codeSentParams,
+    required String phoneNumber,
+    required dynamic Function() onVerified,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.enterCodeView,
+        arguments: EnterCodeViewArguments(
+            key: key,
+            codeSentParams: codeSentParams,
+            phoneNumber: phoneNumber,
+            onVerified: onVerified),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTermsView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.termsView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

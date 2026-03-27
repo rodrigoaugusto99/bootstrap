@@ -104,7 +104,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   void _handleFocusChange() {
-    if(!mounted)return;
+    if (!mounted) return;
     setState(() {
       _isFocused = _focusNode.hasFocus;
     });
@@ -118,7 +118,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
 
   void onTapEye() {
     isObscure = !isObscure;
-    if(!mounted)return;
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -143,7 +143,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   void _setError(String? error) {
-    if(!mounted)return;
+    if (!mounted) return;
     setState(() {
       _errorMessage = error;
       if (_errorMessage != null && _errorMessage!.isNotEmpty) {
@@ -435,7 +435,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
                   topPadding: _eyeTopPadding,
                   rightPadding: 18,
                   onTap: onTapEye,
-                  child:  Icon(isObscure ? Icons.remove_red_eye: Icons.remove_red_eye),
+                  child: Icon(
+                      isObscure ? Icons.remove_red_eye : Icons.remove_red_eye),
                 ),
               ),
             if (widget.hasArrowDown)

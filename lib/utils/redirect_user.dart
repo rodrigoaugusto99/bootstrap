@@ -6,7 +6,7 @@ import 'package:bootstrap/utils/loading.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class RedirectUser {
-   RedirectUser() {
+  RedirectUser() {
     _redirectUser();
   }
 
@@ -44,7 +44,6 @@ class RedirectUser {
     // }
     _log.i('redirecting user logged in');
     hideLoading();
-      _navigationService.clearStackAndShow(Routes.homeView);
-    
+    _navigationService.clearStackAndShow(Routes.homeView);
   }
 }

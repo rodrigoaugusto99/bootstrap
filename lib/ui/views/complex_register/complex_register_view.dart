@@ -15,8 +15,7 @@ class ComplexRegisterView extends StackedView<ComplexRegisterViewModel> {
     ComplexRegisterViewModel viewModel,
     Widget? child,
   ) {
-    return 
-      PopScope(
+    return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         viewModel.handleBack();
         return;
