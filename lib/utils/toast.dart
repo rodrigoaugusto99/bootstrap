@@ -39,8 +39,8 @@ class AppToast {
         outLeftPadding: getResponsiveWidth(context, 32),
         outRightPadding: getResponsiveWidth(context, 32),
         outBottomPadding: ignoreKeyboard
-            ? getResponsiveWidth(context, 62)
-            : getBottomPadding(context) + getResponsiveWidth(context, 62),
+            ? getResponsiveWidth(context, 10)
+            : getBottomPadding(context) + getResponsiveWidth(context, 10),
         color: Colors.grey,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -71,9 +71,11 @@ class AppToast {
       position: position ?? StyledToastPosition.bottom,
       animDuration: const Duration(milliseconds: 700),
       reverseAnimation: reverseTo ?? StyledToastAnimation.slideToBottom,
+      startOffset: const Offset(0, 1.2),
       reverseEndOffset: const Offset(0, 1.2),
       duration: const Duration(seconds: 3),
       curve: Curves.easeInOutCubicEmphasized,
+      //endOffset: const Offset(0, 0.3),
       reverseCurve: Curves.easeInOutCubicEmphasized,
       dismissOtherToast: true,
     );
