@@ -257,16 +257,16 @@ class Validators {
     }
 
     // Verifica se o número de celular começa com 9
-    String phoneNumber = value.substring(2);
-    if (!phoneNumber.startsWith('9')) {
-      return 'O número de celular deve começar com 9';
-    }
+    // String phoneNumber = value.substring(2);
+    // if (!phoneNumber.startsWith('9')) {
+    //   return 'O número de celular deve começar com 9';
+    // }
 
-    // Verifica se o número de celular segue o formato esperado
-    RegExp phoneRegExp = RegExp(r'^9\d{8}$');
-    if (!phoneRegExp.hasMatch(phoneNumber)) {
-      return 'Número de celular inválido';
-    }
+    // // Verifica se o número de celular segue o formato esperado
+    // RegExp phoneRegExp = RegExp(r'^9\d{8}$');
+    // if (!phoneRegExp.hasMatch(phoneNumber)) {
+    //   return 'Número de celular inválido';
+    // }
 
     // Verifica se o número de celular não é composto de dígitos repetidos
     // if (RegExp(r'^9(\d)\1{7}$').hasMatch(phoneNumber)) {

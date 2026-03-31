@@ -78,6 +78,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   bool _isFocused = false;
   bool isObscure = false;
   String? _errorMessage;
+  String _lastText = '';
   late AnimationController _errorAnimationController;
   late Animation<Offset> _errorSlideAnimation;
 
@@ -85,6 +86,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   void initState() {
     super.initState();
     isObscure = widget.obscureText ?? false;
+    _lastText = widget.controller?.text ?? '';
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
     widget.controller?.addListener(_handleControllerChange);
@@ -111,6 +113,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
   }
 
   void _handleControllerChange() {
+    final currentText = widget.controller?.text ?? '';
+    if (currentText == _lastText) return;
+    _lastText = currentText;
     if (_errorMessage != null) {
       _setError(null);
     }
@@ -128,6 +133,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller?.removeListener(_handleControllerChange);
       widget.controller?.addListener(_handleControllerChange);
+      _lastText = widget.controller?.text ?? '';
     }
   }
 
@@ -362,7 +368,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: -23,
+                bottom: -21,
                 child: SlideTransition(
                   position: _errorSlideAnimation,
                   child: FadeTransition(
@@ -435,8 +441,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField>
                   topPadding: _eyeTopPadding,
                   rightPadding: 18,
                   onTap: onTapEye,
+                  color: Colors.transparent,
                   child: Icon(
-                      isObscure ? Icons.remove_red_eye : Icons.remove_red_eye),
+                      isObscure ? Icons.remove_red_eye : Icons.hide_source),
                 ),
               ),
             if (widget.hasArrowDown)

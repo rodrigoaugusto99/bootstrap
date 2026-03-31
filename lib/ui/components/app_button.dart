@@ -38,6 +38,9 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color getTextColor = !enable
+        ? const Color(0xff1D1B20).withValues(alpha: 0.4)
+        : textColor ?? Colors.white;
     return ElevatedButton(
       key: key,
       onPressed: isBusy || !enable ? null : onPressed,
@@ -70,7 +73,7 @@ class AppButton extends StatelessWidget {
               maxLines: maxLines,
               fontSize: fontSize ?? 16,
               fontFamily: fontFamily ?? 'Roboto',
-              color: textColor ?? Colors.white,
+              color: getTextColor,
             ),
     );
   }
