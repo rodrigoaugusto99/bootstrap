@@ -4,10 +4,13 @@ import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/firebase_options.dart';
 import 'package:bootstrap/ui/common/app_colors.dart';
 import 'package:bootstrap/ui/common/app_theme.dart';
+import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/logarte.dart';
 import 'package:bootstrap/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bootstrap/app/app.dialogs.dart';
 import 'package:bootstrap/app/app.locator.dart';
@@ -41,6 +44,10 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    if (useEmulator) {
+      await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+      await FirebaseStorage.instance.useStorageEmulator(host, 9199);
+    }
     FirebaseMessaging.onBackgroundMessage(_handleBackgroundNotification);
     await setupLocator();
     setupDialogUi();

@@ -1,4 +1,8 @@
 const DEVELOPMENT = true; //appFlavor == 'internal' || kDebugMode;
+const useEmulator = bool.fromEnvironment('USE_EMULATOR');
+const host = '192.168.15.82'; //'10.0.2.2';
+const emulatorUrl =
+    'http://$host:5001/fidelizei-cartoes/southamerica-east1/api';
 
 const devApiUrl = '';
 const prodApiUrl = '';

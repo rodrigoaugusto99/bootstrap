@@ -9,3 +9,5 @@ gcloud config set project inner-chat-v1
 gcloud firestore export gs://inner-chat-v1.appspot.com
 
 remover o .git : Remove-Item -Recurse -Force .git
+
+- renderizar puml - alt + d ou fzr no site https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001
