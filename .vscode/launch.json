@@ -39,34 +39,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "saude EMULATOR",
+      "name": "debug",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "${workspaceFolder}/app"
+    },
+    {
+      "name": "EMULATOR",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}/app",
       "args": ["--dart-define=USE_EMULATOR=true"]
     },
     {
-      "name": "saude debug",
-      "request": "launch",
-      "type": "dart",
-      "cwd": "${workspaceFolder}/app"
-    },
-    {
-      "name": "saude release",
+      "name": "release",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}/app",
       "args": ["--release"]
     },
     {
-      "name": "saude debug internal",
+      "name": "debug internal",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}/app",
       "args": ["--flavor", "internal"]
     },
     {
-      "name": "saude debug stable",
+      "name": "debug stable",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}/app",
