@@ -71,6 +71,7 @@ class AuthService {
       //_log.e('Erro no setupUserLoggedIn: $e\n$stackTrace');
       _log.e(
           'Erro no setupUserLoggedIn: erro: $e\n\n\n\nstackTrace: $stackTrace');
+      signOut();
     }
   }
 
