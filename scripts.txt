@@ -1,4 +1,4 @@
-dart run flutter_native_splash:create --path=flutter_native_splash.yaml
+
 
 dart run change_app_package_name:main com.kxp.tal
 
@@ -10,4 +10,28 @@ gcloud firestore export gs://inner-chat-v1.appspot.com
 
 remover o .git : Remove-Item -Recurse -Force .git
 
+git init
+git remote add origin <link>
+
 - renderizar puml - alt + d ou fzr no site https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001
+
+
+icone do app
+
+https://icon.kitchen/
+
+extrair, colar tudo que ta dentro de RES dentro do /android/app/src/main/res.
+
+no ios, eh no ios/flutter/runner/assets.scassets/appIcon.appiconset
+
+icone de notificacao:
+
+[Android Asset Studio - Notification icon generator](https://romannurik.github.io/AndroidAssetStudio/icons-notification.html#source.type=image&source.space.trim=1&source.space.pad=0.1&name=ic_notification)
+
+splash:
+
+-criar png
+
+colocar em flutter_native_splash.yaml
+
+dart run flutter_native_splash:create --path=flutter_native_splash.yaml

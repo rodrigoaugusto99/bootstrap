@@ -20,3 +20,8 @@ refatorar appbutton
 rodar projeto de vdd pra configurar notificacoes
 
 skill
+
+
+aprender a colocar skill de frontend
+aprender claude design
+mandar o claude code fzr igual o claude design, ver se tem uma boa integração sei la
