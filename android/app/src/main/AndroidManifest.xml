@@ -24,10 +24,9 @@
     <application
         android:label="bootstrap"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
-         <!-- 
-         android:usesCleartextTraffic="true" 
-         android:networkSecurityConfig="${networkSecurityConfig}">
+        android:icon="@mipmap/ic_launcher"
+        android:networkSecurityConfig="${networkSecurityConfig}">
+         <!-- Add
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyBhE8QGfMBV..."/>
                    -->
