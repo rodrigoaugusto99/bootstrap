@@ -16,11 +16,11 @@ class RedirectUser {
   final _log = getLogger('RedirectUser');
 
   Future<void> _redirectUser() async {
-    hideLoading();
+    hideLoading('redirectUser');
     _navigationService.clearStackAndShow(Routes.tryStaggeredAnimationTwoView);
 
     return;
-    showLoading();
+    showLoading('redirectUser');
     if (_authService.currUser == null) {
       // bool sawOnboarding = await getBoolSharedPreferences(
       //   SharedPreferencesKeys.sawOnboarding,
@@ -31,7 +31,7 @@ class RedirectUser {
       //   return;
       // }
       _log.i('redirecting to login view');
-      hideLoading();
+      hideLoading('redirectUser');
       _navigationService.replaceWithLoginView();
       return;
     }
@@ -43,7 +43,7 @@ class RedirectUser {
     //   return;
     // }
     _log.i('redirecting user logged in');
-    hideLoading();
+    hideLoading('redirectUser');
     _navigationService.clearStackAndShow(Routes.homeView);
   }
 }

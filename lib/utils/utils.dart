@@ -6,7 +6,12 @@ import 'package:bootstrap/utils/svg_util.dart';
 import 'package:bootstrap/utils/toast.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+Future<void> copy(String text) async {
+  await Clipboard.setData(ClipboardData(text: text));
+}
 
 //todo: parametro de pré-mensagem
 Future<void> sendWppMessage(String? number, {String? message}) async {

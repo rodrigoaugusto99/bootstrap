@@ -58,7 +58,7 @@ class EnterCodeViewModel extends BaseViewModel {
       _log.e('Code is not valid');
       return;
     }
-    showLoading();
+    showLoading('onCompleted');
     try {
       final params = VerifyCodeParams(
         verificationId: codeSentParams!.verificationId,
@@ -67,7 +67,7 @@ class EnterCodeViewModel extends BaseViewModel {
       await _authService.verifyCode(params);
       onVerified();
     } on AppError {
-      hideLoading();
+      hideLoading('onCompleted');
       errorAnimationController.add(ErrorAnimationType.shake);
     }
 

@@ -13,15 +13,15 @@ class LoginWithGoogleOrAppleViewModel extends BaseViewModel {
 
   Future<void> handleLoginWithGoogle() async {
     _log.i('handleLoginWithGoogle');
-    showLoading();
+    showLoading('handleLoginWithGoogle');
     try {
       await _authService.signInWithGoogle();
       RedirectUser();
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('handleLoginWithGoogle');
       AppToast.showToast(text: e.message);
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('handleLoginWithGoogle');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao entrar com Google');
     }
@@ -29,15 +29,15 @@ class LoginWithGoogleOrAppleViewModel extends BaseViewModel {
 
   Future<void> handleLoginWithApple() async {
     _log.i('handleLoginWithApple');
-    showLoading();
+    showLoading('handleLoginWithApple');
     try {
       await _authService.signInWithApple();
       RedirectUser();
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('handleLoginWithApple');
       AppToast.showToast(text: e.message);
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('handleLoginWithApple');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao entrar com Apple');
     }

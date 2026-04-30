@@ -55,7 +55,7 @@ class OnBoardingViewModel extends BaseViewModel {
 
   Future<void> nextPage() async {
     if (isLastPage) {
-      showLoading();
+      showLoading('nextPage');
       await setBoolSharedPreferences(
         key: SharedPreferencesKeys.sawOnboarding,
         value: true,

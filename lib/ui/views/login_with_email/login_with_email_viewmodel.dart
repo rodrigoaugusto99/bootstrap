@@ -59,7 +59,7 @@ class LoginWithEmailViewModel extends BaseViewModel {
   Future<void> handleSubmit() async {
     if (!formKey.currentState!.validate()) return;
     unfocus();
-    showLoading();
+    showLoading('handleSubmit');
 
     try {
       if (isRegister) {
@@ -68,10 +68,10 @@ class LoginWithEmailViewModel extends BaseViewModel {
         await _loginWithEmailAndPassword();
       }
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('handleSubmit');
       AppToast.showToast(text: e.message);
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('handleSubmit');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao autenticar');
     }
@@ -85,12 +85,12 @@ class LoginWithEmailViewModel extends BaseViewModel {
       );
       RedirectUser();
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('loginWithEmailAndPassword');
       _log.e(e);
       passwordErrorMessage = e.message;
       notifyListeners();
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('loginWithEmailAndPassword');
       _log.e(e);
       AppToast.showToast(text: 'Credenciais inválidas');
     }
@@ -104,7 +104,7 @@ class LoginWithEmailViewModel extends BaseViewModel {
       );
       RedirectUser();
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('registerWithEmailAndPassword');
       switch (e.message) {
         case EMAIL_ALREADY_IN_USE:
           emailErrorMessage = EMAIL_ALREADY_IN_USE;
@@ -113,7 +113,7 @@ class LoginWithEmailViewModel extends BaseViewModel {
       }
       notifyListeners();
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('registerWithEmailAndPassword');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao realizar cadastro');
     }

@@ -208,7 +208,7 @@ class ComplexRegisterViewModel extends BaseViewModel {
     _log.i('Finalizing registration');
 
     try {
-      showLoading();
+      showLoading('finalize');
       // IMAGEM
 
       //String? imageUrl;
@@ -250,7 +250,7 @@ class ComplexRegisterViewModel extends BaseViewModel {
 
       RedirectUser();
     } catch (e) {
-      hideLoading();
+      hideLoading('finalize');
       _log.e('Error finalizing registration: $e');
       rethrow;
     }

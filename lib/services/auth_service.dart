@@ -512,7 +512,7 @@ class AuthService {
 
   Future signOut() async {
     _log.i('Signing out');
-    showLoading();
+    showLoading('signOut');
     // await locator<NotificationService>().removeFcmTokenFromFirestore();
     //await locator<NotificationService>().dispose();
     currUser = null;
@@ -525,7 +525,7 @@ class AuthService {
     locator.registerLazySingleton(() => LocationService());
     locator.registerLazySingleton(() => NotificationService());
     locator.registerLazySingleton(() => SubscriptionService());
-    hideLoading();
+    hideLoading('signOut');
     _navigationService.clearStackAndShow(Routes.loginView);
   }
 

@@ -2,18 +2,29 @@
 
 dart run change_app_package_name:main com.kxp.tal
 
-firebase login:use EMAIL
+______________________________________
 
+firebase login:use EMAIL
+_______________________________________
+
+zipa o firestore e joga no storage
 
 gcloud config set project inner-chat-v1
 gcloud firestore export gs://inner-chat-v1.appspot.com
+
+gcloud config set project taskplay-kxp
+gcloud firestore export gs://taskplay-kxp.firebasestorage.app
+
+_____________________________________
 
 remover o .git : Remove-Item -Recurse -Force .git
 
 git init
 git remote add origin <link>
 
-- renderizar puml - alt + d ou fzr no site https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001
+
+
+_____________________________________
 
 
 icone do app
@@ -28,6 +39,9 @@ icone de notificacao:
 
 [Android Asset Studio - Notification icon generator](https://romannurik.github.io/AndroidAssetStudio/icons-notification.html#source.type=image&source.space.trim=1&source.space.pad=0.1&name=ic_notification)
 
+
+_______________________________________
+
 splash:
 
 -criar png
@@ -35,3 +49,18 @@ splash:
 colocar em flutter_native_splash.yaml
 
 dart run flutter_native_splash:create --path=flutter_native_splash.yaml
+
+____________________________________
+
+- renderizar puml - alt + d ou fzr no site https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001
+
+___________________________________
+
+emulador
+
+adb connect 192.168.8.68:xxxxx
+adb pair 192.168.8.68:xxxxx yyyyyy
+
+emulator -list-avds
+
+emulator -avd Pixel_9_API_34

@@ -55,7 +55,7 @@ class LoginViewModel extends BaseViewModel {
     }
 
     unfocus();
-    showLoading();
+    showLoading('handleLogin');
 
     try {
       if (schema != null && schema!.wasAnonymous) {
@@ -69,7 +69,7 @@ class LoginViewModel extends BaseViewModel {
           ),
         );
         //todo: continuar o após autenticado com sucesso
-        hideLoading();
+        hideLoading('handleLogin');
         return;
       }
 
@@ -102,10 +102,10 @@ class LoginViewModel extends BaseViewModel {
           break;
       }
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('handleLogin');
       AppToast.showToast(text: e.message);
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('handleLogin');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao fazer login');
     }
@@ -137,7 +137,7 @@ class LoginViewModel extends BaseViewModel {
   Future<void> loginWithEmailAndPassword() async {
     try {
       //_log.i('loginWithEmailAndPassword');
-      showLoading();
+      showLoading('loginWithEmailAndPassword');
       await _authService.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
@@ -145,11 +145,11 @@ class LoginViewModel extends BaseViewModel {
       RedirectUser();
     } on AppError catch (e) {
       _log.e(e);
-      hideLoading();
+      hideLoading('loginWithEmailAndPassword');
       passwordErrorMessage = e.message;
       notifyListeners();
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('loginWithEmailAndPassword');
       _log.e(e);
       AppToast.showToast(text: 'Credenciais inválidas');
     }
@@ -157,7 +157,7 @@ class LoginViewModel extends BaseViewModel {
 
   Future<void> registerWithEmailAndPassword() async {
     try {
-      showLoading();
+      showLoading('registerWithEmailAndPassword');
       await _authService.registerEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
@@ -165,7 +165,7 @@ class LoginViewModel extends BaseViewModel {
 
       RedirectUser();
     } on AppError catch (e) {
-      hideLoading();
+      hideLoading('registerWithEmailAndPassword');
       switch (e.message) {
         case EMAIL_ALREADY_IN_USE:
           emailErrorMessage = EMAIL_ALREADY_IN_USE;
@@ -173,7 +173,7 @@ class LoginViewModel extends BaseViewModel {
           passwordErrorMessage = WEAK_PASSWORD;
       }
     } on Exception catch (e) {
-      hideLoading();
+      hideLoading('registerWithEmailAndPassword');
       _log.e(e);
       AppToast.showToast(text: 'Erro ao realizar cadastro');
     } finally {

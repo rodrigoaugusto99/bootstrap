@@ -24,7 +24,7 @@ class LoginWithSmsViewModel extends BaseViewModel {
       if (!formKey.currentState!.validate()) {
         return;
       }
-      showLoading();
+      showLoading('login');
       unfocus();
       await _authService.sendCode(
         phoneNumber: phoneController.text,
@@ -32,7 +32,7 @@ class LoginWithSmsViewModel extends BaseViewModel {
           // _analyticsService.logSMSCodeSent(
           //   screenName: screenName,
           // );
-          hideLoading();
+          hideLoading('login');
           _navigationService.navigateToEnterCodeView(
             codeSentParams: params,
             phoneNumber: phoneController.text,
@@ -42,7 +42,7 @@ class LoginWithSmsViewModel extends BaseViewModel {
           );
         },
         onError: (message) async {
-          hideLoading();
+          hideLoading('login');
           AppToast.showToast(
             text: message,
             type: ToastType.error,
@@ -51,7 +51,7 @@ class LoginWithSmsViewModel extends BaseViewModel {
       );
     } catch (e) {
       _log.e(e);
-      hideLoading();
+      hideLoading('login');
       AppToast.showToast(
         text: 'Erro ao enviar código',
       );
