@@ -2,23 +2,22 @@ import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/services/app_service.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
-import 'package:bootstrap/utils/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'dart:io' show Platform;
 
 final _log = getLogger('app_updater.dart');
 
 Future<void> redirectToStore() async {
-  String url = '';
+  String? url = '';
 
   if (Platform.isAndroid) {
-    url = androidStoreUrl;
+    url = locator<AppService>().appInfos?.androidStoreUrl;
   } else if (Platform.isIOS) {
-    url = iosStoreUrl;
+    url = locator<AppService>().appInfos?.iosStoreUrl;
   } else {
     return;
   }
-  openUrl(url);
+  openUrl(url ?? '');
 }
 
 Future<bool> userCanContinueUsingApp() async {

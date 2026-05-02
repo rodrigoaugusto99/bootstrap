@@ -1,16 +1,18 @@
+const _usePhysicalDevice = bool.fromEnvironment('USE_PHYSICAL_DEVICE');
+const _projectId = 'daily-words-5a5ad';
+const _emulatorUrl = 'http://$host:5002/$_projectId/southamerica-east1/api';
+const _devApiUrl = '';
+const _prodApiUrl = '';
+
 const DEVELOPMENT = true; //appFlavor == 'internal' || kDebugMode;
-const useEmulator = bool.fromEnvironment('USE_EMULATOR');
-const host = '192.168.15.82'; //'10.0.2.2';
-const emulatorUrl =
-    'http://$host:5001/fidelizei-cartoes/southamerica-east1/api';
+const useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
+const host = _usePhysicalDevice ? '192.168.15.82' : '10.0.2.2';
 
-const devApiUrl = '';
-const prodApiUrl = '';
-
-const androidStoreUrl = '';
-const iosStoreUrl = '';
-
-const apiUrl = DEVELOPMENT ? devApiUrl : prodApiUrl;
+const apiUrl = useFirebaseEmulator
+    ? _emulatorUrl
+    : DEVELOPMENT
+        ? _devApiUrl
+        : _prodApiUrl;
 
 const WEAK_PASSWORD = 'Senha muito fraca. Por favor, use uma senha mais forte.';
 const EMAIL_ALREADY_IN_USE = 'Já existe uma conta com esse email.';

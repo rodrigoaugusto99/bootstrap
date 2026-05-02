@@ -5,6 +5,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "EMULATOR w/ physical device",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define=USE_FIREBASE_EMULATOR=true",
+        "--dart-define=USE_PHYSICAL_DEVICE=true"
+      ]
+    },
+    {
+      "name": "EMULATOR w/ emulator device",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=USE_FIREBASE_EMULATOR=true"]
+    },
+    {
       "name": "debug internal",
       "type": "dart",
       "request": "launch",
@@ -38,18 +55,28 @@
 .vscode caso tenha /app (monorepo)
   "version": "0.2.0",
   "configurations": [
+  {
+      "name": "EMULATOR w/ physical device",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "${workspaceFolder}/app",
+      "args": [
+        "--dart-define=USE_FIREBASE_EMULATOR=true",
+        "--dart-define=USE_PHYSICAL_DEVICE=true"
+      ]
+    },
+    {
+      "name": "EMULATOR w/ emulator device",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "${workspaceFolder}/app",
+      "args": ["--dart-define=USE_FIREBASE_EMULATOR=true"]
+    },
     {
       "name": "debug",
       "request": "launch",
       "type": "dart",
       "cwd": "${workspaceFolder}/app"
-    },
-    {
-      "name": "EMULATOR",
-      "request": "launch",
-      "type": "dart",
-      "cwd": "${workspaceFolder}/app",
-      "args": ["--dart-define=USE_EMULATOR=true"]
     },
     {
       "name": "release",

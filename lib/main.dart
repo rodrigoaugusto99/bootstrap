@@ -44,7 +44,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    if (useEmulator) {
+    if (useFirebaseEmulator) {
       await FirebaseAuth.instance.useAuthEmulator(host, 9099);
       await FirebaseStorage.instance.useStorageEmulator(host, 9199);
     }
