@@ -1,4 +1,4 @@
-import 'package:bootstrap/app/app.logger.dart';
+import 'package:daily_words/app/app.logger.dart';
 
 // Com classe:
 class LoginViewModel extends BaseViewModel {

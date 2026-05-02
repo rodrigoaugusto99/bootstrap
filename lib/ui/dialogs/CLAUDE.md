@@ -1,6 +1,17 @@
-// ── Dialog ────────────────────────────────────────────────────────────────────
+# Dialogs
 
-// View (NUNCA altere o construtor)
+Dialogs ficam em `lib/ui/dialogs/`. Use o `DialogService` do Stacked.
+
+## Regras
+
+- **Nunca altere o construtor** da View de dialog — os parâmetros `request` e `completer` são obrigatórios e fixos.
+- Chame dialogs sempre via ViewModel: `final _dialogService = locator<DialogService>()`.
+- Dados customizados vão no campo `data` do `showCustomDialog` como schema.
+
+## Padrão
+
+```dart
+// ── View (NUNCA altere o construtor) ─────────────────────────────────────────
 class ConfirmationDialog extends StackedView<ConfirmationDialogModel> {
   final DialogRequest request;
   final Function(DialogResponse) completer;
@@ -30,7 +41,7 @@ class ConfirmationDialog extends StackedView<ConfirmationDialogModel> {
       ConfirmationDialogModel(completer: completer);
 }
 
-// ViewModel
+// ── ViewModel ────────────────────────────────────────────────────────────────
 class ConfirmationDialogModel extends BaseViewModel {
   final Function(DialogResponse)? completer;
   ConfirmationDialogModel({this.completer});
@@ -38,7 +49,7 @@ class ConfirmationDialogModel extends BaseViewModel {
   void onConfirm() => completer!(DialogResponse(confirmed: true, data: ''));
 }
 
-// Como chamar
+// ── Como chamar (na ViewModel da tela) ───────────────────────────────────────
 Future<void> showConfirmation() async {
   final response = await _dialogService.showCustomDialog(
     variant: DialogType.confirmation,
@@ -54,10 +65,4 @@ Future<void> showConfirmation() async {
   if (response == null || !response.confirmed) return;
   // continuar após confirmação
 }
-
-
-// ── Bottom Sheet ──────────────────────────────────────────────────────────────
-// Igual ao dialog, mas:
-//   DialogResponse  → SheetResponse
-//   showCustomDialog → showCustomSheet
-//   DialogType      → BottomSheetType
+```
