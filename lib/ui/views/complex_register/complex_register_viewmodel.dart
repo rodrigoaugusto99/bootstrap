@@ -2,7 +2,6 @@ import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/models/user_model.dart';
 import 'package:bootstrap/schemas/user_registration_schema.dart';
-import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/loading.dart';

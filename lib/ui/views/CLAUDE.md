@@ -130,6 +130,21 @@ _navigationService.navigateTo(Routes.profileView, arguments: ProfileViewArgument
 
 ---
 
+## Erros
+
+Erros capturados na ViewModel devem ser exibidos com `AppToast`, nunca com `SnackbarService` ou `print`.
+
+```dart
+import 'package:daily_words/utils/toast.dart';
+
+} on AppError catch (e) {
+  _log.e(e);
+  AppToast.showToast(text: e.message);
+}
+```
+
+---
+
 ## Formulários
 
 - Validadores estáticos ficam em `lib/utils/validators.dart`.

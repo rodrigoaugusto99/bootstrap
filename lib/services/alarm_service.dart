@@ -1,11 +1,8 @@
 import 'package:just_audio/just_audio.dart';
-import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
-import 'package:bootstrap/services/app_service.dart';
 
 class AlarmService {
   final _log = getLogger('AlarmService');
-  final _appService = locator<AppService>();
   final AudioPlayer _alarmAudioPlayer = AudioPlayer();
   final AudioPlayer _warningAudioPlayer = AudioPlayer();
   bool _isPlaying = false;

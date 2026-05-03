@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
@@ -45,12 +44,7 @@ class EnterCodeViewModel extends BaseViewModel {
     // });
   }
 
-  FocusNode focusNode = FocusNode();
-
-  void focus() {
-    focusNode.requestFocus();
-    notifyListeners();
-  }
+  void focus() {}
 
   Future<void> onCompleted(String code) async {
     // log.v('onCompleted');

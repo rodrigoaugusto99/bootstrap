@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-
 import 'terms_viewmodel.dart';
 
 class TermsView extends StackedView<TermsViewModel> {

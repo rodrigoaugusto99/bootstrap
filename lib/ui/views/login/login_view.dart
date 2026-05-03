@@ -6,7 +6,6 @@ import 'package:bootstrap/utils/helpers.dart';
 import 'package:bootstrap/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-
 import 'login_viewmodel.dart';
 
 class LoginView extends StackedView<LoginViewModel> {

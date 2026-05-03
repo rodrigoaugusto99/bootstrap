@@ -5,15 +5,9 @@ import 'package:bootstrap/utils/image_util.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'enter_code_viewmodel.dart';
-import 'package:flutter/material.dart';
-import 'package:bootstrap/services/auth_service.dart';
 import 'package:bootstrap/ui/common/app_colors.dart';
-import 'package:bootstrap/ui/components/app_button.dart';
 import 'package:bootstrap/ui/components/custom_bottom_navigation_bar.dart';
 import 'package:bootstrap/ui/components/pin_code_field.dart';
-import 'package:stacked/stacked.dart';
-
-import 'enter_code_viewmodel.dart';
 
 class EnterCodeView extends StackedView<EnterCodeViewModel> {
   final CodeSentParams codeSentParams;
@@ -32,11 +26,12 @@ class EnterCodeView extends StackedView<EnterCodeViewModel> {
     EnterCodeViewModel viewModel,
     Widget? child,
   ) {
-    return WillPopScope(
-      onWillPop: () async {
-        //viewModel.back();
-        return false;
+    return PopScope(
+      onPopInvokedWithResult: (_, __) async {
+        //viewModel.handleBack();
+        return;
       },
+      canPop: false,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,

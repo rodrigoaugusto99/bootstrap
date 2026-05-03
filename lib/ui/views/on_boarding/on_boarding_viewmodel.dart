@@ -1,7 +1,6 @@
 import 'package:bootstrap/utils/image_util.dart';
 import 'package:bootstrap/utils/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:bootstrap/utils/enums.dart';
 import 'package:bootstrap/utils/redirect_user.dart';
 import 'package:bootstrap/utils/shared_preferences.dart';
 import 'package:stacked/stacked.dart';

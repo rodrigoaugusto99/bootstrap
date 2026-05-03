@@ -45,4 +45,8 @@ class SubscriptionService {
     // notificationService.subscribeToTopic("free");
     return false;
   }
+
+  void dispose() {
+    _subSubscription?.cancel();
+  }
 }

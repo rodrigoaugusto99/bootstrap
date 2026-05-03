@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/firestore/user.dart' as firestore;
 import 'package:bootstrap/models/user_model.dart';

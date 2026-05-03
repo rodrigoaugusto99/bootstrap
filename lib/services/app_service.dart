@@ -1,4 +1,3 @@
-import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/firestore/app.dart';
 
 class AppInfos {
@@ -24,7 +23,6 @@ class AppInfos {
 
 class AppService {
   AppInfos? appInfos;
-  final _log = getLogger('AppService');
   Future<void> init() async {
     appInfos = await getAppInfos();
   }
