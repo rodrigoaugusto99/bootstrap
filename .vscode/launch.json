@@ -22,6 +22,12 @@
       "args": ["--dart-define=USE_FIREBASE_EMULATOR=true"]
     },
     {
+      "name": "debug",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart"
+    },
+    {
       "name": "debug internal",
       "type": "dart",
       "request": "launch",

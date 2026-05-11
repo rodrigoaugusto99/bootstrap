@@ -1,4 +1,6 @@
 import 'package:bootstrap/ui/components/app_button.dart';
+import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'home_viewmodel.dart';
@@ -30,6 +32,11 @@ class HomeView extends StackedView<HomeViewModel> {
                 text: 'Logout',
                 onPressed: () => viewModel.logout(),
               ),
+              if (DEVELOPMENT || true) ...[
+                styledText(
+                  text: viewModel.version,
+                ),
+              ]
             ],
           ),
         ),

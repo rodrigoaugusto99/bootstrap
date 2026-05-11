@@ -1,10 +1,10 @@
 name: bootstrap
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: ">=3.0.3 <4.0.0"
 
 dependencies:
   cached_network_image: ^3.4.1
@@ -30,7 +30,6 @@ dependencies:
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   image_picker: ^1.1.2
-  just_audio: ^0.9.46
   loader_overlay: ^4.0.4+1
   logarte: ^1.4.0
   logger: ^1.4.0
@@ -60,4 +59,3 @@ flutter:
 
   assets:
     - assets/images/
-
