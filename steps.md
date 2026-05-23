@@ -26,3 +26,8 @@ storeFile=D:\\keys\\upload_keystore_nome_projeto.jks
 ---
 
 - fill /docs
+- antes de planejar, pedir pro claude fazer um desenho da arquitetura (casos de uso) e outro grafico mais tecnico
+- ai sim fazer o planejamento
+- dividr o planejamento por fases e fazer as coisas de forma mais facil, por exemplo, login ao inves de usar o login
+  final, usar o login mais simples possivel e botar o login "correto" no arquivo pending.md
+- planejamento vai ser dividido em fases. claude deve implementar cada fase por vez, e nós iremos testar
