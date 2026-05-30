@@ -26,6 +26,7 @@ import 'package:bootstrap/ui/views/try_staggered_animation_two/try_staggered_ani
 import 'package:bootstrap/ui/views/login_with_sms/login_with_sms_view.dart';
 import 'package:bootstrap/ui/views/enter_code/enter_code_view.dart';
 import 'package:bootstrap/ui/views/terms/terms_view.dart';
+import 'package:bootstrap/ui/views/cue_test/cue_test_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -41,6 +42,7 @@ import 'package:bootstrap/ui/views/terms/terms_view.dart';
     MaterialRoute(page: LoginWithSmsView),
     MaterialRoute(page: EnterCodeView),
     MaterialRoute(page: TermsView),
+    MaterialRoute(page: CueTestView),
 // @stacked-route
   ],
   dependencies: [

@@ -17,9 +17,9 @@ class RedirectUser {
 
   Future<void> _redirectUser() async {
     hideLoading('redirectUser');
-    // _navigationService.clearStackAndShow(Routes.tryStaggeredAnimationTwoView);
+    _navigationService.clearStackAndShow(Routes.cueTestView);
 
-    // return;
+    return;
     // showLoading('redirectUser');
     if (_authService.currUser == null) {
       // bool sawOnboarding = await getBoolSharedPreferences(
