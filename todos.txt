@@ -31,3 +31,6 @@ testar phone verification
 
 template em um .md que vai fazer com que, com base no que é o app (overview.md), fazer o plano com a metodologia certa (app + api), a cada fase,
 fazer e rodar os testes (api), 
+
+habilitar filmagem de tela
+fazer bagulho pra traduzir em texto

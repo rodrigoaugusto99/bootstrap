@@ -303,11 +303,14 @@ Widget styledText({
   );
 }
 
-double getBottomPadding(BuildContext context) {
+double getBottomPadding(
+  BuildContext context, {
+  bool ignoreKeyboard = false,
+}) {
   final mediaQuery = MediaQuery.of(context);
 
   final bottomPadding = math.max(
-    mediaQuery.viewInsets.bottom,
+    ignoreKeyboard ? 0.0 : mediaQuery.viewInsets.bottom,
     mediaQuery.viewPadding.bottom,
   );
   return bottomPadding;
