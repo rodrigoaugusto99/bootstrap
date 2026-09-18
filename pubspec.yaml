@@ -1,7 +1,10 @@
 name: bootstrap
 description: A new Flutter project.
 publish_to: "none"
-version: 0.1.0
+# O "+N" e o build number. No Android vira o versionCode, e o Play Console
+# recusa upload com versionCode ja usado - incremente a cada envio.
+# No iOS o codemagic.yaml sobrescreve com get-latest-testflight-build-number + 1.
+version: 0.1.0+1
 
 environment:
   sdk: ">=3.0.3 <4.0.0"

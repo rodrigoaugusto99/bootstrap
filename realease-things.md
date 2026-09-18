@@ -42,12 +42,41 @@ no ios, eh no ios/flutter/runner/assets.scassets/appIcon.appiconset
 
 # keystore & key.properties
 
-key.properties
+O arquivo vai em **`android/key.properties`** (não em `android/app/`). Ele já está
+no `.gitignore` — nunca commitar.
+
 ```
-storePassword=123123
-keyPassword=123123
-keyAlias=my-key-alias
-storeFile=upload-keystore.keystore
+storePassword=<senha aleatória>
+keyPassword=<mesma senha>
+keyAlias=upload
+storeFile=D:\\keys\\upload_keystore_<nome_do_app>.jks
 ```
 
-arquivo keystore no root do android
+- **O `.jks` fica em `D:\keys\`**, não dentro do projeto. As barras no `storeFile`
+  são **duplas** (escape do Groovy).
+- Gerar com o `keytool` — comando no [steps.md](steps.md).
+- Depois de gerar, pegar o SHA-1 e o SHA-256 e colar no Firebase Console:
+  `keytool -list -v -alias upload -keystore D:\keys\upload_keystore_<app>.jks`
+
+## Conferir que o release saiu assinado de verdade
+
+Vale o minuto que leva. Um AAB assinado com a chave de **debug** é recusado pelo
+Play Console com uma mensagem que não diz a causa — foi o que aconteceu no
+Famous Quest, porque o `build.gradle` do template vinha com
+`signingConfig = signingConfigs.debug` no buildType release.
+
+```bash
+flutter build appbundle --release
+```
+
+O build tem que falhar se o `key.properties` não existir — e **não** gerar um
+artefato assinado em debug. Para inspecionar o que saiu:
+
+```bash
+keytool -printcert -jarfile build/app/outputs/bundle/release/app-release.aab
+```
+
+O `CN` tem que ser o do nosso certificado de upload, nunca `CN=Android Debug`.
+
+> Checklist completo do que preparar antes de publicar:
+> `docs/aprendizagem-publicacao/preparacao-de-app-novo.md` no workspace.

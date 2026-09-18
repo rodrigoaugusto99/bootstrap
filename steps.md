@@ -15,6 +15,11 @@
 - adicionar sha1 e sha256 no firebase console
 - botar key em D:\keys e adicionar em password
 - criar key.properties em /android
+- **conferir que o release sai assinado com a chave de upload** (ver realease-things.md)
+- **pubspec: usar `version: 0.1.0+1`** — sem o `+N` o versionCode fica travado em 1 e o segundo upload no Play é recusado
+- **limpar as permissões do AndroidManifest** — o template declara ~15 (localização, câmera, microfone, bluetooth...); deixar só o que o app usa
+- trocar o `CFBundleDisplayName` no ios/Runner/Info.plist (vem "Bootstrap")
+- ícone e splash (`dart run flutter_native_splash:create` depois de editar o yaml — editar sozinho não faz nada)
 
 ---
 

@@ -37,51 +37,73 @@ android {
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        debug {
-            manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_debug"]
-        }
-        release {
-            signingConfig = signingConfigs.debug
-            manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_release"]
-        }
-    }
-
-    /*
+    // Assinatura de release: lê android/key.properties, que fica FORA do git
+    // (ver android/.gitignore). O arquivo aponta para o .jks da chave de upload.
+    //
+    // android/key.properties, num app novo:
+    //   storePassword=...
+    //   keyPassword=...
+    //   keyAlias=upload
+    //   storeFile=D:\\keys\\upload_keystore_<app>.jks
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+        if (keystorePropertiesFile.exists()) {
+            release {
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
+                storeFile = file(keystoreProperties['storeFile'])
+                storePassword = keystoreProperties['storePassword']
+            }
         }
     }
 
     buildTypes {
         debug {
             manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_debug"]
-            signingConfig signingConfigs.debug
         }
         release {
-            signingConfig = signingConfigs.release
+            // Sem key.properties o release fica SEM assinatura, de propósito.
+            // Nunca cair para signingConfigs.debug: um AAB assinado em debug é
+            // recusado pelo Play Console, e a mensagem de erro não diz a causa.
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.release
+            } else {
+                logger.warn("AVISO: android/key.properties nao encontrado — o build de release sairá SEM assinatura e o Play Console vai recusar o upload.")
+            }
             manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_release"]
         }
     }
 
-    flavorDimensions "track"
-    productFlavors {
-        internal {
-            dimension "track"
-            signingConfig signingConfigs.release
-            // manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_debug"]
-        }
-        stable {
-            dimension "track"
-            signingConfig signingConfigs.release
-            //  manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_release"]
-        }
-    }
-    */
+    // -----------------------------------------------------------------------
+    // OPCIONAL — flavors por trilha (internal / stable)
+    //
+    // A MAIORIA DOS APPS NÃO PRECISA DISSO. A trilha de teste interno do Play
+    // Console recebe o mesmo AAB da produção; flavor só faz sentido quando os
+    // dois builds são de fato diferentes — por exemplo apontando para APIs
+    // distintas, ou convivendo instalados no mesmo aparelho.
+    //
+    // Ao descomentar, todo comando de build passa a exigir o flavor:
+    //     flutter run --flavor internal
+    //     flutter build appbundle --release --flavor stable
+    //
+    // Não é preciso repetir signingConfig aqui: o buildType release acima já
+    // define a assinatura para todos os flavors.
+    //
+    // Se usar applicationIdSuffix, cada applicationId vira um app SEPARADO —
+    // precisa ser registrado no Firebase (google-services.json) e no Play
+    // Console como outra ficha.
+    //
+    // flavorDimensions "track"
+    // productFlavors {
+    //     internal {
+    //         dimension "track"
+    //         // applicationIdSuffix ".internal"
+    //         // manifestPlaceholders = [networkSecurityConfig: "@xml/network_security_config_debug"]
+    //     }
+    //     stable {
+    //         dimension "track"
+    //     }
+    // }
+    // -----------------------------------------------------------------------
 }
 
 dependencies {
