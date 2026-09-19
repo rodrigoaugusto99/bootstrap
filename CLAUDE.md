@@ -60,3 +60,7 @@ Ver [lib/CLAUDE.md](lib/CLAUDE.md) para fluxo de dados, arquitetura de diretóri
 - Não faça comentários no código.
 - Não crie arquivos `.svg` — os arquivos de imagem sempre estarão criados antes.
 - Nunca use `print()`. Use o logger. → [.claude/examples/ex_logger.dart](.claude/examples/ex_logger.dart)
+
+## Git
+
+- **Não crie branches.** Trabalhe sempre na branch atual; só crie uma branch nova se eu pedir explicitamente.
