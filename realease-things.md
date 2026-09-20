@@ -27,16 +27,31 @@ Future<void> _initLocalNotifications() async {
 
 # icones
 
-## link para gerar o icone
+## Caminho padrão: flutter_launcher_icons (já está no projeto)
+
+Um PNG **1024×1024 sem canal alfa** em `assets/icon/icon.png` e um comando geram
+os ícones das duas plataformas:
+
+```bash
+dart run flutter_launcher_icons
+```
+
+A config está no `pubspec.yaml`. O `remove_alpha_ios: true` resolve sozinho a
+**rejeição da Apple por canal alfa** — que é a armadilha desta etapa.
+Detalhes da arte: [assets/icon/README.md](assets/icon/README.md).
+
+## Caminho manual: icon.kitchen
+
+Vale quando a logo precisa de ajuste fino de margem dentro do ícone adaptativo
+do Android, que é visual e difícil de acertar por parâmetro.
 
 https://icon.kitchen/
 
-## arquivos
+Extrair e colar tudo que está dentro de `RES` em `/android/app/src/main/res`,
+dando replace em tudo. No iOS é em `ios/Runner/Assets.xcassets/AppIcon.appiconset`.
 
-extrair, colar tudo que ta dentro de RES dentro do /android/res.
-dar replace em tudo
-
-no ios, eh no ios/flutter/runner/assets.scassets/appIcon.appiconset
+⚠️ Por este caminho **ninguém remove o canal alfa por você** — confira o ícone de
+1024 do iOS à mão (`PIL` tem que dizer `RGB`, nunca `RGBA`).
 
 --------------------------------------------------------
 
