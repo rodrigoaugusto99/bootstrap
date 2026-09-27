@@ -63,7 +63,9 @@ Ver [lib/CLAUDE.md](lib/CLAUDE.md) para fluxo de dados, arquitetura de diretóri
 - 🔥 **Peças obrigatórias, nunca remover** (lista e o que é estar "ligada" em
   [lib/utils/CLAUDE.md](lib/utils/CLAUDE.md#-peças-obrigatórias-nunca-remover)): `loading.dart`,
   `app_updater.dart` (+ `app/infos`), `gcp_logger.dart` + `google_cloud_logging_service.dart`,
-  `route_logger.dart`, `app_cached_network_image.dart`.
+  `route_logger.dart`, `app_cached_network_image.dart`. E em `lib/app/` (ver
+  [lib/app/CLAUDE.md](lib/app/CLAUDE.md)): `app.bottomsheets.custom.dart` e o `filter: ProductionFilter()` do
+  `app.logger.dart`, que o `build_runner` apaga.
 - 🔥 **Observabilidade:** log em toda ação, toda leitura e todo erro. Qualquer problema relatado por um
   usuário tem que ser investigável pelos logs. Ver [lib/utils/CLAUDE.md](lib/utils/CLAUDE.md#observabilidade).
 

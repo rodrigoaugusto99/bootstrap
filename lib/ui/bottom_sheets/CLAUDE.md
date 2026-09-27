@@ -13,6 +13,7 @@ Bottom sheets ficam em `lib/ui/bottom_sheets/`. Funcionam exatamente como dialog
 - **Nunca altere o construtor** da View de bottom sheet — os parâmetros `request` e `completer` são obrigatórios e fixos.
 - Chame bottom sheets sempre via ViewModel: `final _sheetService = locator<BottomSheetService>()`.
 - Dados customizados vão no campo `data` do `showCustomSheet` como schema.
+- 🔥 **Toda sheet entra também em `lib/app/app.bottomsheets.custom.dart`**, envolvida em `_CustomAnimatedBottomSheet`. O `main.dart` usa só esse registro; sheet que ficar só no gerado não abre. Ver [app/CLAUDE.md](../../app/CLAUDE.md).
 
 ## Padrão
 

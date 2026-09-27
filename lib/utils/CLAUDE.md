@@ -40,7 +40,7 @@ decisão do Rodrigo, nunca do Claude.
 |---|---|
 | `loading.dart` | `LoaderOverlay` no `main.dart` com a animação do app; `showLoading`/`hideLoading` em toda ação em que o usuário espera (salvar, enviar, comprar, restaurar, gerar arquivo). Conteúdo da tela carregando usa esqueleto, quando o design tiver |
 | `app_updater.dart` + `AppService` + `firestore/app.dart` | O `startup_viewmodel` chama `AppService.init()` e `userCanContinueUsingApp()`. Documento Firestore `app/infos` com `minVersionName`, `minBuildNumber` (texto), `androidStoreUrl`, `iosStoreUrl`; regra com leitura pública de `app/{doc}`. Sem o documento ou sem rede, o app segue |
-| `gcp_logger.dart` + `services/google_cloud_logging_service.dart` | `GCPLogger` nos `loggerOutputs` do `app.dart`; JSON da conta `<nome-interno>-logs` (papel único `roles/logging.logWriter`) colado no serviço; `logAppName` no `constants.dart` |
+| `gcp_logger.dart` + `services/google_cloud_logging_service.dart` | `GCPLogger` nos `loggerOutputs` do `app.dart`; `filter: ProductionFilter()` no `getLogger` do `app/app.logger.dart` (sem ele, release não loga nada; o `build_runner` apaga, ver [app/CLAUDE.md](../app/CLAUDE.md)); JSON da conta `<nome-interno>-logs` (papel único `roles/logging.logWriter`) colado no serviço; `logAppName` no `constants.dart` |
 | `route_logger.dart` | `RouteLogger()` nos `navigatorObservers` do `main.dart` |
 | `app_cached_network_image.dart` | Toda imagem remota passa por ele |
 

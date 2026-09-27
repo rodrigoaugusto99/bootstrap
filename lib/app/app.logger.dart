@@ -160,5 +160,6 @@ Logger getLogger(
       if (kReleaseMode) GCPLogger(),
       if (kReleaseMode) LogarteOutput(),
     ]),
+    filter: ProductionFilter(),
   );
 }
