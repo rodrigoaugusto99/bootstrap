@@ -5,7 +5,10 @@ import 'package:bootstrap/firebase_options.dart';
 import 'package:bootstrap/ui/common/app_colors.dart';
 import 'package:bootstrap/ui/common/app_theme.dart';
 import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/services/google_cloud_logging_service.dart';
+import 'package:bootstrap/utils/app_session.dart';
 import 'package:bootstrap/utils/logarte.dart';
+import 'package:bootstrap/utils/route_logger.dart';
 import 'package:bootstrap/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,9 +44,14 @@ Future<void> main() async {
   await runZonedGuarded(() async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    await AppSession.init();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // Logs do app no Cloud Logging (só em release). OBRIGATÓRIO: não remover.
+    unawaited(GoogleCloudLoggingService.instance.setupLoggingApi());
+    getLogger('main').i('app aberto: versão ${AppSession.version}, '
+        '${AppSession.platform}, sessão ${AppSession.id}');
     if (useFirebaseEmulator) {
       await FirebaseAuth.instance.useAuthEmulator(host, 9099);
       await FirebaseStorage.instance.useStorageEmulator(host, 9199);
@@ -91,6 +99,7 @@ class MainApp extends StatelessWidget {
         navigatorObservers: [
           LogarteNavigatorObserver(LogarteService().logarte),
           StackedService.routeObserver,
+          RouteLogger(), // loga cada tela aberta: OBRIGATÓRIO, não remover
           // FirebaseAnalyticsObserver(
           //   analytics: FirebaseAnalytics.instance,
           // ),

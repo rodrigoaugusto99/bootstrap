@@ -12,7 +12,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-import '../utils/GCPLogger.dart';
+import '../utils/gcp_logger.dart';
 import '../utils/logarte.dart';
 
 class SimpleLogPrinter extends LogPrinter {

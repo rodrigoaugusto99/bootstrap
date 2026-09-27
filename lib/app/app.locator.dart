@@ -17,7 +17,6 @@ import '../services/api_service.dart';
 import '../services/app_service.dart';
 import '../services/auth_service.dart';
 import '../services/conectivity_service.dart';
-import '../services/google_cloud_logging_service.dart';
 import '../services/location_service.dart';
 import '../services/notification_service.dart';
 import '../services/subscription_service.dart';
@@ -40,7 +39,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => AppService());
   locator.registerLazySingleton(() => ApiService());
-  locator.registerLazySingleton(() => GoogleCloudLoggingService());
   locator.registerLazySingleton(() => UserService());
   locator.registerLazySingleton(() => SubscriptionService());
   locator.registerLazySingleton(() => NotificationService());

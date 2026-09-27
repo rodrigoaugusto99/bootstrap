@@ -1,36 +1,35 @@
+import 'dart:io' show Platform;
+
 import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/services/app_service.dart';
+import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'dart:io' show Platform;
 
+// Atualização forçada: se a versão instalada for menor que a mínima do app/infos, o
+// app manda para a loja e não segue. Sem app/infos (offline, documento ausente), segue.
+// 🔥 OBRIGATÓRIO em todo app: não remover (ligado no startup_viewmodel).
 final _log = getLogger('app_updater.dart');
 
 Future<void> redirectToStore() async {
-  String? url = '';
-
-  if (Platform.isAndroid) {
-    url = locator<AppService>().appInfos?.androidStoreUrl;
-  } else if (Platform.isIOS) {
-    url = locator<AppService>().appInfos?.iosStoreUrl;
-  } else {
-    return;
-  }
-  openUrl(url ?? '');
+  final infos = locator<AppService>().appInfos;
+  final url = Platform.isIOS
+      ? (infos?.iosStoreUrl ?? iosStoreUrl)
+      : (infos?.androidStoreUrl ?? androidStoreUrl);
+  _log.w('Mandando para a loja: $url');
+  openUrl(url);
 }
 
 Future<bool> userCanContinueUsingApp() async {
-  final minVersion = locator<AppService>().appInfos?.minVersionName;
-  final minBuildNumber = locator<AppService>().appInfos?.minBuildNumber;
+  final infos = locator<AppService>().appInfos;
+  final minVersion = infos?.minVersionName;
+  final minBuildNumber = infos?.minBuildNumber;
   if (minVersion == null || minBuildNumber == null) {
-    _log.e('AppInfos não disponíveis, pulando verificação de atualização');
+    _log.w('AppInfos não disponíveis, pulando verificação de atualização');
     return true;
   }
-  bool userNeedsUpdate = await needToUpdate(
-    minVersion,
-    minBuildNumber,
-  );
+  final userNeedsUpdate = await needToUpdate(minVersion, minBuildNumber);
   if (userNeedsUpdate) {
     await redirectToStore();
     return false;
@@ -38,39 +37,38 @@ Future<bool> userCanContinueUsingApp() async {
   return true;
 }
 
-void printCurrentVersion() async {
+Future<void> printCurrentVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();
-  final version = packageInfo.version;
-  final buildNumber = packageInfo.buildNumber;
-  _log.i('Versão do usuário: $version+$buildNumber');
+  _log.i('Versão do usuário: ${packageInfo.version}+${packageInfo.buildNumber}');
 }
 
 Future<bool> needToUpdate(String minVersion, String minBuildNumber) async {
-  bool userNeedsUpdateByBuildNumber =
-      await needsUpdateByBuildNumber(minBuildNumber);
-  bool userNeedsUpdateByVersion = await needsUpdateByVersion(minVersion);
-  return userNeedsUpdateByBuildNumber || userNeedsUpdateByVersion;
+  final byBuild = await needsUpdateByBuildNumber(minBuildNumber);
+  final byVersion = await needsUpdateByVersion(minVersion);
+  _log.i('Versão mínima $minVersion+$minBuildNumber: '
+      'atualizar por build=$byBuild, por versão=$byVersion');
+  return byBuild || byVersion;
 }
 
 Future<bool> needsUpdateByVersion(String minVersion) async {
   final packageInfo = await PackageInfo.fromPlatform();
-  final version = packageInfo.version;
-  return _compareVersions(version, minVersion) < 0;
+  return _compareVersions(packageInfo.version, minVersion) < 0;
 }
 
 Future<bool> needsUpdateByBuildNumber(String minBuildNumber) async {
   final packageInfo = await PackageInfo.fromPlatform();
-  final buildNumber = packageInfo.buildNumber;
-  return int.parse(buildNumber) < int.parse(minBuildNumber);
+  final current = int.tryParse(packageInfo.buildNumber) ?? 0;
+  final minimum = int.tryParse(minBuildNumber) ?? 0;
+  return current < minimum;
 }
 
 int _compareVersions(String v1, String v2) {
-  final v1Parts = v1.split('.').map(int.parse).toList();
-  final v2Parts = v2.split('.').map(int.parse).toList();
-
-  for (var i = 0; i < v1Parts.length; i++) {
-    if (v1Parts[i] > v2Parts[i]) return 1;
-    if (v1Parts[i] < v2Parts[i]) return -1;
+  final a = v1.split('.').map((p) => int.tryParse(p) ?? 0).toList();
+  final b = v2.split('.').map((p) => int.tryParse(p) ?? 0).toList();
+  for (var i = 0; i < a.length || i < b.length; i++) {
+    final x = i < a.length ? a[i] : 0;
+    final y = i < b.length ? b[i] : 0;
+    if (x != y) return x > y ? 1 : -1;
   }
   return 0;
 }

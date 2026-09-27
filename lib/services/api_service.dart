@@ -4,6 +4,7 @@ import 'package:bootstrap/app/app.locator.dart';
 import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/services/auth_service.dart';
+import 'package:bootstrap/utils/app_session.dart';
 import 'package:dio/dio.dart';
 
 enum HttpMethod {
@@ -16,7 +17,7 @@ enum HttpMethod {
 
 class ApiService {
   final _log = getLogger('ApiService');
-  final Dio dio = Dio(
+  late final Dio dio = Dio(
     BaseOptions(
       responseType: ResponseType.plain,
       headers: {
@@ -24,7 +25,42 @@ class ApiService {
         'Content-Type': 'application/json',
       },
     ),
-  );
+  )..interceptors.add(
+      InterceptorsWrapper(
+        // O backend loga estes cabeçalhos (request-logger do api_bootstrap): é o que
+        // cruza o log do app com o dele. OBRIGATÓRIO: não remover.
+        onRequest: (options, handler) {
+          options.headers['x-session-id'] = AppSession.id;
+          options.headers['x-app-version'] = AppSession.version;
+          options.headers['x-platform'] = AppSession.platform;
+          options.extra['startedAt'] = DateTime.now();
+          _log.i('→ ${options.method} ${options.path}');
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          _log.i('← ${response.requestOptions.method} '
+              '${response.requestOptions.path} ${response.statusCode} '
+              '${_elapsed(response.requestOptions)} '
+              'requestId ${response.headers.value('x-request-id')}');
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          _log.e('✕ ${error.requestOptions.method} '
+              '${error.requestOptions.path} ${error.response?.statusCode} '
+              '${_elapsed(error.requestOptions)} ${error.type.name} '
+              'requestId ${error.response?.headers.value('x-request-id')} '
+              'resposta ${error.response?.data}');
+          handler.next(error);
+        },
+      ),
+    );
+
+  static String _elapsed(RequestOptions options) {
+    final startedAt = options.extra['startedAt'];
+    return startedAt is DateTime
+        ? '${DateTime.now().difference(startedAt).inMilliseconds}ms'
+        : '';
+  }
   Future<Map<String, dynamic>> request({
     dynamic body,
     required String url,

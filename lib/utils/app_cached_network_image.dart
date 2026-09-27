@@ -1,7 +1,13 @@
+import 'package:bootstrap/app/app.logger.dart';
 import 'package:bootstrap/utils/helpers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+// Toda imagem remota do app passa por aqui. 🔥 OBRIGATÓRIO: não remover.
+// App com muitas imagens imutáveis (catálogo, conteúdo): passe um cacheManager com
+// limite alto e prazo longo — o padrão do flutter_cache_manager é 200 objetos/30 dias.
+final _log = getLogger('AppCachedNetworkImage');
 
 Widget appCachedNetWorkImage({
   String? imageUrl,
@@ -13,7 +19,7 @@ Widget appCachedNetWorkImage({
   Function()? onTap,
 }) {
   if (imageUrl == null || imageUrl == '') {
-    const SizedBox();
+    return const SizedBox();
   }
 
   return decContainer(
@@ -24,8 +30,8 @@ Widget appCachedNetWorkImage({
       child: CachedNetworkImage(
         height: height,
         width: width,
-        fit: BoxFit.cover,
-        imageUrl: imageUrl ?? '',
+        fit: fit ?? BoxFit.cover,
+        imageUrl: imageUrl,
         placeholder: (context, url) {
           return Skeletonizer(
             enabled: true,
@@ -37,7 +43,10 @@ Widget appCachedNetWorkImage({
             ),
           );
         },
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+        errorWidget: (context, url, error) {
+          _log.w('Imagem não carregou: $url ($error)');
+          return const Icon(Icons.error);
+        },
       ),
     ),
   );

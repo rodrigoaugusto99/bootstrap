@@ -36,6 +36,7 @@ dependencies:
   logarte: ^1.4.0
   logger: ^1.4.0
   package_info_plus: ^9.0.0
+  uuid: ^4.6.0
   pin_code_fields: ^8.0.1
   shared_preferences: ^2.5.3
   sign_in_with_apple: ^7.0.1
