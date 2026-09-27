@@ -14,12 +14,12 @@ class RouteLogger extends NavigatorObserver {
   }
 
   @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      _log.i('abriu ${_describe(route)} (vindo de ${_describe(previousRoute)})');
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) => _log
+      .i('abriu ${_describe(route)} (vindo de ${_describe(previousRoute)})');
 
   @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      _log.i('fechou ${_describe(route)} (volta para ${_describe(previousRoute)})');
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) => _log
+      .i('fechou ${_describe(route)} (volta para ${_describe(previousRoute)})');
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>

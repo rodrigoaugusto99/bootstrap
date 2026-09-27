@@ -39,7 +39,8 @@ Future<bool> userCanContinueUsingApp() async {
 
 Future<void> printCurrentVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();
-  _log.i('Versão do usuário: ${packageInfo.version}+${packageInfo.buildNumber}');
+  _log.i(
+      'Versão do usuário: ${packageInfo.version}+${packageInfo.buildNumber}');
 }
 
 Future<bool> needToUpdate(String minVersion, String minBuildNumber) async {

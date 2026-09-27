@@ -32,8 +32,8 @@ Future<ShareResultStatus> shareTextWithResult(
   String text, {
   String? subject,
 }) async {
-  final result = await SharePlus.instance
-      .share(ShareParams(text: text, subject: subject));
+  final result =
+      await SharePlus.instance.share(ShareParams(text: text, subject: subject));
   return result.status;
 }
 

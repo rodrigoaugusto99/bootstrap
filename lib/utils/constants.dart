@@ -10,7 +10,8 @@ const DEVELOPMENT = true; //appFlavor == 'internal' || kDebugMode;
 const logAppName = 'bootstrap';
 
 // Atualização forçada: usadas quando o app/infos não traz os links das lojas.
-const androidStoreUrl = 'https://play.google.com/store/apps/details?id=com.example.bootstrap';
+const androidStoreUrl =
+    'https://play.google.com/store/apps/details?id=com.example.bootstrap';
 const iosStoreUrl = 'https://apps.apple.com/app/id0000000000';
 const useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
 const host = _usePhysicalDevice ? '192.168.15.82' : '10.0.2.2';

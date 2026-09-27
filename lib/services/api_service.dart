@@ -61,6 +61,7 @@ class ApiService {
         ? '${DateTime.now().difference(startedAt).inMilliseconds}ms'
         : '';
   }
+
   Future<Map<String, dynamic>> request({
     dynamic body,
     required String url,
