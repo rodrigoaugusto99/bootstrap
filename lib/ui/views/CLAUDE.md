@@ -196,3 +196,24 @@ Future<void> handleSubmit() async {
   }
 }
 ```
+
+---
+
+## Estado global e telas que ficam vivas
+
+Os serviços são singletons, e os `ValueNotifier` deles (`flow` da compra, `premium`, `isOnline`...) são **globais**.
+Uma ViewModel que escuta um deles recebe **todo** evento, inclusive os que outra tela provocou. As abas da
+`HomeView` ficam num `IndexedStack`: **todas existem o tempo todo**, mesmo escondidas.
+
+Regras:
+
+- **Listener que só chama `notifyListeners` é seguro.**
+- **Listener que faz efeito colateral** (toast, loading, navegação, bottom sheet) só age se **esta tela** pediu a
+  ação. Guarde um flag (`_restoreRequested = true` no `handle...`) e ignore o evento sem ele.
+- **Quem mostra o loading esconde o loading.** Outra ViewModel nunca chama `hideLoading` por um estado que não
+  iniciou, senão apaga o loading de quem está esperando.
+- Evento que só **uma** tela deve tratar (push tocado, link de card) é **consumido** (`consume...`) por quem
+  trata, como faz a `HomeViewModel`.
+- 🔥 Caso real (Refúgio): a aba Ajustes escutava o fluxo de compra e mostrou "Compras restauradas." por cima do
+  "Assinatura ativa" do paywall. Ao criar um listener com efeito colateral, pergunte: "se outra tela disparar
+  isto, o que acontece aqui?"
