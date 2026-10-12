@@ -1,0 +1,76 @@
+# Modelo do codemagic.yaml dos nossos apps. Copiar para a RAIZ do projeto novo (ao lado de
+# app/, functions/ e firebase.json) e trocar os três valores marcados com <...>.
+# Passo a passo: apps/docs/novo-app/03-montagem.md (passo 9) e apps/docs/aprendizagem-apple.
+#
+# 🔥 Pegadinhas já pagas (Refúgio, 10/10/2026: três builds até passar):
+# - `flutter config --enable-swift-package-manager` ANTES do `flutter pub get`: plugin só com
+#   Swift Package Manager (ex.: app_settings 8+) falha no pub get com "is only Swift Package
+#   Manager compatible", porque o Codemagic roda com o SwiftPM desligado.
+# - Com o SwiftPM ligado, todo plugin iOS passa a ser compilado por ele e um plugin velho quebra só
+#   no "Gerar IPA". flutter_native_splash 2.4.4 quebrava ("public headers (include) directory path
+#   ... is invalid"): manter ^2.4.7 ou mais novo.
+# - `flutter:` igual ao app/.fvmrc. Nunca `flutter: fvm`: ele procura o .fvmrc na raiz do repo.
+# - Rodar o `ios-build-check` (barato, sem assinatura) antes do `ios-testflight`.
+workflows:
+  # Não precisa de conta Apple: só confere se o projeto iOS compila
+  # (CocoaPods, Firebase, deployment target). Não gera IPA instalável.
+  ios-build-check:
+    name: iOS — teste de compilação (sem assinatura)
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    working_directory: app
+    environment:
+      flutter: 3.41.0                        # manter igual a app/.fvmrc
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Dependências
+        script: |
+          flutter config --enable-swift-package-manager
+          flutter pub get
+      - name: Build iOS sem assinatura
+        script: flutter build ios --release --no-codesign
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+
+  ios-testflight:
+    name: iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: app
+    integrations:
+      app_store_connect: Redarock ASC        # integração da conta; serve para todos os apps
+    environment:
+      flutter: 3.41.0                        # manter igual a app/.fvmrc
+      xcode: latest
+      cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: <bundle-id>       # ex.: com.redarock.meuapp
+      vars:
+        APP_STORE_APPLE_ID: <apple-id-do-app>  # ~10 dígitos, App Store Connect → Informações do app
+    scripts:
+      - name: Dependências
+        script: |
+          flutter config --enable-swift-package-manager
+          flutter pub get
+      - name: Aplicar perfis de assinatura no projeto
+        script: xcode-project use-profiles
+      - name: Gerar IPA
+        script: |
+          LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" || echo 0)
+          flutter build ipa --release \
+            --build-number=$((LATEST + 1)) \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa                  # relativo ao working_directory
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Sobe o IPA e para por aí: o build fica disponível para TESTE INTERNO
+        # (testadores internos não passam por revisão da Apple).
+        # `submit_to_testflight: true` submeteria para revisão de teste EXTERNO,
+        # que exige preencher Beta App Information + Beta App Review Information
+        # em App Store Connect → TestFlight → Test Information. Sem isso o build
+        # sobe, processa e o workflow falha na última etapa.

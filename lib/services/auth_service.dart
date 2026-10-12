@@ -11,7 +11,8 @@ import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/services/app_service.dart';
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
-import 'package:bootstrap/services/subscription_service.dart';
+import 'package:bootstrap/services/entitlement_service.dart';
+import 'package:bootstrap/services/purchase_service.dart';
 import 'package:bootstrap/services/user_service.dart';
 import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/enums.dart';
@@ -524,7 +525,8 @@ class AuthService {
     locator.registerLazySingleton(() => AppService());
     locator.registerLazySingleton(() => LocationService());
     locator.registerLazySingleton(() => NotificationService());
-    locator.registerLazySingleton(() => SubscriptionService());
+    locator.registerLazySingleton(() => EntitlementService());
+    locator.registerLazySingleton(() => PurchaseService());
     hideLoading('signOut');
     _navigationService.clearStackAndShow(Routes.loginView);
   }

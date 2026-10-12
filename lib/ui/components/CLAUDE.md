@@ -88,3 +88,10 @@ CustomCheckBox(
   onTap: () => viewModel.handleSelectFruit(FruitEnum.apple),
 )
 ```
+
+
+---
+
+## AppVersionLabel
+
+`AppVersionLabel()` mostra "Versão 1.0.0+3" (versão e build do `package_info_plus`), pequeno e centralizado. Vai no **rodapé da tela de Ajustes** de todo app: quem testa e quem reporta um problema precisa saber a versão sem abrir o log.

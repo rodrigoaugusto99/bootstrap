@@ -1,5 +1,6 @@
 import 'package:bootstrap/services/conectivity_service.dart';
 import 'package:bootstrap/ui/bottom_sheets/notice/notice_sheet.dart';
+import 'package:bootstrap/ui/dialogs/force_update/force_update_dialog.dart';
 import 'package:bootstrap/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:bootstrap/ui/views/home/home_view.dart';
 import 'package:bootstrap/ui/views/startup/startup_view.dart';
@@ -14,7 +15,8 @@ import 'package:bootstrap/ui/views/login/login_view.dart';
 import 'package:bootstrap/ui/views/register/register_view.dart';
 import 'package:bootstrap/ui/views/on_boarding/on_boarding_view.dart';
 import 'package:bootstrap/services/user_service.dart';
-import 'package:bootstrap/services/subscription_service.dart';
+import 'package:bootstrap/services/entitlement_service.dart';
+import 'package:bootstrap/services/purchase_service.dart';
 import 'package:bootstrap/services/notification_service.dart';
 import 'package:bootstrap/services/location_service.dart';
 import 'package:bootstrap/services/alarm_service.dart';
@@ -52,7 +54,8 @@ import 'package:bootstrap/ui/views/cue_test/cue_test_view.dart';
     LazySingleton(classType: AppService),
     LazySingleton(classType: ApiService),
     LazySingleton(classType: UserService),
-    LazySingleton(classType: SubscriptionService),
+    LazySingleton(classType: EntitlementService),
+    LazySingleton(classType: PurchaseService),
     LazySingleton(classType: NotificationService),
     LazySingleton(classType: ConnectivityService),
     LazySingleton(classType: LocationService),
@@ -66,6 +69,7 @@ import 'package:bootstrap/ui/views/cue_test/cue_test_view.dart';
   ],
   dialogs: [
     StackedDialog(classType: InfoAlertDialog),
+    StackedDialog(classType: ForceUpdateDialog),
     // @stacked-dialog
   ],
   logger: StackedLogger(

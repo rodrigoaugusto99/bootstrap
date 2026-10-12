@@ -155,6 +155,7 @@ class ApiService {
       throw AppError(
         message: errorMessage ?? 'Erro desconhecido',
         dataResponse: dataResponse,
+        code: statusCode?.toString(),
       );
     } catch (e) {
       _log.e('Erro inesperado: $e');

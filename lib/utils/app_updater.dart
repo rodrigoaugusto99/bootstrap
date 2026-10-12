@@ -7,9 +7,10 @@ import 'package:bootstrap/utils/constants.dart';
 import 'package:bootstrap/utils/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-// Atualização forçada: se a versão instalada for menor que a mínima do app/infos, o
-// app manda para a loja e não segue. Sem app/infos (offline, documento ausente), segue.
-// 🔥 OBRIGATÓRIO em todo app: não remover (ligado no startup_viewmodel).
+// Atualização forçada: se a versão instalada for menor que a mínima do app/infos, a
+// abertura mostra o dialog de atualização e só segue quando a versão passar a valer.
+// Sem app/infos (offline, documento ausente), segue.
+// 🔥 OBRIGATÓRIO em todo app: não remover (ligado no startup_viewmodel, que mostra o ForceUpdateDialog).
 final _log = getLogger('app_updater.dart');
 
 Future<void> redirectToStore() async {
@@ -21,20 +22,15 @@ Future<void> redirectToStore() async {
   openUrl(url);
 }
 
-Future<bool> userCanContinueUsingApp() async {
+Future<bool> needsForcedUpdate() async {
   final infos = locator<AppService>().appInfos;
   final minVersion = infos?.minVersionName;
   final minBuildNumber = infos?.minBuildNumber;
   if (minVersion == null || minBuildNumber == null) {
     _log.w('AppInfos não disponíveis, pulando verificação de atualização');
-    return true;
-  }
-  final userNeedsUpdate = await needToUpdate(minVersion, minBuildNumber);
-  if (userNeedsUpdate) {
-    await redirectToStore();
     return false;
   }
-  return true;
+  return needToUpdate(minVersion, minBuildNumber);
 }
 
 Future<void> printCurrentVersion() async {
