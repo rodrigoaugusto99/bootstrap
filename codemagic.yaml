@@ -62,8 +62,20 @@ workflows:
           flutter build ipa --release \
             --build-number=$((LATEST + 1)) \
             --export-options-plist=/Users/builder/export_options.plist
+      - name: Enviar dSYMs ao Crashlytics
+        # Sem os dSYMs o Crashlytics deixa o crash do iOS "não processado" e o painel
+        # não mostra nada. O GoogleService-Info.plist basta para autenticar.
+        # Não derruba o build se falhar: o IPA continua indo para o TestFlight.
+        ignore_failure: true
+        script: |
+          UPLOAD=$(find "$HOME/Library/Developer/Xcode/DerivedData" "$CM_BUILD_DIR" \
+            -path "*Crashlytics*" -name upload-symbols -type f 2>/dev/null | head -1)
+          echo "upload-symbols: $UPLOAD"
+          "$UPLOAD" -gsp ios/Runner/GoogleService-Info.plist -p ios \
+            build/ios/archive/Runner.xcarchive/dSYMs
     artifacts:
       - build/ios/ipa/*.ipa                  # relativo ao working_directory
+      - build/ios/archive/Runner.xcarchive/dSYMs/**   # guardar os dSYMs de cada build
       - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
