@@ -48,6 +48,21 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // App Check (etapa 8): descomentar junto com a dependência `firebase_app_check`. 🔥 Precisa ficar
+    // AQUI, logo depois do Firebase.initializeApp e ANTES de qualquer Auth/Firestore/Storage: o serviço
+    // criado antes dele nunca pega o token (Refúgio: 0% verificadas no Firestore, 89% no Auth).
+    // try {
+    //   await FirebaseAppCheck.instance.activate(
+    //     providerAndroid: kReleaseMode
+    //         ? const AndroidPlayIntegrityProvider()
+    //         : const AndroidDebugProvider(),
+    //     providerApple: kReleaseMode
+    //         ? const AppleAppAttestWithDeviceCheckFallbackProvider()
+    //         : const AppleDebugProvider(),
+    //   );
+    // } catch (e) {
+    //   getLogger('main').w('App Check não ativou: $e');
+    // }
     // Logs do app no Cloud Logging (só em release). OBRIGATÓRIO: não remover.
     unawaited(GoogleCloudLoggingService.instance.setupLoggingApi());
     getLogger('main').i('app aberto: versão ${AppSession.version}, '
@@ -60,19 +75,6 @@ Future<void> main() async {
     await setupLocator();
     setupDialogUi();
     setupBottomSheetUiWithCustomAnimations();
-
-    // try {
-    //   await FirebaseAppCheck.instance.activate(
-    //     providerAndroid: kDebugMode
-    //         ? const AndroidDebugProvider()
-    //         : const AndroidPlayIntegrityProvider(),
-    //     providerApple: kDebugMode
-    //         ? const AppleDebugProvider()
-    //         : const AppleAppAttestProvider(),
-    //   );
-    // } catch (e) {
-    //   _log.e("Error activating FirebaseAppCheck: ${e.toString()}");
-    // }
 
     runApp(const MainApp());
   }, (error, stack) {
