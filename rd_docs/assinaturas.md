@@ -28,8 +28,18 @@ Regras de negócio preservadas (não "simplifique"):
 - `isPremiumAt`: status `active`/`grace` com `accessUntil + 10 min` no futuro. O acesso não cai nos segundos
   entre o vencimento e a renovação chegar do backend. `expired` e `revoked` **não têm folga**.
 - Timer de reavaliação em `accessUntil + renewalSlack + 1s` (não agenda se faltar mais de 30 dias).
+- Exceção: o **403** ("compra de outra conta") é resposta definitiva, então a transação é finalizada. Sem
+  isso, cada conta zerada ou reinstalação deixa transações que a loja reentrega a toda abertura (Refúgio,
+  22/10/2026).
 - Erro 403 do backend mostra a mensagem dele; qualquer outra falha mostra "Recebemos sua compra, mas não
   conseguimos confirmar agora. Ela será liberada automaticamente." (a compra segue pendente na loja).
+  **Só se a tela pediu**: entrega que chega sem compra/restauração em andamento (reentrega da loja ao abrir
+  o app) vai só para o log, senão o erro aparece em quem está restaurando por coincidência.
+- `/purchases/restore` responde 200 também com assinatura vencida (`expired`/`revoked`). Isso não é sucesso:
+  o app mostra "Sua assinatura terminou em…" em vez de "Compras restauradas". É o primeiro teste do revisor
+  da Apple quando pede conta com assinatura expirada.
+- Nenhum texto visível cita a loja da outra plataforma: no iOS, nada de Android ou Google Play (rejeição
+  2.3.10). Instrução de cancelamento e "pela loja" saem por `Platform.isIOS`.
 
 ## Contrato com o backend
 
@@ -226,6 +236,8 @@ uma trilha de teste; as assinaturas de teste renovam em minutos. iPhone: TestFli
 
 - [ ] **Comprar**: assinar o plano anual e o mensal; o paywall fecha, aparece "Assinatura ativa", `entitlements/{uid}` fica `active`.
 - [ ] **Compra interrompida**: derrubar a rede/o backend entre a loja e a validação; reabrir o app e ver a compra ser reentregue e liberada (transação não finalizada).
+- [ ] **Assinatura vencida**: assinar, cancelar, esperar vencer (TestFlight ~1 dia; sandbox poucos minutos) e ver o conteúdo bloqueado e o "Restaurar compras" dizendo que terminou.
+- [ ] **Conta zerada**: assinar, zerar a conta (uid novo), reabrir duas vezes: na primeira o log mostra "é de outra conta; finalizada na loja", na segunda nenhum 403, e o "Restaurar compras" não mostra erro.
 - [ ] **Renovar**: esperar o vencimento de teste; o acesso não pisca (folga de 10 min) e a data nova aparece em Ajustes.
 - [ ] **Cancelar no meio do período**: cancelar na loja; Ajustes mostra "Sem renovação: você tem acesso até {data}." e o acesso continua.
 - [ ] **Expirar**: deixar passar o fim do período; título "Sua assinatura terminou" e conteúdo pago bloqueado. Reembolso/revogação: "Assinatura cancelada pela loja", sem folga.

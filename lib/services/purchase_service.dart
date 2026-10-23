@@ -8,6 +8,7 @@ import 'package:bootstrap/exceptions/app_error.dart';
 import 'package:bootstrap/firestore/entitlements.dart';
 import 'package:bootstrap/services/api_service.dart';
 import 'package:bootstrap/utils/constants.dart';
+import 'package:bootstrap/utils/formatters.dart';
 import 'package:bootstrap/utils/purchase_constants.dart';
 import 'package:bootstrap/utils/purchase_enums.dart';
 import 'package:crypto/crypto.dart';
@@ -256,6 +257,11 @@ class PurchaseService {
 
   Future<void> _deliver(PurchaseDetails purchase) async {
     final restored = purchase.status == PurchaseStatus.restored;
+    // A loja reentrega sozinha, ao abrir o app, transações que ficaram sem finalizar.
+    // Essas entregas não foram pedidas por nenhuma tela e não podem virar erro na tela
+    // de quem, por acaso, está comprando ou restaurando naquele momento.
+    final requested = flow.value ==
+        (restored ? PurchaseFlowState.restoring : PurchaseFlowState.purchasing);
     final body = Platform.isAndroid
         ? {
             'platform': 'android',
@@ -275,16 +281,48 @@ class PurchaseService {
         await InAppPurchase.instance.completePurchase(purchase);
         _log.i('completePurchase de ${purchase.purchaseID}');
       }
+      final expiredMessage = restored ? _expiredMessage(response['data']) : null;
+      if (expiredMessage != null) {
+        _log.i('restaurar: a assinatura da loja já venceu');
+        lastMessage.value = expiredMessage;
+        flow.value = PurchaseFlowState.error;
+        return;
+      }
+      lastMessage.value = null;
       flow.value = PurchaseFlowState.success;
     } on AppError catch (e) {
-      // Sem completePurchase: a loja reentrega e tentamos de novo na próxima abertura.
-      _log.e('$path falhou (${e.code}): ${e.message}. '
-          'Compra ${purchase.purchaseID} fica sem finalizar para a loja reentregar');
-      lastMessage.value = e.code == '403'
+      // 403 é resposta definitiva (a compra é de outro uid, que segue com ela no
+      // backend): reentregar não muda nada, então finaliza. Nos outros erros não
+      // finaliza: a loja reentrega e tentamos de novo na próxima abertura.
+      final notThisAccount = e.code == '403';
+      if (notThisAccount && purchase.pendingCompletePurchase) {
+        await InAppPurchase.instance.completePurchase(purchase);
+        _log.w('$path recusou (403): ${e.message}. '
+            'Compra ${purchase.purchaseID} é de outra conta; finalizada na loja');
+      } else {
+        _log.e('$path falhou (${e.code}): ${e.message}. '
+            'Compra ${purchase.purchaseID} fica sem finalizar para a loja reentregar');
+      }
+      if (!requested) return;
+      lastMessage.value = notThisAccount
           ? e.message
           : 'Recebemos sua compra, mas não conseguimos confirmar agora. Ela será liberada automaticamente.';
       flow.value = PurchaseFlowState.error;
     }
+  }
+
+  // Restaurar uma assinatura vencida responde 200 com status "expired" (ou "revoked"): não é sucesso.
+  String? _expiredMessage(dynamic data) {
+    if (data is! Map) {
+      return 'Não encontramos uma assinatura ativa nesta conta da loja.';
+    }
+    final until = DateTime.tryParse('${data['accessUntil']}')?.toLocal();
+    final active = const ['active', 'grace'].contains(data['status']) &&
+        until != null &&
+        until.isAfter(DateTime.now());
+    if (active) return null;
+    final ended = until == null ? '' : ' em ${formatDate3(until)}';
+    return 'Sua assinatura terminou$ended. Assine de novo para liberar todo o conteúdo.';
   }
 
   // O app viu o acesso vencer há pouco: pede ao backend para reconsultar a loja.
